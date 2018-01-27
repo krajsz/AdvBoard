@@ -1,4 +1,4 @@
-#include "VideoInfoDialog.h"
+#include "src/dialogs/VideoInfoDialog.h"
 #include "ui_videoinfodialog.h"
 
 VideoInfoDialog::VideoInfoDialog(QWidget *parent) :
@@ -11,4 +11,9 @@ VideoInfoDialog::VideoInfoDialog(QWidget *parent) :
 VideoInfoDialog::~VideoInfoDialog()
 {
     delete ui;
+}
+
+void VideoInfoDialog::setController(VideoInfoDialogController *controller)
+{
+    m_controller = controller;
 }

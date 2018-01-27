@@ -8,8 +8,7 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 #ifndef ADVVIEWCONTROLLER_H
 #define ADVVIEWCONTROLLER_H
 
-#include "AdvVideoView.h"
-#include "SensorData.h"
+#include "src/datasources/SensorDataReader.h"
 #include <QObject>
 
 class AdvViewController : public QObject
@@ -19,8 +18,12 @@ public:
     explicit AdvViewController(QObject *parent = nullptr);
 
 signals:
-
+    void setVideo(const QUrl& url);
+    void play();
 public slots:
+
+private:
+
 };
 
 #endif // ADVVIEWCONTROLLER_H

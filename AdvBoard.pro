@@ -36,17 +36,21 @@ SOURCES += \
     src/dashboards/MotorcycleDashboard.cpp \
     src/datasources/VideoSource.cpp \
     src/datasources/LiveVideoSource.cpp \
+    src/datasources/SensorDataReader.cpp \
+    src/datasources/LiveSensorDataReader.cpp \
     src/dialogs/SensorDataValidatingDialog.cpp \
     src/dialogs/VideoInfoDialog.cpp \
     src/dialogs/SensorDataInfoDialog.cpp \
+    src/dialogs/SettingDialog.cpp \
     src/sensors/AbstractSensor.cpp \
     src/sensors/TemperatureSensor.cpp \
-    src/SensorDataParser.cpp \
     src/view/AdvVideoView.cpp \
     src/view/AdvSensorItem.cpp \
     src/view/AdvVideoScene.cpp \
-    src/datasources/SensorDataReader.cpp \
-    src/datasources/LiveSensorDataReader.cpp
+    src/VideoRecorder.cpp \
+    src/controllers/SettingDialogController.cpp \
+    src/dialogs/VideoLoadingDialog.cpp \
+    src/sensors/HumiditySensor.cpp
 
 HEADERS += \
         src\AdvBoardMain.h \
@@ -59,20 +63,29 @@ HEADERS += \
     src/dashboards/MotorcycleDashboard.h \
     src/datasources/VideoSource.h \
     src/datasources/LiveVideoSource.h \
+    src/datasources/SensorDataReader.h \
+    src/datasources/LiveSensorDataReader.h \
     src/dialogs/VideoInfoDialog.h \
     src/dialogs/SensorDataInfoDialog.h \
     src/dialogs/SensorDataValidatingDialog.h \
+    src/dialogs/SettingDialog.h \
     src/sensors/TemperatureSensor.h \
     src/sensors/AbstractSensor.h \
     src/view/AdvVideoView.h \
     src/view/AdvSensorItem.h \
     src/view/AdvVideoScene.h \
-    src/SensorDataParser.h \
-    src/datasources/SensorDataReader.h \
-    src/datasources/LiveSensorDataReader.h
+    src/VideoRecorder.h \
+    src/controllers/SettingDialogController.h \
+    src/dialogs/VideoLoadingDialog.h \
+    src/sensors/HumiditySensor.h
 
 FORMS += \
         src/ui\advboardmain.ui \
     src/ui/sensordatavalidatingdialog.ui \
     src/ui/videoinfodialog.ui \
-    src/ui/sensordatainfodialog.ui
+    src/ui/sensordatainfodialog.ui \
+    src/ui/settingdialog.ui \
+    src/ui/videoloadingdialog.ui
+
+RESOURCES +=\
+    src/resources.qrc

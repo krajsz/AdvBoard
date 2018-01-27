@@ -8,10 +8,9 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 #ifndef ABSTRACTDASHBOARD_H
 #define ABSTRACTDASHBOARD_H
 
-#include "SensorData.h"
-#include "AdvSensorItem.h"
+#include "src/datasources/SensorDataReader.h"
+#include "src/view/AdvSensorItem.h"
 
-#include <QObject>
 #include <QVector>
 #include <QGraphicsObject>
 
@@ -19,20 +18,20 @@ class AbstractDashboard : public QGraphicsObject
 {
     Q_OBJECT
 public:
-    enum DashboardType {
+    enum class DashboardType {
+        Abstract = 0,
         MotorcycleDashboard,
         BikerDashboard,
         HikerDashboard
     };
-    explicit AbstractDashboard(QGraphicsObject* parent);
+    void updateSensors(const QVector<QVariant> &values);
+    QVector<AdvSensorItem*> sensorItems() const;
+    explicit AbstractDashboard(const DashboardType dashboardType = DashboardType::Abstract, QGraphicsObject* parent = nullptr);
     DashboardType dashboardType() const;
-
-
-
-private:
-
+    int numberOfSensors() const;
+protected:
     DashboardType m_type;
-    QVector<AdvSensorItem*> m_advSensorItem;
+    QVector<AdvSensorItem*> m_advSensorItems;
 };
 
 #endif // ABSTRACTDASHBOARD_H

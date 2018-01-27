@@ -1,15 +1,24 @@
+/***************************************************************************
+File		: TemperatureSensor.h
+Project		: AdvBoard
+Description	: Temperature sensor
+--------------------------------------------------------------------
+Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
+***************************************************************************/
 #ifndef TEMPERATURESENSOR_H
 #define TEMPERATURESENSOR_H
 
-#include "AbstractSensor.h"
+#include "src/sensors/AbstractSensor.h"
+#include <QObject>
 
 class TemperatureSensor : public AbstractSensor
 {
+    Q_OBJECT
 public:
-    TemperatureSensor();
+    TemperatureSensor(const int id, const double temp, QObject* parent = nullptr);
 
 private:
-    double m_value;
+
 };
 
 #endif // TEMPERATURESENSOR_H

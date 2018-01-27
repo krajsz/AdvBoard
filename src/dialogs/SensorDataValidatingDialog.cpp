@@ -12,3 +12,8 @@ SensorDataValidatingDialog::~SensorDataValidatingDialog()
 {
     delete ui;
 }
+
+void SensorDataValidatingDialog::setController(SensorDataValidatingDialogController *controller)
+{
+    m_controller = controller;
+}

@@ -1,28 +1,37 @@
+/***************************************************************************
+File		: VideoSource.h
+Project		: AdvBoard
+Description	: MotorcycleDashboard dashboard
+--------------------------------------------------------------------
+Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
+***************************************************************************/
 #ifndef VIDEOSOURCE_H
 #define VIDEOSOURCE_H
 
 #include <QGraphicsVideoItem>
+#include <QUrl>
 #include <QMediaPlayer>
-#include <QVideoProbe>
-#include <QVideoFrame>
 
-class QString;
 class VideoSource : public QGraphicsVideoItem
 {
     Q_OBJECT
 public:
+
     explicit VideoSource(QGraphicsVideoItem *parent = nullptr);
-    QString path() const;
-    QVideoFrame currentFrame() const;
+    QUrl path() const;
+
 signals:
-
+    void videoLoaded();
+    void loadPercent(int percent);
 public slots:
+    void loadP(int percent);
     void play();
-
+    void setVideo(const QUrl& url);
+    void positionChanged(qint64 position);
+    void mediaStatusChanged(QMediaPlayer::MediaStatus status);
 private:
-    QString m_path;
+    QUrl m_path;
     QMediaPlayer* m_player;
-    QVideoProbe* m_probe;
 };
 
 #endif // VIDEOSOURCE_H

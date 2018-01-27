@@ -1,33 +1,39 @@
+/***************************************************************************
+File		: AbstractSensor.h
+Project		: AdvBoard
+Description	: Base class for sensors
+--------------------------------------------------------------------
+Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
+***************************************************************************/
 #ifndef ABSTRACTSENSOR_H
 #define ABSTRACTSENSOR_H
 
 #include <QObject>
 #include <QJsonObject>
+#include <QVariant>
 
-template<class T>
 class AbstractSensor : public QObject
 {
     Q_OBJECT
 public:
-    explicit AbstractSensor(const int id, const T& val, QObject *parent = nullptr);
-    SensorType type() const;
-    bool operator==(const AbstractSensor<T> &other) const;
-    T value() const;
     enum SensorType {
-        TemperatureSensor = 0,
+        Abstract = 0,
+        TemperatureSensor,
         AccelerationSensor,
         HumiditySensor,
         GPSpositionSensor
     };
-signals:
-    void dataChanged();
+    explicit AbstractSensor(const int id, const QVariant& val, SensorType type = Abstract, QObject *parent = nullptr);
+    SensorType type() const;
+    bool operator==(const AbstractSensor &other) const;
+    QVariant value() const;
+
 public slots:
+    void update(const QVariant& newvalue);
 private:
-
-
     SensorType m_type;
     QJsonObject m_sensorData;
-    T m_value;
+    QVariant m_value;
     const int m_id;
 };
 

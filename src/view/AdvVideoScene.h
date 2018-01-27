@@ -2,8 +2,8 @@
 #define ADVVIDEOSCENE_H
 
 
-#include "AbstractDashboard.h"
-#include "VideoSource.h"
+#include "src/dashboards/AbstractDashboard.h"
+#include "src/datasources/VideoSource.h"
 
 #include <QObject>
 #include <QGraphicsScene>
@@ -12,8 +12,11 @@ class AdvVideoScene : public QGraphicsScene
 {
     Q_OBJECT
 public:
-    explicit AdvVideoScene(QGraphicsScene *parent = nullptr);
+    explicit AdvVideoScene(AbstractDashboard::DashboardType dashboardType, QGraphicsScene *parent = nullptr);
 
+    VideoSource* video();
+    AbstractDashboard* dashboard();
+    void setup();
 signals:
 
 public slots:

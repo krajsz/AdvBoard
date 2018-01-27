@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1130</width>
-    <height>554</height>
+    <width>933</width>
+    <height>491</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -30,6 +30,9 @@
        </item>
        <item row="1" column="0">
         <widget class="QPushButton" name="liveProcessingSettingsPushButton">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="text">
           <string>Settings</string>
          </property>
@@ -86,6 +89,18 @@
       <property name="value">
        <number>0</number>
       </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="invertedAppearance">
+       <bool>false</bool>
+      </property>
+      <property name="textDirection">
+       <enum>QProgressBar::BottomToTop</enum>
+      </property>
       <property name="format">
        <string>Rendering...%p%</string>
       </property>
@@ -115,7 +130,16 @@
      </widget>
     </item>
     <item row="0" column="0" rowspan="6">
-     <widget class="QGraphicsView" name="graphicsView"/>
+     <widget class="AdvVideoView" name="videoView">
+      <property name="sceneRect">
+       <rectf>
+        <x>0.000000000000000</x>
+        <y>0.000000000000000</y>
+        <width>200.000000000000000</width>
+        <height>200.000000000000000</height>
+       </rectf>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -124,7 +148,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1130</width>
+     <width>933</width>
      <height>25</height>
     </rect>
    </property>
@@ -192,6 +216,13 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>AdvVideoView</class>
+   <extends>QGraphicsView</extends>
+   <header>src/view/AdvVideoView.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
