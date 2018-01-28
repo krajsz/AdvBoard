@@ -13,12 +13,12 @@ public:
     explicit AdvVideoView(QWidget *parent = nullptr);
     void setController(AdvViewController* controller);
     AdvVideoScene* videoScene();
+
 signals:
 
 public slots:
 private slots:
     void setScenee();
-    void repaintt();
 private:
     AdvVideoScene* m_advScene;
     AdvViewController* m_controller;

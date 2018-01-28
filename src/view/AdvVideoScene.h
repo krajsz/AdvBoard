@@ -8,6 +8,7 @@
 #include <QObject>
 #include <QGraphicsScene>
 
+class QSize;
 class AdvVideoScene : public QGraphicsScene
 {
     Q_OBJECT
@@ -16,6 +17,8 @@ public:
 
     VideoSource* video();
     AbstractDashboard* dashboard();
+
+    void resize(const QSize& size);
 
 signals:
     void updateSensorsSignal(const QVector<QVariant>& data);

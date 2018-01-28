@@ -18,7 +18,10 @@ public:
 protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = Q_NULLPTR);
     virtual QRectF boundingRect() const;
+
+public slots:
     void layoutSensors();
+
 };
 
 #endif // MOTORCYCLEDASHBOARD_H

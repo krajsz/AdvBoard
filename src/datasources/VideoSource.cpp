@@ -3,11 +3,10 @@
 #include <QMediaPlayer>
 #include <QDebug>
 
-VideoSource::VideoSource(QGraphicsVideoItem *parent) : QGraphicsVideoItem(parent), m_player(new QMediaPlayer(this, QMediaPlayer::VideoSurface))
+VideoSource::VideoSource(QGraphicsVideoItem *parent) : QGraphicsVideoItem(parent),
+    m_player(new QMediaPlayer(this, QMediaPlayer::VideoSurface))
 {
-    m_player->setVideoOutput(this);
     connect(m_player, &QMediaPlayer::positionChanged, this, &VideoSource::positionChanged);
-    setSize(QSizeF(640,480));
     connect(m_player, &QMediaPlayer::mediaStatusChanged, this, &VideoSource::mediaStatusChanged);
     connect(m_player, &QMediaPlayer::bufferStatusChanged, this, &VideoSource::loadP);
 }
@@ -15,6 +14,12 @@ VideoSource::VideoSource(QGraphicsVideoItem *parent) : QGraphicsVideoItem(parent
 QUrl VideoSource::path() const
 {
     return m_path;
+}
+
+
+void VideoSource::resize(const QSize &size)
+{
+    setSize(size);
 }
 
 void VideoSource::play()
@@ -28,7 +33,8 @@ void VideoSource::setVideo(const QUrl &url)
 {
     m_path = url;
     m_player->setMedia(url);
-    setSize(m_player->media().canonicalResource().resolution());
+    m_player->setVideoOutput(this);
+    setPos(0, 0);
 }
 
 void VideoSource::positionChanged(qint64 position)

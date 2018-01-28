@@ -12,6 +12,7 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 #include <QUrl>
 #include <QMediaPlayer>
 
+class QSize;
 class VideoSource : public QGraphicsVideoItem
 {
     Q_OBJECT
@@ -19,7 +20,7 @@ public:
 
     explicit VideoSource(QGraphicsVideoItem *parent = nullptr);
     QUrl path() const;
-
+    void resize(const QSize& size);
 signals:
     void videoLoaded();
     void loadPercent(int percent);

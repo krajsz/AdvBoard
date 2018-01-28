@@ -59,8 +59,6 @@ void AbstractDashboard::initSensors(const QVector<QJsonObject> &sensorInfoData)
         AdvSensorItem* sensor = new AdvSensorItem(static_cast<AbstractSensor::SensorType>(type), id, this);
         m_advSensorItems.push_back(sensor);
     }
-
-    layoutSensors();
     qDebug() << "m_advSensorItems " << m_advSensorItems.size();
 
     qDebug() << "sensorsinitialised" << sensorInfoData.size();

@@ -17,12 +17,6 @@ void AdvVideoView::setController(AdvViewController* controller)
     connect(m_controller, &AdvViewController::initDashboardSignal, m_advScene, &AdvVideoScene::initDashboard);
     connect(m_controller, &AdvViewController::dataReadSignal, m_advScene, &AdvVideoScene::updateSensorsSignal);
     connect(m_controller, &AdvViewController::initSensorsSignal, m_advScene, &AdvVideoScene::initSensorSignal);
-    connect(m_controller, &AdvViewController::update, this, &AdvVideoView::repaintt);
-}
-
-void AdvVideoView::repaintt()
-{
-   // scene()->update();
 }
 
 AdvVideoScene* AdvVideoView::videoScene()
@@ -33,4 +27,6 @@ AdvVideoScene* AdvVideoView::videoScene()
 void AdvVideoView::setScenee()
 {
     setScene(m_advScene);
+    scene()->setSceneRect(0,0, this->width(), this->height());
+    m_advScene->resize(this->size());
 }

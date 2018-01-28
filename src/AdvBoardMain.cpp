@@ -48,6 +48,8 @@ void AdvBoardMain::setController(AdvMainController *controller)
     m_controller = controller;
     m_view = ui->videoView;
     m_view->show();
+
+    qDebug() << "pos: " << m_view->pos();
     m_view->setController(m_controller->viewController());
 
     connect(ui->startProcessingButton, &QPushButton::clicked, m_controller->viewController(), &AdvViewController::play);
@@ -64,7 +66,7 @@ void AdvBoardMain::openSensorData()
 
 void AdvBoardMain::openVideoSource()
 {
-    QUrl path = QFileDialog::getOpenFileName(0, tr("Open your video"), QDir::home().absolutePath());
+    QUrl path = QFileDialog::getOpenFileName(0, tr("Open your video"), QDir::homePath());
 
     VideoLoadingDialog* dialog = new VideoLoadingDialog;
     connect(m_view->videoScene()->video(), &VideoSource::loadPercent, dialog, &VideoLoadingDialog::setPercent);

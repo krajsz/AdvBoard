@@ -42,10 +42,10 @@ void MotorcycleDashboard::layoutSensors()
 
         switch (type) {
         case AbstractSensor::SensorType::TemperatureSensor:
-            sensorItem->moveBy(50, 0);
+            sensorItem->moveBy(50, 80);
             break;
         case AbstractSensor::SensorType::HumiditySensor:
-            sensorItem->moveBy(0, 50);
+            sensorItem->moveBy(50, 50);
 
             break;
         default:

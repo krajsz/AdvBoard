@@ -36,11 +36,12 @@ signals:
 public slots:
     void initSensors(const QVector<QJsonObject>& sensorInfoData);
     void updateSensors(const QVector<QVariant> &values);
+    virtual void layoutSensors();
+
 protected:
     DashboardType m_type;
     QVector<AdvSensorItem*> m_advSensorItems;
 
-    virtual void layoutSensors();
 };
 
 #endif // ABSTRACTDASHBOARD_H
