@@ -15,6 +15,9 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 class AbstractSensor : public QObject
 {
     Q_OBJECT
+    //    Q_PROPERTY(double value READ valueProperty WRITE setValue)
+    Q_PROPERTY(QVariant value MEMBER m_value READ value WRITE setValue NOTIFY valueChanged)
+
 public:
     enum SensorType {
         Abstract = 0,
@@ -28,8 +31,10 @@ public:
     SensorType type() const;
     bool operator==(const AbstractSensor &other) const;
     QVariant value() const;
+    void setValue(const QVariant& newValue);
 signals:
     void sensorUpdated();
+    void valueChanged(const QVariant& value);
 public slots:
     void update(const QVariant& newvalue);
 private:

@@ -64,13 +64,15 @@ QRectF AdvSensorItem::boundingRect() const
     case AbstractSensor::SensorType::GPSpositionSensor:
         break;
     case AbstractSensor::SensorType::SpeedSensor:
+        brect.setWidth(250);
+        brect.setHeight(250);
         break;
     default:
         break;
     }
     return brect;
 }
-
+#include <QPropertyAnimation>
 void AdvSensorItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     if (m_sensor->type() == AbstractSensor::SensorType::AccelerationSensor)
@@ -81,10 +83,33 @@ void AdvSensorItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
     {
     }
 
+
     if (m_sensor->type() == AbstractSensor::SensorType::SpeedSensor)
     {
-    }
+        const QPointF speedoCenter(100, 40);
+        const int speedoRadius = 100;
+        QRadialGradient rgrad(speedoCenter, speedoRadius);
 
+        rgrad.setColorAt(0.0, Qt::darkRed);
+        rgrad.setColorAt(0.375, Qt::darkYellow);
+        rgrad.setColorAt(0.750, Qt::yellow);
+        rgrad.setColorAt(1.0, Qt::green);
+
+        painter->setBrush(rgrad);
+        painter->setOpacity(0.6);
+
+        painter->drawEllipse(speedoCenter, speedoRadius, speedoRadius);
+
+        QBrush pointBrush(Qt::darkBlue);
+        painter->setBrush(pointBrush);
+        painter->drawEllipse(speedoCenter, 6, 6);
+
+        QFont kmhFont;
+        kmhFont.setBold(true);
+        kmhFont.setPointSize(12);
+        painter->setFont(kmhFont);
+        painter->drawText(speedoCenter.x() - 25, speedoCenter.y() + 50, "Km/h");
+    }
 
     if (m_sensor->type() == AbstractSensor::SensorType::HumiditySensor)
     {
@@ -105,9 +130,19 @@ void AdvSensorItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
         humidityFont.setPointSize(15);
         humidityFont.setItalic(false);
         painter->setFont(humidityFont);
-        painter->drawText(20, 50, m_sensor->value().toString() + "%");
+        QString humidityString = m_sensor->value().toString();
+        const int dotidx = humidityString.indexOf(QLatin1Char('.'));
 
-        painter->drawPie(0, 0, 80, 80, 1*16, (m_sensor->value().toInt() * 36* 16)/10);
+        if (humidityString.size() > (dotidx + 2))
+        {
+            painter->drawText(10, 60, humidityString.left(dotidx+2) + "%");
+        }
+        else
+        {
+            painter->drawText(10, 60, humidityString + "%");
+        }
+
+        painter->drawPie(0, 0, 100, 100, 360*16, (m_sensor->value().toInt() * 36* 16)/10);
     }
 
     if (m_sensor->type() == AbstractSensor::SensorType::TemperatureSensor)
@@ -132,6 +167,17 @@ void AdvSensorItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
 
         tempFont.setPointSize(20);
         painter->setFont(tempFont);
-        painter->drawText(20, 40, m_sensor->value().toString()+ QString::fromUtf8("\u2103"));
+
+        QString temperatureString = m_sensor->value().toString();
+        const int dotidx = temperatureString.indexOf(QLatin1Char('.'));
+
+        if (temperatureString.size() > (dotidx + 2))
+        {
+            painter->drawText(20, 40, temperatureString.left(dotidx+2)+ QString::fromUtf8("\u2103"));
+        }
+        else
+        {
+            painter->drawText(20, 40, temperatureString+ QString::fromUtf8("\u2103"));
+        }
     }
 }

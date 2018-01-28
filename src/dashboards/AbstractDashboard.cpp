@@ -38,15 +38,17 @@ QRectF AbstractDashboard::boundingRect() const
     brect.setLeft(0);
     brect.setTop(0);
     int width = 0;
-    int height = 0;
+    int maxHeight = 0;
+
     for (const AdvSensorItem* const item : sensorItems())
     {
         width += item->boundingRect().width() + DASHBOARD_SENSORITEMS_PADDING;
-        height += item->boundingRect().height() + DASHBOARD_SENSORITEMS_PADDING;
+        if (item->boundingRect().height() > maxHeight)
+            maxHeight = item->boundingRect().height();
     }
 
     brect.setWidth(width);
-    brect.setHeight(height);
+    brect.setHeight(maxHeight + DASHBOARD_SENSORITEMS_PADDING);
     return brect;
 }
 
@@ -74,8 +76,8 @@ void AbstractDashboard::initSensors(const QVector<QJsonObject> &sensorInfoData)
         const int id = sensorData["id"].toInt();
 
         AdvSensorItem* sensor = new AdvSensorItem(static_cast<AbstractSensor::SensorType>(type), id, this);
+        connect(sensor->sensor(), &AbstractSensor::valueChanged, this, [=](){ emit sensorsUpdated();});
         m_advSensorItems.push_back(sensor);
     }
-    qDebug() << "brect: " << boundingRect();
     emit sensorsInitialised();
 }

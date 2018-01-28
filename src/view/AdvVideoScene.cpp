@@ -56,7 +56,7 @@ void AdvVideoScene::resize(const QSize &size)
 {
     m_video->resize(size);
     m_dashBoard->setPos(size.width()/2 - m_dashBoard->boundingRect().width()/2,
-                        size.height() - m_dashBoard->boundingRect().height() *1.2);
+                        size.height() - m_dashBoard->boundingRect().height() *1.35);
 }
 AbstractDashboard* AdvVideoScene::dashboard()
 {

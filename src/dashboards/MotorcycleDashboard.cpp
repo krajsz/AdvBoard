@@ -22,7 +22,6 @@ void MotorcycleDashboard::paint(QPainter *painter, const QStyleOptionGraphicsIte
 
 void MotorcycleDashboard::layoutSensors()
 {
-
     for(AdvSensorItem* sensorItem : sensorItems())
     {
         const AbstractSensor::SensorType type = sensorItem->sensor()->type();
@@ -35,6 +34,7 @@ void MotorcycleDashboard::layoutSensors()
             sensorItem->setPos(boundingRect().width()/2, boundingRect().height() - 20 );
             break;
         case AbstractSensor::SensorType::SpeedSensor:
+            sensorItem->setPos(boundingRect().width() - boundingRect().width()/3, boundingRect().height() - 60 );
             break;
         case AbstractSensor::SensorType::GPSpositionSensor:
             break;
