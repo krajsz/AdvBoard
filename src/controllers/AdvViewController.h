@@ -20,8 +20,15 @@ public:
 signals:
     void setVideo(const QUrl& url);
     void play();
-public slots:
 
+    void update();
+    void dataReadSignal(const QVector<QVariant>& data);
+    void initSensorsSignal(const QVector<QJsonObject>& sensordata);
+    void initDashboardSignal(int dashboardType);
+public slots:
+    void dataRead(const QVector<QVariant>& data);
+    void initSensors(const QVector<QJsonObject>& sensordata);
+    void initDashboard(int dashboardType);
 private:
 
 };

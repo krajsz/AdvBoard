@@ -40,6 +40,9 @@ private slots:
     void about();
 
     void optionsActionTriggered();
+
+    void sensorDataInvalid(const QString& errorstring);
+
 private:
     Ui::AdvBoardMain *ui;
     AdvMainController* m_controller;

@@ -15,7 +15,7 @@ class TemperatureSensor : public AbstractSensor
 {
     Q_OBJECT
 public:
-    TemperatureSensor(const int id, const double temp, QObject* parent = nullptr);
+    TemperatureSensor(const int id, const double temp = 0, QObject* parent = nullptr);
 
 private:
 

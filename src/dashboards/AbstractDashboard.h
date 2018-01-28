@@ -13,6 +13,7 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 
 #include <QVector>
 #include <QGraphicsObject>
+#include <QJsonObject>
 
 class AbstractDashboard : public QGraphicsObject
 {
@@ -24,14 +25,22 @@ public:
         BikerDashboard,
         HikerDashboard
     };
-    void updateSensors(const QVector<QVariant> &values);
+
     QVector<AdvSensorItem*> sensorItems() const;
     explicit AbstractDashboard(const DashboardType dashboardType = DashboardType::Abstract, QGraphicsObject* parent = nullptr);
     DashboardType dashboardType() const;
     int numberOfSensors() const;
+signals:
+    void sensorsInitialised();
+    void sensorsUpdated();
+public slots:
+    void initSensors(const QVector<QJsonObject>& sensorInfoData);
+    void updateSensors(const QVector<QVariant> &values);
 protected:
     DashboardType m_type;
     QVector<AdvSensorItem*> m_advSensorItems;
+
+    virtual void layoutSensors();
 };
 
 #endif // ABSTRACTDASHBOARD_H

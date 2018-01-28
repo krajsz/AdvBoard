@@ -12,10 +12,13 @@ class AdvVideoView : public QGraphicsView
 public:
     explicit AdvVideoView(QWidget *parent = nullptr);
     void setController(AdvViewController* controller);
-    void setScenee(AdvVideoScene* scene);
+    AdvVideoScene* videoScene();
 signals:
 
 public slots:
+private slots:
+    void setScenee();
+    void repaintt();
 private:
     AdvVideoScene* m_advScene;
     AdvViewController* m_controller;

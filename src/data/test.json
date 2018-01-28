@@ -1,13 +1,13 @@
 {
-	"interval": 100,
-	"dashboardType": 0,
+    "interval": 1000,
+    "dashboardType": 1,
 	"sensors": [{
 			"id": 1,
-			"type": 0
+			"type": 1
 		},
 		{
 			"id": 2,
-			"type": 1
+			"type": 3
 		}
 	],
 	"sensorData": [

@@ -23,11 +23,12 @@ public:
         HumiditySensor,
         GPSpositionSensor
     };
-    explicit AbstractSensor(const int id, const QVariant& val, SensorType type = Abstract, QObject *parent = nullptr);
+    explicit AbstractSensor(const int id, const QVariant& val = QVariant(), SensorType type = Abstract, QObject *parent = nullptr);
     SensorType type() const;
     bool operator==(const AbstractSensor &other) const;
     QVariant value() const;
-
+signals:
+    void sensorUpdated();
 public slots:
     void update(const QVariant& newvalue);
 private:

@@ -12,17 +12,24 @@ class AdvVideoScene : public QGraphicsScene
 {
     Q_OBJECT
 public:
-    explicit AdvVideoScene(AbstractDashboard::DashboardType dashboardType, QGraphicsScene *parent = nullptr);
+    explicit AdvVideoScene(QGraphicsScene *parent = nullptr);
 
     VideoSource* video();
     AbstractDashboard* dashboard();
-    void setup();
-signals:
 
+signals:
+    void updateSensorsSignal(const QVector<QVariant>& data);
+    void initSensorSignal(const QVector<QJsonObject> &sensordata);
+
+    void sceneSetupDone();
 public slots:
+    void initDashboard(int type);
 private:
     AbstractDashboard* m_dashBoard;
     VideoSource* m_video;
+private slots:
+    void setup();
+    void sensorsUpdated();
 
 };
 

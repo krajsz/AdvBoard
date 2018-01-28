@@ -30,7 +30,7 @@ public:
 signals:
     void dataRead(const QVector<QVariant>& data);
     void initSensors(const QVector<QJsonObject>& sensordata);
-    void initDashBoard(int sensors, int dashboardType);
+    void initDashBoard(int dashboardType);
     void dataInvalid(const QString& errorString);
 public slots:
     void startReading();

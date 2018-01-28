@@ -27,15 +27,14 @@ public:
         GuiMode = 0,
         SilentMode
     };
-    void start(const Mode mode);
+    void start(const Mode mode, bool live = false);
 
     AdvViewController* viewController();
     SensorDataInfoDialogController* sensorDataInfoDialogController();
     SensorDataValidatingDialogController* sensorDataValidatingDialogController();
     VideoInfoDialogController* videoInfoDialogController();
     SettingDialogController* settingDialogController();
-    SensorDataReader* fileSensorDataReader();
-    LiveSensorDataReader* liveSensorDataReader();
+    SensorDataReader* sensorDataReader();
 
 private:
     AdvViewController* m_viewController;
@@ -43,8 +42,7 @@ private:
     SensorDataValidatingDialogController* m_sensorDataValidatingDialogController;
     SettingDialogController* m_settingDialogController;
     VideoInfoDialogController* m_videoInfoDialogController;
-    SensorDataReader* m_fileSensorDataReader;
-    LiveSensorDataReader* m_liveSensorDataReader;
+    SensorDataReader* m_sensorDataReader;
 
 signals:
 };

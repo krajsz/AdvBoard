@@ -12,8 +12,12 @@ AdvMainController::AdvMainController(QObject* parent) : QObject(parent),
     m_sensorDataValidatingDialogController(nullptr),
     m_videoInfoDialogController(nullptr),
     m_settingDialogController(nullptr),
+    m_sensorDataReader(new SensorDataReader),
     m_viewController(new AdvViewController)
 {
+    connect(m_sensorDataReader, &SensorDataReader::initDashBoard, m_viewController, &AdvViewController::initDashboard);
+    connect(m_sensorDataReader, &SensorDataReader::initSensors, m_viewController, &AdvViewController::initSensors);
+    connect(m_sensorDataReader, &SensorDataReader::dataRead, m_viewController, &AdvViewController::dataRead);
 }
 AdvMainController::~AdvMainController()
 {
@@ -37,7 +41,7 @@ AdvMainController::~AdvMainController()
     delete m_viewController;
 }
 
-void AdvMainController::start(const AdvMainController::Mode mode)
+void AdvMainController::start(const AdvMainController::Mode mode, bool live)
 {
     switch (mode)
     {
@@ -52,6 +56,8 @@ void AdvMainController::start(const AdvMainController::Mode mode)
     default:
         break;
     }
+
+    Q_UNUSED(live)
 }
 
 AdvViewController* AdvMainController::viewController()
@@ -77,6 +83,11 @@ SettingDialogController* AdvMainController::settingDialogController()
 VideoInfoDialogController* AdvMainController::videoInfoDialogController()
 {
     return m_videoInfoDialogController;
+}
+
+SensorDataReader* AdvMainController::sensorDataReader()
+{
+    return m_sensorDataReader;
 }
 
 

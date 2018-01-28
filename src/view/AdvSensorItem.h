@@ -4,11 +4,11 @@
 #include <QGraphicsObject>
 #include "src/sensors/AbstractSensor.h"
 
-class AdvSensorItem : public QGraphicsObject
+class AdvSensorItem : public QObject, public QGraphicsItem
 {
     Q_OBJECT
 public:
-    explicit AdvSensorItem(AbstractSensor::SensorType type, QGraphicsObject *parent = nullptr);
+    explicit AdvSensorItem(AbstractSensor::SensorType type, const int id, QGraphicsItem *parent = nullptr);
     AbstractSensor* sensor();
 signals:
     void updateSensor(const QVariant& newVal);

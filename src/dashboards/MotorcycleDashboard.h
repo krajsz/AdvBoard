@@ -14,11 +14,11 @@ class MotorcycleDashboard : public AbstractDashboard
 {
 public:
     MotorcycleDashboard();
-    void addSensor(AdvSensorItem* sensor);
+
 protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = Q_NULLPTR);
     virtual QRectF boundingRect() const;
-
+    void layoutSensors();
 };
 
 #endif // MOTORCYCLEDASHBOARD_H

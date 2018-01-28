@@ -10,12 +10,13 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 #include "src/sensors/HumiditySensor.h"
 
 #include <QPainter>
+#include <QDebug>
 
-AdvSensorItem::AdvSensorItem(AbstractSensor::SensorType type, QGraphicsObject *parent) : QGraphicsObject(parent)
+AdvSensorItem::AdvSensorItem(AbstractSensor::SensorType type, const int id, QGraphicsItem *parent) : QObject(),  QGraphicsItem(parent)
 {
     switch (type) {
     case AbstractSensor::SensorType::TemperatureSensor:
-        m_sensor = new TemperatureSensor(1,22);
+        m_sensor = new TemperatureSensor(id);
         break;
     case AbstractSensor::SensorType::AccelerationSensor:
 
@@ -24,11 +25,12 @@ AdvSensorItem::AdvSensorItem(AbstractSensor::SensorType type, QGraphicsObject *p
 
         break;
     case AbstractSensor::SensorType::HumiditySensor:
-        m_sensor = new HumiditySensor(2, 66);
+        m_sensor = new HumiditySensor(id);
         break;
     default:
         break;
     }
+
     connect(this, &AdvSensorItem::updateSensor, m_sensor, &AbstractSensor::update);
 }
 

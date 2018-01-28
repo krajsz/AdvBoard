@@ -51,16 +51,15 @@ void AdvBoardMain::setController(AdvMainController *controller)
     m_view->setController(m_controller->viewController());
 
     connect(ui->startProcessingButton, &QPushButton::clicked, m_controller->viewController(), &AdvViewController::play);
-
-    AdvVideoScene* scene = new AdvVideoScene(AbstractDashboard::DashboardType::MotorcycleDashboard);
-    m_view->setScenee(scene);
+    connect(ui->startProcessingButton, &QPushButton::clicked, m_controller->sensorDataReader(), &SensorDataReader::startReading);
 }
 
 void AdvBoardMain::openSensorData()
 {
-    QString fileName = QFileDialog::getOpenFileName(0, tr("Open sensor data"), QDir::homePath(), "JSON (*.JSON *.json);");
+    //QString fileName = QFileDialog::getOpenFileName(0, tr("Open sensor data"), QDir::homePath(), "JSON (*.JSON *.json);");
 
-    //m_controller->readSensorData(fileName);
+    m_controller->sensorDataReader()->setFile(":/json/data/test.json");
+    connect(m_controller->sensorDataReader(), &SensorDataReader::dataInvalid, this, &AdvBoardMain::sensorDataInvalid);
 }
 
 void AdvBoardMain::openVideoSource()
@@ -68,9 +67,9 @@ void AdvBoardMain::openVideoSource()
     QUrl path = QFileDialog::getOpenFileName(0, tr("Open your video"), QDir::home().absolutePath());
 
     VideoLoadingDialog* dialog = new VideoLoadingDialog;
-    connect(qobject_cast<AdvVideoScene*>(m_view->scene())->video(), &VideoSource::loadPercent, dialog, &VideoLoadingDialog::setPercent);
-    connect(qobject_cast<AdvVideoScene*>(m_view->scene())->video(), &VideoSource::videoLoaded, dialog, &VideoLoadingDialog::close);
-    connect(qobject_cast<AdvVideoScene*>(m_view->scene())->video(), &VideoSource::videoLoaded, this, [=](){
+    connect(m_view->videoScene()->video(), &VideoSource::loadPercent, dialog, &VideoLoadingDialog::setPercent);
+    connect(m_view->videoScene()->video(), &VideoSource::videoLoaded, dialog, &VideoLoadingDialog::close);
+    connect(m_view->videoScene()->video(), &VideoSource::videoLoaded, this, [=](){
         ui->startProcessingButton->setEnabled(true);
     });
 
@@ -103,17 +102,17 @@ void AdvBoardMain::liveProcessingChecked(bool checked)
     if (checked)
     {
         ui->liveProcessingSettingsPushButton->setEnabled(true);
+        ui->loadSourcesGroupBox->setEnabled(false);
     }
     else
     {
         ui->liveProcessingSettingsPushButton->setEnabled(false);
+        ui->loadSourcesGroupBox->setEnabled(false);
     }
 }
 
 void AdvBoardMain::closeApp()
 {
-
-
     close();
 }
 
@@ -122,6 +121,10 @@ void AdvBoardMain::about()
     QMessageBox::information(0, tr("About"), "Author: Fábián Kristóf - Szabolcs", QMessageBox::Ok);
 }
 
+void AdvBoardMain::sensorDataInvalid(const QString &errorstring)
+{
+    QMessageBox::warning(0, tr("Sensor Data Invalid"), errorstring, QMessageBox::Ok);
+}
 void AdvBoardMain::optionsActionTriggered()
 {
 
