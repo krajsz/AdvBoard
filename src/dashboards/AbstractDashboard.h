@@ -30,6 +30,7 @@ public:
     explicit AbstractDashboard(const DashboardType dashboardType = DashboardType::Abstract, QGraphicsObject* parent = nullptr);
     DashboardType dashboardType() const;
     int numberOfSensors() const;
+    QRectF boundingRect() const;
 signals:
     void sensorsInitialised();
     void sensorsUpdated();

@@ -21,7 +21,8 @@ public:
         TemperatureSensor,
         AccelerationSensor,
         HumiditySensor,
-        GPSpositionSensor
+        GPSpositionSensor,
+        SpeedSensor
     };
     explicit AbstractSensor(const int id, const QVariant& val = QVariant(), SensorType type = Abstract, QObject *parent = nullptr);
     SensorType type() const;

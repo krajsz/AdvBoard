@@ -50,7 +50,10 @@ SOURCES += \
     src/VideoRecorder.cpp \
     src/controllers/SettingDialogController.cpp \
     src/dialogs/VideoLoadingDialog.cpp \
-    src/sensors/HumiditySensor.cpp
+    src/sensors/HumiditySensor.cpp \
+    src/sensors/SpeedSensor.cpp \
+    src/sensors/AccelerationSensor.cpp \
+    src/sensors/GPSpositionSensor.cpp
 
 HEADERS += \
         src\AdvBoardMain.h \
@@ -77,7 +80,10 @@ HEADERS += \
     src/VideoRecorder.h \
     src/controllers/SettingDialogController.h \
     src/dialogs/VideoLoadingDialog.h \
-    src/sensors/HumiditySensor.h
+    src/sensors/HumiditySensor.h \
+    src/sensors/SpeedSensor.h \
+    src/sensors/AccelerationSensor.h \
+    src/sensors/GPSpositionSensor.h
 
 FORMS += \
         src/ui\advboardmain.ui \

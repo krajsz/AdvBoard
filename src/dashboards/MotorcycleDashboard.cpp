@@ -13,15 +13,6 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 
 MotorcycleDashboard::MotorcycleDashboard() : AbstractDashboard(AbstractDashboard::DashboardType::MotorcycleDashboard)
 {
-    /*AdvSensorItem* temperatureGauge = new AdvSensorItem(AbstractSensor::TemperatureSensor, this);
-    AdvSensorItem* humidityGauge = new AdvSensorItem(AbstractSensor::HumiditySensor, this);
-
-    m_advSensorItems.push_back(temperatureGauge);
-    m_advSensorItems.push_back(humidityGauge);
-
-    humidityGauge->moveBy(50,50);
-
-    moveBy(5, 5);*/
 }
 
 void MotorcycleDashboard::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -29,24 +20,25 @@ void MotorcycleDashboard::paint(QPainter *painter, const QStyleOptionGraphicsIte
     //QGraphicsItem::paint(painter,option,widget);
 }
 
-QRectF MotorcycleDashboard::boundingRect() const
-{
-    return QRectF();
-}
-
 void MotorcycleDashboard::layoutSensors()
 {
+
     for(AdvSensorItem* sensorItem : sensorItems())
     {
         const AbstractSensor::SensorType type = sensorItem->sensor()->type();
 
         switch (type) {
         case AbstractSensor::SensorType::TemperatureSensor:
-            sensorItem->moveBy(50, 80);
+            sensorItem->setPos(0, boundingRect().height() - 20 );
             break;
         case AbstractSensor::SensorType::HumiditySensor:
-            sensorItem->moveBy(50, 50);
-
+            sensorItem->setPos(boundingRect().width()/2, boundingRect().height() - 20 );
+            break;
+        case AbstractSensor::SensorType::SpeedSensor:
+            break;
+        case AbstractSensor::SensorType::GPSpositionSensor:
+            break;
+        case AbstractSensor::SensorType::AccelerationSensor:
             break;
         default:
             break;

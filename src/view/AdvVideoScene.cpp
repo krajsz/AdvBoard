@@ -20,8 +20,6 @@ void AdvVideoScene::setup()
     addItem(m_video);
     addItem(m_dashBoard);
 
-    //setSceneRect(0, 0, m_video->boundingRect().width(), m_video->boundingRect().height());
-
     emit sceneSetupDone();
 }
 
@@ -47,19 +45,19 @@ void AdvVideoScene::initDashboard(int type)
     default:
         break;
     }
-
-    connect(this, &AdvVideoScene::initSensorSignal, m_dashBoard, &AbstractDashboard::initSensors);
-    connect(this, &AdvVideoScene::updateSensorsSignal, m_dashBoard, &AbstractDashboard::updateSensors);
     connect(m_dashBoard, &AbstractDashboard::sensorsInitialised, this, &AdvVideoScene::setup);
     connect(m_dashBoard, &AbstractDashboard::sensorsUpdated, this, &AdvVideoScene::sensorsUpdated);
+    connect(this, &AdvVideoScene::initSensorSignal, m_dashBoard, &AbstractDashboard::initSensors);
+    connect(this, &AdvVideoScene::updateSensorsSignal, m_dashBoard, &AbstractDashboard::updateSensors);
     connect(this, &AdvVideoScene::sceneSetupDone, m_dashBoard, &AbstractDashboard::layoutSensors);
 }
 
 void AdvVideoScene::resize(const QSize &size)
 {
     m_video->resize(size);
+    m_dashBoard->setPos(size.width()/2 - m_dashBoard->boundingRect().width()/2,
+                        size.height() - m_dashBoard->boundingRect().height() *1.2);
 }
-
 AbstractDashboard* AdvVideoScene::dashboard()
 {
     return m_dashBoard;

@@ -10,11 +10,12 @@ class AdvSensorItem : public QObject, public QGraphicsItem
 public:
     explicit AdvSensorItem(AbstractSensor::SensorType type, const int id, QGraphicsItem *parent = nullptr);
     AbstractSensor* sensor();
+    virtual QRectF boundingRect() const;
+
 signals:
     void updateSensor(const QVariant& newVal);
 protected:
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-    virtual QRectF boundingRect() const;
 public slots:
 
 private:
