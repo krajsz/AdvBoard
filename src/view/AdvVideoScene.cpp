@@ -8,6 +8,8 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 
 #include "src/view/AdvVideoScene.h"
 #include "src/dashboards/MotorcycleDashboard.h"
+#include "src/dashboards/HikerDashboard.h"
+#include "src/dashboards/BikerDashboard.h"
 
 AdvVideoScene::AdvVideoScene(QGraphicsScene *parent) : QGraphicsScene(parent),
     m_video(new VideoSource),
@@ -37,14 +39,15 @@ void AdvVideoScene::initDashboard(int type)
         m_dashBoard = new MotorcycleDashboard;
         break;
     case AbstractDashboard::DashboardType::HikerDashboard:
-
+        m_dashBoard = new BikerDashboard;
         break;
     case AbstractDashboard::DashboardType::BikerDashboard:
-
+        m_dashBoard = new HikerDashboard;
         break;
     default:
         break;
     }
+
     connect(m_dashBoard, &AbstractDashboard::sensorsInitialised, this, &AdvVideoScene::setup);
     connect(m_dashBoard, &AbstractDashboard::sensorsUpdated, this, &AdvVideoScene::sensorsUpdated);
     connect(this, &AdvVideoScene::initSensorSignal, m_dashBoard, &AbstractDashboard::initSensors);

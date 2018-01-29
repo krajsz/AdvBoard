@@ -53,7 +53,9 @@ SOURCES += \
     src/sensors/HumiditySensor.cpp \
     src/sensors/SpeedSensor.cpp \
     src/sensors/AccelerationSensor.cpp \
-    src/sensors/GPSpositionSensor.cpp
+    src/sensors/GPSpositionSensor.cpp \
+    src/dashboards/HikerDashboard.cpp \
+    src/dashboards/BikerDashboard.cpp
 
 HEADERS += \
         src\AdvBoardMain.h \
@@ -83,7 +85,9 @@ HEADERS += \
     src/sensors/HumiditySensor.h \
     src/sensors/SpeedSensor.h \
     src/sensors/AccelerationSensor.h \
-    src/sensors/GPSpositionSensor.h
+    src/sensors/GPSpositionSensor.h \
+    src/dashboards/HikerDashboard.h \
+    src/dashboards/BikerDashboard.h
 
 FORMS += \
         src/ui\advboardmain.ui \
