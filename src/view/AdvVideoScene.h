@@ -22,7 +22,7 @@ public:
 
 signals:
     void updateSensorsSignal(const QVector<QVariant>& data);
-    void initSensorSignal(const QVector<QJsonObject> &sensordata);
+    void initSensorSignal(const QVector<QJsonObject> &sensordata, const int interval);
 
     void sceneSetupDone();
 public slots:

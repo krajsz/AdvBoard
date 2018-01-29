@@ -75,6 +75,8 @@ QRectF AdvSensorItem::boundingRect() const
 #include <QPropertyAnimation>
 void AdvSensorItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    painter->setRenderHint(QPainter::Antialiasing);
+
     if (m_sensor->type() == AbstractSensor::SensorType::AccelerationSensor)
     {
     }
@@ -91,9 +93,9 @@ void AdvSensorItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
         QRadialGradient rgrad(speedoCenter, speedoRadius);
 
         rgrad.setColorAt(0.0, Qt::darkRed);
-        rgrad.setColorAt(0.375, Qt::darkYellow);
-        rgrad.setColorAt(0.750, Qt::yellow);
-        rgrad.setColorAt(1.0, Qt::green);
+        rgrad.setColorAt(0.375, Qt::red);
+        rgrad.setColorAt(0.750, Qt::gray);
+        rgrad.setColorAt(1.0, Qt::darkGray);
 
         painter->setBrush(rgrad);
         painter->setOpacity(0.6);
@@ -108,7 +110,34 @@ void AdvSensorItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
         kmhFont.setBold(true);
         kmhFont.setPointSize(12);
         painter->setFont(kmhFont);
-        painter->drawText(speedoCenter.x() - 25, speedoCenter.y() + 50, "Km/h");
+        painter->drawText(speedoCenter.x() - 27, speedoCenter.y() + 40, "Km/h");
+        QPen kmhPen;
+        kmhPen.setColor(Qt::darkBlue);
+        kmhPen.setCapStyle(Qt::RoundCap);
+        kmhPen.setWidth(3);
+        kmhFont.setPointSize(20);
+        painter->setFont(kmhFont);
+        painter->setPen(kmhPen);
+        painter->drawText(speedoCenter.x() - 10, speedoCenter.y() + 75, QString::number(m_sensor->value().toInt()));
+
+        QConicalGradient speedoGrad;
+        speedoGrad.setCenter(speedoCenter);
+        speedoGrad.setAngle(270);
+        speedoGrad.setColorAt(0.2, Qt::darkRed);
+        speedoGrad.setColorAt(0.4, Qt::red);
+        speedoGrad.setColorAt(0.6, Qt::cyan);
+        speedoGrad.setColorAt(0.8, Qt::green);
+
+        QPen speedoLinesPen;
+        speedoLinesPen.setBrush(speedoGrad);
+        speedoLinesPen.setWidth(22);
+        speedoLinesPen.setCapStyle(Qt::RoundCap);
+
+        painter->setPen(speedoLinesPen);
+        painter->setOpacity(0.8);
+        const int speedoval = m_sensor->value().toInt();
+        painter->drawArc(13,-47, speedoRadius * 2 - 25, speedoRadius * 2 - 25,
+                         -120 * 16, -speedoval * 16);
     }
 
     if (m_sensor->type() == AbstractSensor::SensorType::HumiditySensor)
@@ -130,17 +159,9 @@ void AdvSensorItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
         humidityFont.setPointSize(15);
         humidityFont.setItalic(false);
         painter->setFont(humidityFont);
-        QString humidityString = m_sensor->value().toString();
-        const int dotidx = humidityString.indexOf(QLatin1Char('.'));
 
-        if (humidityString.size() > (dotidx + 2))
-        {
-            painter->drawText(10, 60, humidityString.left(dotidx+2) + "%");
-        }
-        else
-        {
-            painter->drawText(10, 60, humidityString + "%");
-        }
+        QString humidityString = QString::number(m_sensor->value().toDouble(), 'f', 1);
+        painter->drawText(10, 60, humidityString + "%");
 
         painter->drawPie(0, 0, 100, 100, 360*16, (m_sensor->value().toInt() * 36* 16)/10);
     }
@@ -168,16 +189,7 @@ void AdvSensorItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
         tempFont.setPointSize(20);
         painter->setFont(tempFont);
 
-        QString temperatureString = m_sensor->value().toString();
-        const int dotidx = temperatureString.indexOf(QLatin1Char('.'));
-
-        if (temperatureString.size() > (dotidx + 2))
-        {
-            painter->drawText(20, 40, temperatureString.left(dotidx+2)+ QString::fromUtf8("\u2103"));
-        }
-        else
-        {
-            painter->drawText(20, 40, temperatureString+ QString::fromUtf8("\u2103"));
-        }
+        QString temperatureString = QString::number(m_sensor->value().toDouble(),'f', 1);
+        painter->drawText(20, 40, temperatureString+ QString::fromUtf8("\u2103"));
     }
 }

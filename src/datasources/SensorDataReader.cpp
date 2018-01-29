@@ -35,7 +35,6 @@ void SensorDataReader::startReading()
 {
     if (m_readTimer)
         m_readTimer->start(m_interval);
-    qDebug() << "start reading: " << m_interval;
 }
 
 void SensorDataReader::readSnapshot()
@@ -93,7 +92,7 @@ void SensorDataReader::read()
         connect(m_readTimer, &QTimer::timeout, this, &SensorDataReader::readSnapshot);
 
         emit initDashBoard(dashboardType);
-        emit initSensors(sensors);
+        emit initSensors(sensors, m_interval);
     }
 }
 

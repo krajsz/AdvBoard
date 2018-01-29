@@ -35,7 +35,7 @@ signals:
     void sensorsInitialised();
     void sensorsUpdated();
 public slots:
-    void initSensors(const QVector<QJsonObject>& sensorInfoData);
+    void initSensors(const QVector<QJsonObject>& sensorInfoData, const int animationInterval);
     void updateSensors(const QVector<QVariant> &values);
     virtual void layoutSensors();
 

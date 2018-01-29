@@ -23,11 +23,11 @@ signals:
 
     void update();
     void dataReadSignal(const QVector<QVariant>& data);
-    void initSensorsSignal(const QVector<QJsonObject>& sensordata);
+    void initSensorsSignal(const QVector<QJsonObject>& sensordata, const int animationInterval);
     void initDashboardSignal(int dashboardType);
 public slots:
     void dataRead(const QVector<QVariant>& data);
-    void initSensors(const QVector<QJsonObject>& sensordata);
+    void initSensors(const QVector<QJsonObject>& sensordata, const int animationInterval);
     void initDashboard(int dashboardType);
 private:
 

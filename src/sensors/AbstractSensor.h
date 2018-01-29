@@ -12,10 +12,10 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 #include <QJsonObject>
 #include <QVariant>
 
+class QPropertyAnimation;
 class AbstractSensor : public QObject
 {
     Q_OBJECT
-    //    Q_PROPERTY(double value READ valueProperty WRITE setValue)
     Q_PROPERTY(QVariant value MEMBER m_value READ value WRITE setValue NOTIFY valueChanged)
 
 public:
@@ -27,6 +27,8 @@ public:
         GPSpositionSensor,
         SpeedSensor
     };
+    virtual ~AbstractSensor();
+    QPropertyAnimation* animation();
     explicit AbstractSensor(const int id, const QVariant& val = QVariant(), SensorType type = Abstract, QObject *parent = nullptr);
     SensorType type() const;
     bool operator==(const AbstractSensor &other) const;
@@ -41,6 +43,7 @@ private:
     SensorType m_type;
     QJsonObject m_sensorData;
     QVariant m_value;
+    QPropertyAnimation* m_animation;
     const int m_id;
 };
 

@@ -8,6 +8,8 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 #include "src/dashboards/AbstractDashboard.h"
 
 #include <QGraphicsObject>
+#include <QPropertyAnimation>
+
 #include <QDebug>
 
 #define DASHBOARD_SENSORITEMS_PADDING 15
@@ -67,7 +69,7 @@ void AbstractDashboard::layoutSensors()
 {
 }
 
-void AbstractDashboard::initSensors(const QVector<QJsonObject> &sensorInfoData)
+void AbstractDashboard::initSensors(const QVector<QJsonObject> &sensorInfoData, const int animationInterval)
 {
     for (int i = 0; i < sensorInfoData.size(); ++i)
     {
@@ -77,6 +79,8 @@ void AbstractDashboard::initSensors(const QVector<QJsonObject> &sensorInfoData)
 
         AdvSensorItem* sensor = new AdvSensorItem(static_cast<AbstractSensor::SensorType>(type), id, this);
         connect(sensor->sensor(), &AbstractSensor::valueChanged, this, [=](){ emit sensorsUpdated();});
+        sensor->sensor()->animation()->setDuration(animationInterval);
+
         m_advSensorItems.push_back(sensor);
     }
     emit sensorsInitialised();

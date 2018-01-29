@@ -29,7 +29,7 @@ public:
     int dataSnapshotCount() const;
 signals:
     void dataRead(const QVector<QVariant>& data);
-    void initSensors(const QVector<QJsonObject>& sensordata);
+    void initSensors(const QVector<QJsonObject>& sensordata, const int animationDuration);
     void initDashBoard(int dashboardType);
     void dataInvalid(const QString& errorString);
 public slots:

@@ -16,9 +16,9 @@ void AdvViewController::initDashboard(int dashboardType)
     emit initDashboardSignal(dashboardType);
 }
 
-void AdvViewController::initSensors(const QVector<QJsonObject> &sensordata)
+void AdvViewController::initSensors(const QVector<QJsonObject> &sensordata, const int animationInterval)
 {
-    emit initSensorsSignal(sensordata);
+    emit initSensorsSignal(sensordata, animationInterval);
 }
 
 void AdvViewController::dataRead(const QVector<QVariant> &data)
