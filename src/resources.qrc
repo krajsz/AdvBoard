@@ -1,5 +1,8 @@
 <RCC>
-    <qresource prefix="/json">
+    <qresource lang="En" prefix="/json">
         <file>data/test.json</file>
+    </qresource>
+    <qresource lang="En" prefix="/pictures">
+        <file>data/coldTempSign.png</file>
     </qresource>
 </RCC>

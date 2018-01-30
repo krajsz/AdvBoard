@@ -13,6 +13,7 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 #include "src/sensors/AccelerationSensor.h"
 #include <QPainter>
 #include <QDebug>
+#include <QPropertyAnimation>
 
 AdvSensorItem::AdvSensorItem(AbstractSensor::SensorType type, const int id, QGraphicsItem *parent) : QObject(),  QGraphicsItem(parent)
 {
@@ -54,7 +55,7 @@ QRectF AdvSensorItem::boundingRect() const
 
         break;
     case AbstractSensor::SensorType::TemperatureSensor:
-        brect.setWidth(150);
+        brect.setWidth(165);
         brect.setHeight(140);
         break;
     case AbstractSensor::SensorType::HumiditySensor:
@@ -64,15 +65,15 @@ QRectF AdvSensorItem::boundingRect() const
     case AbstractSensor::SensorType::GPSpositionSensor:
         break;
     case AbstractSensor::SensorType::SpeedSensor:
-        brect.setWidth(250);
-        brect.setHeight(250);
+        brect.setWidth(240);
+        brect.setHeight(200);
         break;
     default:
         break;
     }
     return brect;
 }
-#include <QPropertyAnimation>
+
 void AdvSensorItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     painter->setRenderHint(QPainter::Antialiasing);
@@ -92,10 +93,10 @@ void AdvSensorItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
         const int speedoRadius = 100;
         QRadialGradient rgrad(speedoCenter, speedoRadius);
 
-        rgrad.setColorAt(0.0, Qt::darkRed);
-        rgrad.setColorAt(0.375, Qt::red);
-        rgrad.setColorAt(0.750, Qt::gray);
-        rgrad.setColorAt(1.0, Qt::darkGray);
+        rgrad.setColorAt(0.0, Qt::darkBlue);
+        rgrad.setColorAt(0.375, Qt::blue);
+        rgrad.setColorAt(0.750, Qt::darkCyan);
+        rgrad.setColorAt(1.0, Qt::cyan);
 
         painter->setBrush(rgrad);
         painter->setOpacity(0.6);
@@ -112,20 +113,30 @@ void AdvSensorItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
         painter->setFont(kmhFont);
         painter->drawText(speedoCenter.x() - 27, speedoCenter.y() + 40, "Km/h");
         QPen kmhPen;
-        kmhPen.setColor(Qt::darkBlue);
+        //50, 109, 255
+        kmhPen.setColor(QColor::fromRgb(13,17,18));
+
+        QPainterPath textPath;
         kmhPen.setCapStyle(Qt::RoundCap);
         kmhPen.setWidth(3);
         kmhFont.setPointSize(20);
-        painter->setFont(kmhFont);
+        textPath.addText(speedoCenter.x() - 10, speedoCenter.y() + 75,
+                         kmhFont, QString::number(m_sensor->value().toInt()));
+
         painter->setPen(kmhPen);
-        painter->drawText(speedoCenter.x() - 10, speedoCenter.y() + 75, QString::number(m_sensor->value().toInt()));
+        painter->fillPath(textPath,painter->brush());
+        QPen kmhStrokePen;
+        kmhStrokePen.setColor(Qt::darkRed);
+        kmhStrokePen.setWidth(2);
+        painter->strokePath(textPath,kmhStrokePen);
+        //painter->drawText(speedoCenter.x() - 10, speedoCenter.y() + 75, QString::number(m_sensor->value().toInt()));
 
         QConicalGradient speedoGrad;
         speedoGrad.setCenter(speedoCenter);
         speedoGrad.setAngle(270);
         speedoGrad.setColorAt(0.2, Qt::darkRed);
         speedoGrad.setColorAt(0.4, Qt::red);
-        speedoGrad.setColorAt(0.6, Qt::cyan);
+        speedoGrad.setColorAt(0.7, Qt::darkGreen);
         speedoGrad.setColorAt(0.8, Qt::green);
 
         QPen speedoLinesPen;
@@ -163,14 +174,14 @@ void AdvSensorItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
         QString humidityString = QString::number(m_sensor->value().toDouble(), 'f', 1);
         painter->drawText(10, 60, humidityString + "%");
 
-        painter->drawPie(0, 0, 100, 100, 360*16, (m_sensor->value().toInt() * 36* 16)/10);
+        if (m_sensor->value().toInt() > 0)
+            painter->drawPie(0, 0, 100, 100, 360*16, (m_sensor->value().toInt() * 36* 16)/10);
     }
 
     if (m_sensor->type() == AbstractSensor::SensorType::TemperatureSensor)
     {
         QFont tempFont;
 
-        painter->setOpacity(0.7);
         tempFont.setPointSize(10);
         tempFont.setCapitalization(QFont::Capitalize);
         tempFont.setItalic(true);
@@ -179,10 +190,12 @@ void AdvSensorItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
         painter->setFont(tempFont);
         painter->drawText(0, 0, QLatin1String("Temperature"));
 
-        QBrush tempBrush(QColor(Qt::red));
+        QBrush tempBrush(QColor(Qt::darkGreen).darker());
 
         painter->setBrush(tempBrush);
-        painter->drawRoundRect(0, 0, 125, 55);
+        painter->setOpacity(0.5);
+
+        painter->drawRoundedRect(0, 5, 125, 55, 40, 40);
 
         tempFont.setItalic(false);
 
@@ -191,5 +204,11 @@ void AdvSensorItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
 
         QString temperatureString = QString::number(m_sensor->value().toDouble(),'f', 1);
         painter->drawText(20, 40, temperatureString+ QString::fromUtf8("\u2103"));
+
+        painter->setOpacity(0.8);
+        if (m_sensor->value().toDouble() <= 4)
+        {
+            painter->drawPixmap(125, 10, 40,40, QPixmap(":/pictures/data/coldTempSign.png"));
+        }
     }
 }
