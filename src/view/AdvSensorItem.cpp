@@ -52,7 +52,8 @@ QRectF AdvSensorItem::boundingRect() const
     brect.setLeft(0);
     switch (m_sensor->type()) {
     case AbstractSensor::SensorType::AccelerationSensor:
-
+        brect.setWidth(160);
+        brect.setHeight(160);
         break;
     case AbstractSensor::SensorType::TemperatureSensor:
         brect.setWidth(165);
@@ -80,6 +81,18 @@ void AdvSensorItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
 
     if (m_sensor->type() == AbstractSensor::SensorType::AccelerationSensor)
     {
+        QPen acceleroCirclePen;
+        acceleroCirclePen.setWidth(3);
+        acceleroCirclePen.setColor(Qt::darkGray);
+
+        painter->setPen(acceleroCirclePen);
+
+        const QPointF acceleroCenter(80,80);
+
+        for(int i = 1; i < 5; ++i)
+        {
+            painter->drawEllipse(acceleroCenter, i*20, i * 20);
+        }
     }
 
     if (m_sensor->type() == AbstractSensor::SensorType::GPSpositionSensor)
@@ -129,7 +142,6 @@ void AdvSensorItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
         kmhStrokePen.setColor(Qt::darkRed);
         kmhStrokePen.setWidth(2);
         painter->strokePath(textPath,kmhStrokePen);
-        //painter->drawText(speedoCenter.x() - 10, speedoCenter.y() + 75, QString::number(m_sensor->value().toInt()));
 
         QConicalGradient speedoGrad;
         speedoGrad.setCenter(speedoCenter);

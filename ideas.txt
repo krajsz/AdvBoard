@@ -1,0 +1,3 @@
+Validate data
+	- min/max values
+		-if invalid decide..

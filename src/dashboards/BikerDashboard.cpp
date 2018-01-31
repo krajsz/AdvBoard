@@ -18,6 +18,7 @@ BikerDashboard::BikerDashboard() : AbstractDashboard(AbstractDashboard::Dashboar
 void BikerDashboard::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     //QGraphicsItem::paint(painter,option,widget);
+    Q_UNUSED(option)
 }
 
 void BikerDashboard::layoutSensors()

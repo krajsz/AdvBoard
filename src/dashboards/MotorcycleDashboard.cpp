@@ -23,9 +23,10 @@ void MotorcycleDashboard::paint(QPainter *painter, const QStyleOptionGraphicsIte
                           this->boundingRect().x() + this->boundingRect().width(),
                           this->boundingRect().y() + this->boundingRect().height());
 
-    lgrad.setColorAt(0.0, Qt::black);
+    lgrad.setColorAt(0.0, Qt::transparent);
     lgrad.setColorAt(0.3, Qt::gray);
-    lgrad.setColorAt(1.0, Qt::red);
+    lgrad.setColorAt(0.8, Qt::red);
+    lgrad.setColorAt(1.0, Qt::darkRed);
 
     painter->setOpacity(0.4);
     painter->setBrush(lgrad);

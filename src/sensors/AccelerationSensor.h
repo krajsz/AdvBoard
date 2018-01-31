@@ -10,12 +10,18 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 
 #include "src/sensors/AbstractSensor.h"
 #include <QObject>
+#include <QSizeF>
 
 class AccelerationSensor : public AbstractSensor
 {
     Q_OBJECT
 public:
-    AccelerationSensor(const int id, const double acceleration = 0, QObject* parent = nullptr);
+    AccelerationSensor(const int id, const double minAccel = -2, const double maxAccel = 2, const QSizeF& acceleration = QSizeF(), QObject* parent = nullptr);
+
+    double xMinAcceleration() const;
+    double yMinAcceleration() const;
+    double xMaxAcceleration() const;
+    double yMaxAcceleration() const;
 private:
 
 };

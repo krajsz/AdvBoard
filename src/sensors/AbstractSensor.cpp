@@ -10,8 +10,9 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 #include <QPropertyAnimation>
 #include <QEasingCurve>
 
-AbstractSensor::AbstractSensor(const int id, const QVariant &val, AbstractSensor::SensorType type, QObject *parent) :
-    QObject(parent), m_id(id), m_value(val), m_type(type),
+AbstractSensor::AbstractSensor(const int id,const QVariant& minValue, const QVariant& maxValue, const QVariant &val, AbstractSensor::SensorType type, QObject *parent) :
+    QObject(parent), m_id(id),
+    m_minValue(minValue), m_maxValue(maxValue), m_value(val), m_type(type),
     m_animation(new QPropertyAnimation(this, "value"))
 {
 }
@@ -47,6 +48,16 @@ void AbstractSensor::update(const QVariant &newvalue)
 QVariant AbstractSensor::value() const
 {
     return m_value;
+}
+
+QVariant AbstractSensor::minValue() const
+{
+    return m_minValue;
+}
+
+QVariant AbstractSensor::maxValue() const
+{
+    return m_maxValue;
 }
 
 void AbstractSensor::setValue(const QVariant &newValue)

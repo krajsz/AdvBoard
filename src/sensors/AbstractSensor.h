@@ -29,10 +29,12 @@ public:
     };
     virtual ~AbstractSensor();
     QPropertyAnimation* animation();
-    explicit AbstractSensor(const int id, const QVariant& val = QVariant(), SensorType type = Abstract, QObject *parent = nullptr);
+    explicit AbstractSensor(const int id, const QVariant& minValue, const QVariant& maxValue, const QVariant& val = QVariant(), SensorType type = Abstract, QObject *parent = nullptr);
     SensorType type() const;
     bool operator==(const AbstractSensor &other) const;
     QVariant value() const;
+    QVariant minValue() const;
+    QVariant maxValue() const;
     void setValue(const QVariant& newValue);
 signals:
     void sensorUpdated();
@@ -43,6 +45,10 @@ private:
     SensorType m_type;
     QJsonObject m_sensorData;
     QVariant m_value;
+
+    const QVariant m_minValue;
+    const QVariant m_maxValue;
+
     QPropertyAnimation* m_animation;
     const int m_id;
 };

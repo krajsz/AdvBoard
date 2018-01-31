@@ -3,7 +3,9 @@
     "dashboardType": 1,
 	"sensors": [{
 			"id": 1,
-			"type": 1
+            "type": 1,
+            "min": -20,
+            "max": 50
 		},
 		{
 			"id": 2,
@@ -11,7 +13,8 @@
         },
         {
             "id": 3,
-            "type": 5
+            "type": 5,
+            "max": 200
         }
 	],
 	"sensorData": [

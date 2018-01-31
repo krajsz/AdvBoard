@@ -15,7 +15,8 @@ class HumiditySensor : public AbstractSensor
 {
     Q_OBJECT
 public:
-    explicit HumiditySensor(const int id, const double humidity = 0, QObject* parent = nullptr);
+    explicit HumiditySensor(const int id, const double minHumidity = 0, const double maxHumidity = 100,
+                            const double humidity = 0, QObject* parent = nullptr);
 
 private:
 };
