@@ -15,23 +15,23 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 #include <QDebug>
 #include <QPropertyAnimation>
 
-AdvSensorItem::AdvSensorItem(AbstractSensor::SensorType type, const int id, QGraphicsItem *parent) : QObject(),  QGraphicsItem(parent)
+AdvSensorItem::AdvSensorItem(AbstractSensor::SensorType type, const int id, QGraphicsItem *parent, const QVariant &maxValue, const QVariant &minValue) : QObject(),  QGraphicsItem(parent)
 {
     switch (type) {
     case AbstractSensor::SensorType::TemperatureSensor:
-        m_sensor = new TemperatureSensor(id);
+        m_sensor = new TemperatureSensor(id, minValue.toDouble(), maxValue.toDouble());
         break;
     case AbstractSensor::SensorType::AccelerationSensor:
-        m_sensor = new AccelerationSensor(id);
+        m_sensor = new AccelerationSensor(id, minValue.toDouble(), maxValue.toDouble());
         break;
     case AbstractSensor::SensorType::GPSpositionSensor:
         m_sensor = new GPSpositionSensor(id);
         break;
     case AbstractSensor::SensorType::HumiditySensor:
-        m_sensor = new HumiditySensor(id);
+        m_sensor = new HumiditySensor(id, minValue.toDouble(), maxValue.toDouble());
         break;
     case AbstractSensor::SensorType::SpeedSensor:
-        m_sensor = new SpeedSensor(id);
+        m_sensor = new SpeedSensor(id, maxValue.toInt());
         break;
     default:
         break;
@@ -52,7 +52,7 @@ QRectF AdvSensorItem::boundingRect() const
     brect.setLeft(0);
     switch (m_sensor->type()) {
     case AbstractSensor::SensorType::AccelerationSensor:
-        brect.setWidth(160);
+        brect.setWidth(240);
         brect.setHeight(160);
         break;
     case AbstractSensor::SensorType::TemperatureSensor:

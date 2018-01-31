@@ -8,7 +8,9 @@ class AdvSensorItem : public QObject, public QGraphicsItem
 {
     Q_OBJECT
 public:
-    explicit AdvSensorItem(AbstractSensor::SensorType type, const int id, QGraphicsItem *parent = nullptr);
+    explicit AdvSensorItem(AbstractSensor::SensorType type, const int id, QGraphicsItem *parent = nullptr,
+                           const QVariant& maxValue = QVariant(), const QVariant& minValue = QVariant()
+                           );
     AbstractSensor* sensor();
     virtual QRectF boundingRect() const;
 

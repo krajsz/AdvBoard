@@ -13,7 +13,8 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 AbstractSensor::AbstractSensor(const int id,const QVariant& minValue, const QVariant& maxValue, const QVariant &val, AbstractSensor::SensorType type, QObject *parent) :
     QObject(parent), m_id(id),
     m_minValue(minValue), m_maxValue(maxValue), m_value(val), m_type(type),
-    m_animation(new QPropertyAnimation(this, "value"))
+    m_animation(new QPropertyAnimation(this, "value")),
+    m_drawingPosition(AbstractSensor::Separate)
 {
 }
 
@@ -58,6 +59,16 @@ QVariant AbstractSensor::minValue() const
 QVariant AbstractSensor::maxValue() const
 {
     return m_maxValue;
+}
+
+AbstractSensor::DrawingPosition AbstractSensor::drawingPosition() const
+{
+    return m_drawPosition;
+}
+
+void AbstractSensor::setDrawingPosition(const DrawingPosition position)
+{
+    m_drawingPosition = position;
 }
 
 void AbstractSensor::setValue(const QVariant &newValue)

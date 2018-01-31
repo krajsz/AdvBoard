@@ -11,6 +11,7 @@ AccelerationSensor::AccelerationSensor(const int id, const double minAccel, cons
     AbstractSensor(id, minAccel, maxAccel,
                    acceleration, AbstractSensor::AccelerationSensor, parent)
 {
+    setDrawingPosition(AbstractSensor::Overlap);
 }
 
 double AccelerationSensor::xMinAcceleration() const

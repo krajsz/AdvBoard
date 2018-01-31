@@ -44,7 +44,8 @@ QRectF AbstractDashboard::boundingRect() const
 
     for (const AdvSensorItem* const item : sensorItems())
     {
-        width += item->boundingRect().width() + DASHBOARD_SENSORITEMS_PADDING;
+        if (item->sensor()->drawingPosition() == AbstractSensor::DrawingPosition::Separate)
+            width += item->boundingRect().width() + DASHBOARD_SENSORITEMS_PADDING;
         if (item->boundingRect().height() > maxHeight)
             maxHeight = item->boundingRect().height();
     }
@@ -77,7 +78,38 @@ void AbstractDashboard::initSensors(const QVector<QJsonObject> &sensorInfoData, 
         const int type = sensorData["type"].toInt();
         const int id = sensorData["id"].toInt();
 
-        AdvSensorItem* sensor = new AdvSensorItem(static_cast<AbstractSensor::SensorType>(type), id, this);
+        QJsonValue min = sensorData["min"];
+        QVariant minVal;
+        if (!min.isUndefined())
+        {
+            minVal = min.toVariant();
+        }
+
+        QJsonValue max = sensorData["max"];
+        QVariant maxVal;
+        if (!max.isUndefined())
+        {
+            maxVal = max.toVariant();
+        }
+
+        AdvSensorItem* sensor;
+        if (minVal.isValid() && maxVal.isValid())
+        {
+            sensor = new AdvSensorItem(static_cast<AbstractSensor::SensorType>(type), id, this, maxVal, minVal);
+        }
+        else if (minVal.isValid())
+        {
+            sensor = new AdvSensorItem(static_cast<AbstractSensor::SensorType>(type), id, this,QVariant(), minVal);
+
+        } else if (maxVal.isValid())
+        {
+            sensor = new AdvSensorItem(static_cast<AbstractSensor::SensorType>(type), id, this, maxVal, QVariant() );
+        }
+        else
+        {
+            sensor = new AdvSensorItem(static_cast<AbstractSensor::SensorType>(type), id, this);
+        }
+
         connect(sensor->sensor(), &AbstractSensor::valueChanged, this, [=](){ emit sensorsUpdated();});
         sensor->sensor()->animation()->setDuration(animationInterval);
 
