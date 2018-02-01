@@ -21,7 +21,7 @@ public:
     void resize(const QSize& size);
 
 signals:
-    void updateSensorsSignal(const QVector<QVariant>& data);
+    void updateSensorsSignal(const QVector<QJsonValue>& data);
     void initSensorSignal(const QVector<QJsonObject> &sensordata, const int interval);
 
     void sceneSetupDone();

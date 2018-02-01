@@ -10,6 +10,7 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 
 #include "src/datasources/SensorDataReader.h"
 #include <QObject>
+#include <QJsonValue>
 
 class AdvViewController : public QObject
 {
@@ -22,11 +23,11 @@ signals:
     void play();
 
     void update();
-    void dataReadSignal(const QVector<QVariant>& data);
+    void dataReadSignal(const QVector<QJsonValue>& data);
     void initSensorsSignal(const QVector<QJsonObject>& sensordata, const int animationInterval);
     void initDashboardSignal(int dashboardType);
 public slots:
-    void dataRead(const QVector<QVariant>& data);
+    void dataRead(const QVector<QJsonValue> &data);
     void initSensors(const QVector<QJsonObject>& sensordata, const int animationInterval);
     void initDashboard(int dashboardType);
 private:

@@ -21,7 +21,7 @@ void AdvViewController::initSensors(const QVector<QJsonObject> &sensordata, cons
     emit initSensorsSignal(sensordata, animationInterval);
 }
 
-void AdvViewController::dataRead(const QVector<QVariant> &data)
+void AdvViewController::dataRead(const QVector<QJsonValue> &data)
 {
     emit dataReadSignal(data);
     emit update();

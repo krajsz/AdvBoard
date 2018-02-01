@@ -28,7 +28,7 @@ public:
     virtual void read();
     int dataSnapshotCount() const;
 signals:
-    void dataRead(const QVector<QVariant>& data);
+    void dataRead(const QVector<QJsonValue>& data);
     void initSensors(const QVector<QJsonObject>& sensordata, const int animationDuration);
     void initDashBoard(int dashboardType);
     void dataInvalid(const QString& errorString);

@@ -53,7 +53,7 @@ QRectF AdvSensorItem::boundingRect() const
     switch (m_sensor->type()) {
     case AbstractSensor::SensorType::AccelerationSensor:
         brect.setWidth(240);
-        brect.setHeight(160);
+        brect.setHeight(200);
         break;
     case AbstractSensor::SensorType::TemperatureSensor:
         brect.setWidth(165);
@@ -93,6 +93,12 @@ void AdvSensorItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
         {
             painter->drawEllipse(acceleroCenter, i*20, i * 20);
         }
+
+        const QString& xaccel = QString::number(m_sensor->value().toPointF().x(), 'f', 2);
+        const QString& yaccel = QString::number(m_sensor->value().toPointF().y(), 'f', 2);
+
+        painter->drawText(10, 20, xaccel);
+        painter->drawText(10, 50, yaccel);
     }
 
     if (m_sensor->type() == AbstractSensor::SensorType::GPSpositionSensor)

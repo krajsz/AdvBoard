@@ -39,7 +39,7 @@ void SensorDataReader::startReading()
 
 void SensorDataReader::readSnapshot()
 {
-    QVector<QVariant> dataToSend;
+    QVector<QJsonValue> dataToSend;
     dataToSend.reserve(m_sensorCount);
 
     if (m_dataIndex < m_data.size())
@@ -47,7 +47,7 @@ void SensorDataReader::readSnapshot()
         QJsonArray data = m_data[m_dataIndex++];
         for (int i = 0; i < data.size(); ++i)
         {
-            dataToSend.push_back(data[i].toVariant());
+            dataToSend.push_back(data[i]);
         }
         emit dataRead(dataToSend);
     }
@@ -102,7 +102,6 @@ void SensorDataReader::setFile(const QString &path)
     m_file = new QFile(m_path);
     if (m_file->open(QFile::ReadOnly))
     {
-        qDebug() << "reading";
         read();
     }
     else

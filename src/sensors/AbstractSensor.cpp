@@ -9,13 +9,16 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 #include <QDebug>
 #include <QPropertyAnimation>
 #include <QEasingCurve>
+#include <QPointF>
+#include <QVariant>
 
 AbstractSensor::AbstractSensor(const int id,const QVariant& minValue, const QVariant& maxValue, const QVariant &val, AbstractSensor::SensorType type, QObject *parent) :
     QObject(parent), m_id(id),
     m_minValue(minValue), m_maxValue(maxValue), m_value(val), m_type(type),
-    m_animation(new QPropertyAnimation(this, "value")),
+    m_animation(new QVariantAnimation(this)),
     m_drawingPosition(AbstractSensor::Separate)
 {
+    connect(m_animation, &QVariantAnimation::valueChanged, this, &AbstractSensor::setValue);
 }
 
 bool AbstractSensor::operator ==(const AbstractSensor& other) const
@@ -28,7 +31,7 @@ AbstractSensor::~AbstractSensor()
     delete m_animation;
 }
 
-QPropertyAnimation* AbstractSensor::animation()
+QVariantAnimation *AbstractSensor::animation()
 {
     return m_animation;
 }
@@ -36,15 +39,15 @@ QPropertyAnimation* AbstractSensor::animation()
 void AbstractSensor::update(const QVariant &newvalue)
 {
     m_animation->stop();
+
     m_animation->setStartValue(m_value);
     m_animation->setEndValue(newvalue);
-    m_animation->start();
 
+    m_animation->start();
     m_value = newvalue;
 
     emit sensorUpdated();
 }
-
 
 QVariant AbstractSensor::value() const
 {
@@ -63,7 +66,7 @@ QVariant AbstractSensor::maxValue() const
 
 AbstractSensor::DrawingPosition AbstractSensor::drawingPosition() const
 {
-    return m_drawPosition;
+    return m_drawingPosition;
 }
 
 void AbstractSensor::setDrawingPosition(const DrawingPosition position)
@@ -76,9 +79,12 @@ void AbstractSensor::setValue(const QVariant &newValue)
     m_value = newValue;
 }
 
+int AbstractSensor::id() const
+{
+    return m_id;
+}
+
 AbstractSensor::SensorType AbstractSensor::type() const
 {
     return m_type;
 }
-
-

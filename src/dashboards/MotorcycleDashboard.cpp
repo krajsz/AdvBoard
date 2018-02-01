@@ -55,6 +55,7 @@ void MotorcycleDashboard::layoutSensors()
         case AbstractSensor::SensorType::GPSpositionSensor:
             break;
         case AbstractSensor::SensorType::AccelerationSensor:
+            sensorItem->setPos(boundingRect().width() - boundingRect().width()/3, boundingRect().height() /2 - 40 );
             break;
         default:
             break;

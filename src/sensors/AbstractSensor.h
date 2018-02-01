@@ -11,12 +11,12 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 #include <QObject>
 #include <QJsonObject>
 #include <QVariant>
+#include <QPropertyAnimation>
+#include <QPointF>
 
-class QPropertyAnimation;
 class AbstractSensor : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QVariant value MEMBER m_value READ value WRITE setValue NOTIFY valueChanged)
 
 public:
     enum SensorType {
@@ -35,7 +35,7 @@ public:
     };
 
     virtual ~AbstractSensor();
-    QPropertyAnimation* animation();
+    QVariantAnimation* animation();
     explicit AbstractSensor(const int id, const QVariant& minValue, const QVariant& maxValue, const QVariant& val = QVariant(), SensorType type = Abstract, QObject *parent = nullptr);
     SensorType type() const;
     bool operator==(const AbstractSensor &other) const;
@@ -45,24 +45,30 @@ public:
     QVariant maxValue() const;
     void setValue(const QVariant& newValue);
 
+    int id() const;
+
     void setDrawingPosition(const DrawingPosition position);
     DrawingPosition drawingPosition() const;
 
 signals:
     void sensorUpdated();
-    void valueChanged(const QVariant& value);
+
 public slots:
     void update(const QVariant& newvalue);
+
 private:
     SensorType m_type;
     QJsonObject m_sensorData;
     QVariant m_value;
+
+    QPointF m_test;
+
     DrawingPosition m_drawingPosition;
 
     const QVariant m_minValue;
     const QVariant m_maxValue;
 
-    QPropertyAnimation* m_animation;
+    QVariantAnimation* m_animation;
     const int m_id;
 };
 

@@ -7,7 +7,7 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 ***************************************************************************/
 #include "src/sensors/AccelerationSensor.h"
 
-AccelerationSensor::AccelerationSensor(const int id, const double minAccel, const double maxAccel, const QSizeF &acceleration, QObject *parent) :
+AccelerationSensor::AccelerationSensor(const int id, const double minAccel, const double maxAccel, const QPointF &acceleration, QObject *parent) :
     AbstractSensor(id, minAccel, maxAccel,
                    acceleration, AbstractSensor::AccelerationSensor, parent)
 {
