@@ -65,13 +65,12 @@ void AbstractDashboard::updateSensors(const QVector<QJsonValue>& values)
 
         if(val.isArray())
         {
-            QJsonArray arr = val.toArray();
+            const QJsonArray& arr = val.toArray();
             Q_ASSERT(arr.size() == 2);
 
             QPointF value;
             value.setX(arr[0].toDouble());
             value.setY(arr[1].toDouble());
-            qDebug() << "pointvalue: " << value;
             emit m_advSensorItems[i]->updateSensor(QVariant(value));
         }
         else
@@ -90,7 +89,7 @@ void AbstractDashboard::initSensors(const QVector<QJsonObject> &sensorInfoData, 
 {
     for (int i = 0; i < sensorInfoData.size(); ++i)
     {
-        QJsonObject sensorData = sensorInfoData.at(i);
+        const QJsonObject& sensorData = sensorInfoData.at(i);
         const int type = sensorData["type"].toInt();
         const int id = sensorData["id"].toInt();
 
@@ -109,14 +108,14 @@ void AbstractDashboard::initSensors(const QVector<QJsonObject> &sensorInfoData, 
             continue;
         }
 
-        QJsonValue min = sensorData["min"];
+        const QJsonValue& min = sensorData["min"];
         QVariant minVal;
         if (!min.isUndefined())
         {
             minVal = min.toVariant();
         }
 
-        QJsonValue max = sensorData["max"];
+        const QJsonValue& max = sensorData["max"];
         QVariant maxVal;
         if (!max.isUndefined())
         {

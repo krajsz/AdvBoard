@@ -81,24 +81,64 @@ void AdvSensorItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
 
     if (m_sensor->type() == AbstractSensor::SensorType::AccelerationSensor)
     {
+        const QPointF acceleroCenter(100, 40);
+
         QPen acceleroCirclePen;
-        acceleroCirclePen.setWidth(3);
-        acceleroCirclePen.setColor(Qt::darkGray);
+        acceleroCirclePen.setWidth(1);
+        acceleroCirclePen.setColor(Qt::gray);
+
+        QRadialGradient accelGrad(acceleroCenter, 60);
+        accelGrad.setColorAt(0.2, Qt::black);
+        accelGrad.setColorAt(0.6, Qt::darkGray);
+        accelGrad.setColorAt(1.0, Qt::gray);
+
+        acceleroCirclePen.setBrush(accelGrad);
 
         painter->setPen(acceleroCirclePen);
 
-        const QPointF acceleroCenter(80,80);
-
-        for(int i = 1; i < 5; ++i)
+        for(int i = 1; i < 4; ++i)
         {
             painter->drawEllipse(acceleroCenter, i*20, i * 20);
         }
 
-        const QString& xaccel = QString::number(m_sensor->value().toPointF().x(), 'f', 2);
-        const QString& yaccel = QString::number(m_sensor->value().toPointF().y(), 'f', 2);
+        acceleroCirclePen.setStyle(Qt::DashLine);
+        acceleroCirclePen.setDashOffset(3);
+        painter->setPen(acceleroCirclePen);
 
-        painter->drawText(10, 20, xaccel);
-        painter->drawText(10, 50, yaccel);
+        painter->drawLine(acceleroCenter.x() - 60, acceleroCenter.y(),
+                          acceleroCenter.x() + 60, acceleroCenter.y());
+        painter->drawLine(acceleroCenter.x(), acceleroCenter.y() - 60,
+                          acceleroCenter.x(), acceleroCenter.y() + 60);
+        QPointF gpoint;
+
+        const AccelerationSensor*  accsensor = qobject_cast<const AccelerationSensor*>(m_sensor);
+        QPointF gvalue = accsensor->value().toPointF();
+
+        const double xpos = acceleroCenter.x() + (gvalue.x() * (60 / accsensor->xMaxAcceleration()));
+        const double ypos = acceleroCenter.y() + (gvalue.y() * (60 / accsensor->yMaxAcceleration()));
+
+        gpoint.setX(xpos);
+        gpoint.setY(ypos);
+
+        acceleroCirclePen.setDashOffset(0.5);
+        QBrush gpointBrush(Qt::darkRed);
+        acceleroCirclePen.setStyle(Qt::DashLine);
+        acceleroCirclePen.setBrush(gpointBrush);
+        acceleroCirclePen.setColor(Qt::white);
+        painter->setBrush(gpointBrush);
+        painter->setOpacity(1);
+        painter->setPen(acceleroCirclePen);
+        painter->drawEllipse(gpoint, 4, 4);
+
+        QFont axisValueFont;
+        axisValueFont.setPixelSize(10);
+
+        painter->setFont(axisValueFont);
+        const QString& xmin = QString::number(accsensor->xMinAcceleration(),'f', 1);
+        const QString& xmax = QString::number(accsensor->xMaxAcceleration(),'f', 1);
+
+        painter->drawText(acceleroCenter.x()- 60, acceleroCenter.y() + 11, xmin);
+        painter->drawText(acceleroCenter.x()+ 55, acceleroCenter.y() + 11, xmax);
     }
 
     if (m_sensor->type() == AbstractSensor::SensorType::GPSpositionSensor)
@@ -122,28 +162,43 @@ void AdvSensorItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
 
         painter->drawEllipse(speedoCenter, speedoRadius, speedoRadius);
 
-        QBrush pointBrush(Qt::darkBlue);
-        painter->setBrush(pointBrush);
-        painter->drawEllipse(speedoCenter, 6, 6);
-
         QFont kmhFont;
         kmhFont.setBold(true);
         kmhFont.setPointSize(12);
         painter->setFont(kmhFont);
-        painter->drawText(speedoCenter.x() - 27, speedoCenter.y() + 40, "Km/h");
-        QPen kmhPen;
-        //50, 109, 255
-        kmhPen.setColor(QColor::fromRgb(13,17,18));
+        painter->drawText(speedoCenter.x() - 27, speedoCenter.y() + 53, "Km/h");
+        QPen kmhPen(QColor::fromRgb(13,17,18));
+
+        QBrush kmhBrush(QColor::fromRgb(255, 153, 68));
 
         QPainterPath textPath;
         kmhPen.setCapStyle(Qt::RoundCap);
         kmhPen.setWidth(3);
         kmhFont.setPointSize(20);
-        textPath.addText(speedoCenter.x() - 10, speedoCenter.y() + 75,
-                         kmhFont, QString::number(m_sensor->value().toInt()));
+        const int speed = m_sensor->value().toInt();
+
+        if (speed < 100)
+        {
+            if (speed < 10)
+            {
+                textPath.addText(speedoCenter.x() - 10, speedoCenter.y() + 87,
+                                 kmhFont, QString::number(m_sensor->value().toInt()));
+            }
+            else
+            {
+                textPath.addText(speedoCenter.x() - 23, speedoCenter.y() + 87,
+                                 kmhFont, QString::number(m_sensor->value().toInt()));
+            }
+        }
+        else
+        {
+            textPath.addText(speedoCenter.x() - 32, speedoCenter.y() + 87,
+                             kmhFont, QString::number(m_sensor->value().toInt()));
+        }
+
 
         painter->setPen(kmhPen);
-        painter->fillPath(textPath,painter->brush());
+        painter->fillPath(textPath, kmhBrush);
         QPen kmhStrokePen;
         kmhStrokePen.setColor(Qt::darkRed);
         kmhStrokePen.setWidth(2);
@@ -174,35 +229,42 @@ void AdvSensorItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
         QFont humidityFont;
 
         humidityFont.setBold(true);
-        humidityFont.setItalic(true);
         humidityFont.setPointSize(10);
-
         painter->setFont(humidityFont);
-        painter->drawText(0, 0, QLatin1String("Humidity"));
+        painter->drawText(0, 5, QLatin1String("Humidity"));
 
-        const int blue = (255 * m_sensor->value().toInt())/100;
-        QBrush pieBrush(QColor::fromRgb(255 - blue, 0, blue));
-        painter->setBrush(pieBrush);
-        painter->setOpacity(0.7);
+        QBrush fontBrush(QColor::fromRgb(22.7, 22.7, 18.4));
+        QPen fontPen;
+        fontPen.setBrush(fontBrush);
+        painter->setPen(fontPen);
 
         humidityFont.setPointSize(15);
         humidityFont.setItalic(false);
         painter->setFont(humidityFont);
-
         QString humidityString = QString::number(m_sensor->value().toDouble(), 'f', 1);
-        painter->drawText(10, 60, humidityString + "%");
+        painter->drawText(10, 55, humidityString + "%");
 
+        QConicalGradient humidityPieGrad;
+        humidityPieGrad.setCenter(50, 55);
+        humidityPieGrad.setAngle(-15);
+        humidityPieGrad.setColorAt(0.0, QColor::fromRgb(255, 93, 63));
+        humidityPieGrad.setColorAt(0.4, QColor::fromRgb(255, 184, 63));
+        humidityPieGrad.setColorAt(0.7, QColor::fromRgb(71, 90, 207));
+        humidityPieGrad.setColorAt(1.0, QColor::fromRgb(70, 70, 221));
+        painter->setOpacity(0.6);
+
+        painter->setBrush(humidityPieGrad);
         if (m_sensor->value().toInt() > 0)
-            painter->drawPie(0, 0, 100, 100, 360*16, (m_sensor->value().toInt() * 36* 16)/10);
+            painter->drawPie(0, 10, 95, 95, 360*16, (m_sensor->value().toInt() * 36* 16)/10);
     }
 
     if (m_sensor->type() == AbstractSensor::SensorType::TemperatureSensor)
     {
         QFont tempFont;
 
+        tempFont.setFamily("arial");
         tempFont.setPointSize(10);
         tempFont.setCapitalization(QFont::Capitalize);
-        tempFont.setItalic(true);
         tempFont.setBold(true);
 
         painter->setFont(tempFont);
@@ -213,7 +275,7 @@ void AdvSensorItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
         painter->setBrush(tempBrush);
         painter->setOpacity(0.5);
 
-        painter->drawRoundedRect(0, 5, 125, 55, 40, 40);
+        painter->drawRoundedRect(0, 5, 125, 55, 40, 37);
 
         tempFont.setItalic(false);
 
@@ -221,7 +283,7 @@ void AdvSensorItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
         painter->setFont(tempFont);
 
         QString temperatureString = QString::number(m_sensor->value().toDouble(),'f', 1);
-        painter->drawText(20, 40, temperatureString+ QString::fromUtf8("\u2103"));
+        painter->drawText(25, 45, temperatureString+ QString::fromUtf8("\u2103"));
 
         painter->setOpacity(0.8);
         if (m_sensor->value().toDouble() <= 4)

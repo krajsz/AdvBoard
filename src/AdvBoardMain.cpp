@@ -49,7 +49,6 @@ void AdvBoardMain::setController(AdvMainController *controller)
     m_view = ui->videoView;
     m_view->show();
 
-    qDebug() << "pos: " << m_view->pos();
     m_view->setController(m_controller->viewController());
 
     connect(ui->startProcessingButton, &QPushButton::clicked, m_controller->viewController(), &AdvViewController::play);
@@ -81,12 +80,17 @@ void AdvBoardMain::openVideoSource()
 
 void AdvBoardMain::sensorDataInfoDialogButtonClicked()
 {
+    if (!m_sensorDataInfoDialog)
+    {
+        m_sensorDataInfoDialog = new SensorDataInfoDialog;
+    }
 
+    m_sensorDataInfoDialog->show();
 }
 
 void AdvBoardMain::videoInfoDialogButtonClicked()
 {
-
+    m_videoInfoDialog->show();
 }
 
 void AdvBoardMain::startProcessing()

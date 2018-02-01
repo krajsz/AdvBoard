@@ -21,7 +21,7 @@ class SensorDataInfoDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit SensorDataInfoDialog(const SensorDataReader& data, QWidget *parent = 0);
+    explicit SensorDataInfoDialog(QWidget *parent = 0);
     ~SensorDataInfoDialog();
     void setController(SensorDataInfoDialogController* controller);
 
