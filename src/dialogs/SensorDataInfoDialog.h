@@ -11,6 +11,7 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 #include <QDialog>
 #include "src/datasources/SensorDataReader.h"
 #include "src/controllers/SensorDataInfoDialogController.h"
+#include "src/sensors/AbstractSensor.h"
 
 namespace Ui {
 class SensorDataInfoDialog;
@@ -23,6 +24,8 @@ class SensorDataInfoDialog : public QDialog
 public:
     explicit SensorDataInfoDialog(QWidget *parent = 0);
     ~SensorDataInfoDialog();
+    void setSensors(const QVector<AbstractSensor*>& sensors);
+
     void setController(SensorDataInfoDialogController* controller);
 
 private:

@@ -15,7 +15,8 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 
 AdvBoardMain::AdvBoardMain(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::AdvBoardMain)
+    ui(new Ui::AdvBoardMain),
+    m_sensorDataInfoDialog(nullptr)
 {
     ui->setupUi(this);
 
@@ -80,12 +81,20 @@ void AdvBoardMain::openVideoSource()
 
 void AdvBoardMain::sensorDataInfoDialogButtonClicked()
 {
-    if (!m_sensorDataInfoDialog)
+    if (m_sensorDataInfoDialog == nullptr)
     {
-        m_sensorDataInfoDialog = new SensorDataInfoDialog;
+        m_sensorDataInfoDialog = new SensorDataInfoDialog();
     }
 
+    QVector<AbstractSensor*> sensors;
+    for (AdvSensorItem* sensorItem : m_view->videoScene()->dashboard()->sensorItems())
+    {
+        AbstractSensor* sensor = sensorItem->sensor();
+        sensors.push_back(sensor);
+    }
     m_sensorDataInfoDialog->show();
+    m_sensorDataInfoDialog->setSensors(sensors);
+
 }
 
 void AdvBoardMain::videoInfoDialogButtonClicked()
