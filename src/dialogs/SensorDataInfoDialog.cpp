@@ -34,7 +34,7 @@ void SensorDataInfoDialog::setSensors(const QVector<AbstractSensor *> &sensors)
         {
             AccelerationSensor* accsensor = qobject_cast<AccelerationSensor*>(sensor);
             sensorTreeItem->setText(0, "Acceleration");
-
+            sensorTreeItem->setIcon(0, QIcon(":/pictures/data/gsensorIcon.png"));
             //ID
             sensorDataNameTreeItem = new QTreeWidgetItem;
             sensorDataNameTreeItem->setText(0, "ID");
@@ -116,11 +116,14 @@ void SensorDataInfoDialog::setSensors(const QVector<AbstractSensor *> &sensors)
         else if (sensor->type() == AbstractSensor::SensorType::GPSpositionSensor)
         {
             sensorTreeItem->setText(0, "GPS position");
+            sensorTreeItem->setIcon(0, QIcon(":/pictures/data/gpsSensorIcon.png"));
+
 
         }
         else if (sensor->type() == AbstractSensor::SensorType::HumiditySensor)
         {
             sensorTreeItem->setText(0, "Humidity");
+            sensorTreeItem->setIcon(0, QIcon(":/pictures/data/humiditySensorIcon.png"));
 
             //ID
             sensorDataNameTreeItem = new QTreeWidgetItem;
@@ -171,6 +174,8 @@ void SensorDataInfoDialog::setSensors(const QVector<AbstractSensor *> &sensors)
         else if (sensor->type() == AbstractSensor::SensorType::SpeedSensor)
         {
             sensorTreeItem->setText(0, "Speed");
+            sensorTreeItem->setIcon(0, QIcon(":/pictures/data/speedSensorIcon.png"));
+
             //ID
             sensorDataNameTreeItem = new QTreeWidgetItem;
             sensorDataNameTreeItem->setText(0, "ID");
@@ -211,6 +216,8 @@ void SensorDataInfoDialog::setSensors(const QVector<AbstractSensor *> &sensors)
         else if (sensor->type() == AbstractSensor::SensorType::TemperatureSensor)
         {
             sensorTreeItem->setText(0, "Temperature");
+            sensorTreeItem->setIcon(0, QIcon(":/pictures/data/tempSensorIcon.png"));
+
             //ID
             sensorDataNameTreeItem = new QTreeWidgetItem;
             sensorDataNameTreeItem->setText(0, "ID");

@@ -4,5 +4,10 @@
     </qresource>
     <qresource lang="En" prefix="/pictures">
         <file>data/coldTempSign.png</file>
+        <file>data/gpsSensorIcon.png</file>
+        <file>data/gsensorIcon.png</file>
+        <file>data/speedSensorIcon.png</file>
+        <file>data/tempSensorIcon.png</file>
+        <file>data/humiditySensorIcon.png</file>
     </qresource>
 </RCC>
