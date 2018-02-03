@@ -10,4 +10,7 @@
         <file>data/tempSensorIcon.png</file>
         <file>data/humiditySensorIcon.png</file>
     </qresource>
+    <qresource prefix="/settings">
+        <file>data/settings.json</file>
+    </qresource>
 </RCC>

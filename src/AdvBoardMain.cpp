@@ -16,7 +16,8 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 AdvBoardMain::AdvBoardMain(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::AdvBoardMain),
-    m_sensorDataInfoDialog(nullptr)
+    m_sensorDataInfoDialog(nullptr),
+    m_videoInfoDialog(nullptr)
 {
     ui->setupUi(this);
 
@@ -99,6 +100,10 @@ void AdvBoardMain::sensorDataInfoDialogButtonClicked()
 
 void AdvBoardMain::videoInfoDialogButtonClicked()
 {
+    if (m_videoInfoDialog == nullptr)
+    {
+        m_videoInfoDialog = new VideoInfoDialog;
+    }
     m_videoInfoDialog->show();
 }
 
