@@ -99,3 +99,6 @@ FORMS += \
 
 RESOURCES +=\
     src/resources.qrc
+
+DISTFILES += \
+    src/scripts/tcpData.py

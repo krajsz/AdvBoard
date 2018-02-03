@@ -26,6 +26,9 @@
    </item>
    <item row="0" column="0" colspan="2">
     <widget class="QTreeWidget" name="sensorDataTreeView">
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
      <property name="columnCount">
       <number>1</number>
      </property>
