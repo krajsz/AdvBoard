@@ -37,14 +37,20 @@ void SensorDataReader::startReading()
         m_readTimer->start(m_interval);
 }
 
-void SensorDataReader::readSnapshot()
+void SensorDataReader::readSnapshotSlot()
+{
+    readSnapshot(m_dataIndex);
+    m_dataIndex++;
+}
+
+void SensorDataReader::readSnapshot(const int idx)
 {
     QVector<QJsonValue> dataToSend;
     dataToSend.reserve(m_sensorCount);
 
-    if (m_dataIndex < m_data.size())
+    if (idx < m_data.size())
     {
-        QJsonArray data = m_data[m_dataIndex++];
+        QJsonArray data = m_data[idx];
         for (int i = 0; i < data.size(); ++i)
         {
             dataToSend.push_back(data[i]);
@@ -53,8 +59,14 @@ void SensorDataReader::readSnapshot()
     }
 }
 
-void SensorDataReader::read()
+void SensorDataReader::read(bool init)
 {
+    if (!m_file->isOpen())
+        if (!m_file->open(QFile::ReadOnly))
+        {
+            emit dataInvalid(QLatin1String("File cannot be opened!"));
+            return;
+        }
     QByteArray filedata = m_file->readAll();
     QJsonParseError parseError;
     QJsonDocument sensorDocument = QJsonDocument::fromJson(filedata, &parseError);
@@ -67,6 +79,7 @@ void SensorDataReader::read()
     {
         QJsonObject sensorDataObject = sensorDocument.object();
         QJsonArray data = sensorDataObject["sensorData"].toArray();
+
         m_dataSnapshotCount = data.size();
 
         for (int i = 0; i < m_dataSnapshotCount; ++i)
@@ -74,25 +87,28 @@ void SensorDataReader::read()
             m_data.push_back(data[i].toArray());
         }
 
-        m_interval = sensorDataObject["interval"].toInt();
-
-        const int dashboardType = sensorDataObject["dashboardType"].toInt();
-
-        QJsonArray sensorArray = sensorDataObject["sensors"].toArray();
-
-        const int sensorCount = sensorArray.size();
-        QVector<QJsonObject> sensors;
-        sensors.reserve(sensorCount);
-
-        for (int i = 0; i < sensorCount; ++i)
+        if (init)
         {
-            sensors.push_back(sensorArray[i].toObject());
+            m_interval = sensorDataObject["interval"].toInt();
+
+            const int dashboardType = sensorDataObject["dashboardType"].toInt();
+
+            QJsonArray sensorArray = sensorDataObject["sensors"].toArray();
+
+            const int sensorCount = sensorArray.size();
+            QVector<QJsonObject> sensors;
+            sensors.reserve(sensorCount);
+
+            for (int i = 0; i < sensorCount; ++i)
+            {
+                sensors.push_back(sensorArray[i].toObject());
+            }
+
+            connect(m_readTimer, &QTimer::timeout, this, &SensorDataReader::readSnapshotSlot);
+
+            emit initDashBoard(dashboardType);
+            emit initSensors(sensors, m_interval);
         }
-
-        connect(m_readTimer, &QTimer::timeout, this, &SensorDataReader::readSnapshot);
-
-        emit initDashBoard(dashboardType);
-        emit initSensors(sensors, m_interval);
     }
 }
 
@@ -100,12 +116,4 @@ void SensorDataReader::setFile(const QString &path)
 {
     m_path = path;
     m_file = new QFile(m_path);
-    if (m_file->open(QFile::ReadOnly))
-    {
-        read();
-    }
-    else
-    {
-        emit dataInvalid(QLatin1String("File cannot be opened!"));
-    }
 }

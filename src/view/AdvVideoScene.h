@@ -9,7 +9,7 @@
 #include <QGraphicsScene>
 
 class QSize;
-class AdvVideoScene : public QGraphicsScene
+class AdvVideoScene final : public QGraphicsScene
 {
     Q_OBJECT
 public:

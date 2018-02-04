@@ -1,11 +1,11 @@
 {
+    "source": 0,
     "liveDataSettings": {
-		"interval": 1000
-		"type": 1
+        "interval": 1000,
 		"tcp": {
-		        "port": 23
+                "port": 23,
 				"host": "localhost",
-		}
-		"file": "filename"
+        },
+        "file": "filename"
     }
 }

@@ -15,7 +15,7 @@ TemperatureSensor::TemperatureSensor(const int id, const double minTemp, const d
 {
 }
 
-const double TemperatureSensor::coldWeatherWarningTemperature() const
+double TemperatureSensor::coldWeatherWarningTemperature() const
 {
     return m_coldWeatherWarningTemperature;
 }

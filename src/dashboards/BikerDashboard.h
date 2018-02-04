@@ -10,16 +10,16 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 
 #include "src/dashboards/AbstractDashboard.h"
 
-class BikerDashboard : public AbstractDashboard
+class BikerDashboard final: public AbstractDashboard
 {
 public:
     BikerDashboard();
 
 protected:
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = Q_NULLPTR);
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = Q_NULLPTR) override;
 
 public slots:
-    void layoutSensors();
+    void layoutSensors() final override;
 
 };
 

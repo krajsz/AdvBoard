@@ -15,7 +15,7 @@ class SpeedSensor : public AbstractSensor
 {
     Q_OBJECT
 public:
-    SpeedSensor(const int id, const int maxSpeed = 200, const int speed = 0, QObject* parent = nullptr);
+    explicit SpeedSensor(const int id, const int maxSpeed = 200, const int speed = 0, QObject* parent = nullptr);
 private:
 
 };

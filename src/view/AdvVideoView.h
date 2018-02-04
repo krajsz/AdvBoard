@@ -6,7 +6,7 @@
 
 #include <QGraphicsView>
 
-class AdvVideoView : public QGraphicsView
+class AdvVideoView final : public QGraphicsView
 {
     Q_OBJECT
 public:

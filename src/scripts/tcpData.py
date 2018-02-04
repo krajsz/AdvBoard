@@ -23,22 +23,15 @@ def main():
             #load the settings in a json documet
             settingsJson = json.load(settingsFile)
 
-            sourceType = int(settingsJson[LDS]['type'])
             interval = settingsJson[LDS]['interval']
+            type = int(settingsJson[LDS]['type'])
 
-            #file
-            if sourceType == 0:
-                dataFile = settingsJson[LDS]['file']
-                if os.path.isfile(dataFile) == True:
-                    #TODO some condition
-                    while True:
+            #write to file
+            if type == 0:
+                fileName = settingsJson[LDS]['file']
 
-                        time.sleep(interval)
-
-                        #read sensors and send json data
-            #tcp
-            elif sourceType == 1:
-
+            #write to TCP socket
+            elif type == 1:
                 #TODO some condition
                 while True:
                     tcpPort = int(settingsJson[LDS]['tcp']['port'])
@@ -56,13 +49,11 @@ def main():
                     #read sensors and send json data
 
 
-
                     #sock.sendall(sensorData)
 
-                    sock.close()
-                    time.sleep(interval)
+                    connection.close()
     else:
-        print('Error: File not existing')
+        print('Error: Settings file not existing')
 
 if __name__ == '__main__':
                     main()

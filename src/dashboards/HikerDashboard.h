@@ -10,16 +10,16 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 
 #include "src/dashboards/AbstractDashboard.h"
 
-class HikerDashboard : public AbstractDashboard
+class HikerDashboard final : public AbstractDashboard
 {
 public:
     HikerDashboard();
 
 protected:
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = Q_NULLPTR);
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = Q_NULLPTR) final override;
 
 public slots:
-    void layoutSensors();
+    void layoutSensors() final override;
 
 };
 

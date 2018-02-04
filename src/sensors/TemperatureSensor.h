@@ -17,7 +17,7 @@ class TemperatureSensor : public AbstractSensor
 public:
     TemperatureSensor(const int id, const double minTemp = -20, const double maxTemp = 60,
                       const double coldWeatherWarningTemperature = 4, const double temp = 0, QObject* parent = nullptr);
-    const double coldWeatherWarningTemperature() const;
+    double coldWeatherWarningTemperature() const;
 private:
     const double m_coldWeatherWarningTemperature;
 };

@@ -16,7 +16,7 @@ class GPSpositionSensor : public AbstractSensor
 {
     Q_OBJECT
 public:
-    GPSpositionSensor(const int id, const QPointF& pos = QPointF(), QObject* parent = nullptr);
+    explicit GPSpositionSensor(const int id, const QPointF& pos = QPointF(), QObject* parent = nullptr);
 private:
 
 };
