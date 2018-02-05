@@ -41,6 +41,14 @@ AdvMainController::~AdvMainController()
     delete m_viewController;
 }
 
+void AdvMainController::openSensorData(const QString &dataFile)
+{
+    m_sensorDataReader->setFile(dataFile);
+    m_sensorDataReader->read(true);
+
+    connect(m_sensorDataReader, &SensorDataReader::dataInvalid, this, &AdvMainController::sensorDataInvalid);
+}
+
 void AdvMainController::start(const AdvMainController::Mode mode, bool live)
 {
     switch (mode)

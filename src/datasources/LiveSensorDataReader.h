@@ -36,10 +36,12 @@ public:
     };
     SourceType sourceType() const;
     void setSourceType(const SourceType type);
+public slots:
+    void startReading() final override;
 private slots:
     void fileRead(const QString&filepath);
     void tcpRead();
-
+    void readSnapshotSlot() final override;
 private:
     QIODevice* m_device;
     SourceType m_sourceType;

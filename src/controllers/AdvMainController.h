@@ -36,6 +36,8 @@ public:
     SettingDialogController* settingDialogController();
     SensorDataReader* sensorDataReader();
 
+    void openSensorData(const QString& dataFile);
+
 private:
     AdvViewController* m_viewController;
     SensorDataInfoDialogController* m_sensorDataInfoDialogController;
@@ -44,7 +46,9 @@ private:
     VideoInfoDialogController* m_videoInfoDialogController;
     SensorDataReader* m_sensorDataReader;
 
+
 signals:
+    void sensorDataInvalid(const QString& errorString);
 };
 
 #endif // ADVMAINCONTROLLER_H

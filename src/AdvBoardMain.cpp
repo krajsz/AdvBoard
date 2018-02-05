@@ -53,6 +53,7 @@ void AdvBoardMain::setController(AdvMainController *controller)
 
     m_view->setController(m_controller->viewController());
 
+    connect(m_controller, &AdvMainController::sensorDataInvalid, this, &AdvBoardMain::sensorDataInvalid);
     connect(ui->startProcessingButton, &QPushButton::clicked, m_controller->viewController(), &AdvViewController::play);
     connect(ui->startProcessingButton, &QPushButton::clicked, m_controller->sensorDataReader(), &SensorDataReader::startReading);
 }
@@ -61,13 +62,12 @@ void AdvBoardMain::openSensorData()
 {
     //QString fileName = QFileDialog::getOpenFileName(0, tr("Open sensor data"), QDir::homePath(), "JSON (*.JSON *.json);");
 
-    m_controller->sensorDataReader()->setFile(":/json/data/test.json");
-    connect(m_controller->sensorDataReader(), &SensorDataReader::dataInvalid, this, &AdvBoardMain::sensorDataInvalid);
+    m_controller->openSensorData(":/json/data/testnew.json");
 }
 
 void AdvBoardMain::openVideoSource()
 {
-    QUrl path = QFileDialog::getOpenFileName(0, tr("Open your video"), QDir::homePath());
+    const QUrl path = QFileDialog::getOpenFileName(0, tr("Open your video"), QDir::homePath());
 
     VideoLoadingDialog* dialog = new VideoLoadingDialog;
     connect(m_view->videoScene()->video(), &VideoSource::loadPercent, dialog, &VideoLoadingDialog::setPercent);

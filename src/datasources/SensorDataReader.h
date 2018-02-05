@@ -38,17 +38,18 @@ protected:
     QFile* m_file;
     QTimer* m_readTimer;
     QVector<QJsonArray> m_data;
+    int m_sensorCount;
+    int m_interval;
 
     void readSnapshot(const int idx);
 private slots:
-    void readSnapshotSlot();
+    virtual void readSnapshotSlot();
 private:
     QString m_path;
 
-    int m_interval;
-    int m_dataSnapshotCount;
-    int m_sensorCount;
 
+
+    int m_dataSnapshotCount;
     int m_dataIndex;
 };
 

@@ -55,27 +55,45 @@ QRectF AbstractDashboard::boundingRect() const
     return brect;
 }
 
+void AbstractDashboard::updateSensorWithID(const int id, const QJsonValue &value)
+{
+    for(AdvSensorItem* sensorItem : m_advSensorItems)
+    {
+        if (sensorItem->sensor()->id() == id)
+        {
+            if(value.isArray())
+            {
+                Q_ASSERT(sensorItem->sensor()->value().type() == QVariant::PointF);
+                const QJsonArray& arr = value.toArray();
+                Q_ASSERT(arr.size() == 2);
+
+                QPointF pointValue;
+                pointValue.setX(arr[0].toDouble());
+                pointValue.setY(arr[1].toDouble());
+                emit sensorItem->updateSensor(QVariant(pointValue));
+            }
+            else
+            {
+                emit sensorItem->updateSensor(value.toVariant());
+            }
+            break;
+        }
+    }
+}
+
 void AbstractDashboard::updateSensors(const QVector<QJsonValue>& values)
 {
     Q_ASSERT(values.size() == m_advSensorItems.size());
 
-    for (int i = 0; i < m_advSensorItems.size(); ++i)
+    for (const QJsonValue& value : values)
     {
-        QJsonValue val = values[i];
-
-        if(val.isArray())
+        if (value.isObject())
         {
-            const QJsonArray& arr = val.toArray();
-            Q_ASSERT(arr.size() == 2);
+            const QJsonObject& data = value.toObject();
+            const int id = data["id"].toInt();
+            const QJsonValue& value = data["value"];
 
-            QPointF value;
-            value.setX(arr[0].toDouble());
-            value.setY(arr[1].toDouble());
-            emit m_advSensorItems[i]->updateSensor(QVariant(value));
-        }
-        else
-        {
-            emit m_advSensorItems[i]->updateSensor(values[i].toVariant());
+            updateSensorWithID(id, value);
         }
     }
     emit sensorsUpdated();

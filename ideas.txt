@@ -1,8 +1,21 @@
 Validate data
 	- min/max values
 		-if invalid decide..
-Update
-	- use sensor ID
+	- sensor types are valid
+	- dashboard types are valid
+Update sensors
+	- use sensor ID (?) ++
+	- updateSensorWithID(...) ++
+
 Color theming
 
-Font sizes (QFontMetrics..) in positionings
+Font sizes (QFontMetrics..) in positioning stuff
+
+Script
+	- which sensors
+	- sensor order
+	- stop it from Qt
+Dashboard setup
+	- Select dashboard type
+	- Select sensors (will have some default ones for each dashboard type)
+	- Layout sensors (move around, resize..)

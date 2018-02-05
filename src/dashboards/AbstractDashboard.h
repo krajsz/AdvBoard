@@ -42,6 +42,8 @@ public slots:
 protected:
     DashboardType m_type;
     QVector<AdvSensorItem*> m_advSensorItems;
+private:
+    void updateSensorWithID(const int id, const QJsonValue& value);
 
 };
 

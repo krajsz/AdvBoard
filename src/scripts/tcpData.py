@@ -23,35 +23,46 @@ def main():
             #load the settings in a json documet
             settingsJson = json.load(settingsFile)
 
-            interval = settingsJson[LDS]['interval']
-            type = int(settingsJson[LDS]['type'])
+            type = int(settingsJson[LDS]['source'])
 
             #write to file
             if type == 0:
                 fileName = settingsJson[LDS]['file']
+                if os.path.isfile(fileName) == True:
+                    interval = settingsJson[LDS]['interval']
 
+                    #write
+                    time.sleep(interval)
             #write to TCP socket
             elif type == 1:
-                #TODO some condition
-                while True:
-                    tcpPort = int(settingsJson[LDS]['tcp']['port'])
-                    host = str(settingsJson[LDS]['tcp']['host'])
-                    print (tcpPort)
-                    print (host)
+                 #TODO some condition
+                 read = True
+                 #while True:
+                 tcpPort = int(settingsJson[LDS]['tcp']['port'])
+                 host = str(settingsJson[LDS]['tcp']['host'])
+                 print (tcpPort)
+                 print (host)
 
-                    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                    server_address = (host, tcpPort)
-                    sock.bind(server_address)
-                    sock.listen(1)
+                 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                 server_address = (host, tcpPort)
+                 sock.bind(server_address)
+                 sock.listen(1)
 
-                    connection, client_addr = sock.accept()
+                 print ('Waiting for a client..')
+                 #connection, client_addr = sock.accept()
 
-                    #read sensors and send json data
+                 #print ('Client connected ', client_addr)
+                 #read sensors and send json data
 
+                 sensorData = {}
+                 data = [1,2,[3,4,5]]
+                 sensorData['data'] = data
 
-                    #sock.sendall(sensorData)
+                 print(json.dumps(sensorData, indent=1))
 
-                    connection.close()
+                 #sock.sendall(sensorData)
+
+                 #connection.close()
     else:
         print('Error: Settings file not existing')
 
