@@ -22,7 +22,7 @@ public:
     explicit SensorDataValidator(QObject *parent = nullptr);
 
     bool validateSensors(const QVector<QJsonObject>& sensors) const;
-    bool validateSensorData(const QVector<QJsonValue>& sensorData, AbstractDashboard * const dashboard) const;
+    bool validateLiveSensorData(const QJsonArray& sensorData, AbstractDashboard * const dashboard) const;
     bool validateDashboard(const int type) const;
 
 signals:

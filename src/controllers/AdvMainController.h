@@ -48,6 +48,7 @@ private:
 
 
 signals:
+    void dashboardValid(bool valid = true);
     void sensorDataInvalid(const QString& errorString);
 };
 

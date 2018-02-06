@@ -4,9 +4,15 @@
             "default": 0
 },
 {   "type": 2 ,
-            "min": -3,
-            "max": 3,
-            "default": 0
+            "min": {
+        "x": -3,
+        "y": -3
+    },
+    "max": {
+        "x": 3,
+        "y": 3
+    },
+    "default": 0
 },
 {   "type": 3,
             "min": 0,

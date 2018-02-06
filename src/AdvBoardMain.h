@@ -43,6 +43,7 @@ private slots:
 
     void sensorDataInvalid(const QString& errorstring);
 
+    void dashboardValidation(bool valid);
 private:
     Ui::AdvBoardMain *ui;
     AdvMainController* m_controller;

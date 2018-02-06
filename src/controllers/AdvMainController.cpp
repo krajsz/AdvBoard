@@ -15,6 +15,7 @@ AdvMainController::AdvMainController(QObject* parent) : QObject(parent),
     m_sensorDataReader(new SensorDataReader),
     m_viewController(new AdvViewController)
 {
+    connect(m_sensorDataReader, &SensorDataReader::dashboardValid, this, &AdvMainController::dashboardValid);
     connect(m_sensorDataReader, &SensorDataReader::initDashBoard, m_viewController, &AdvViewController::initDashboard);
     connect(m_sensorDataReader, &SensorDataReader::initSensors, m_viewController, &AdvViewController::initSensors);
     connect(m_sensorDataReader, &SensorDataReader::dataRead, m_viewController, &AdvViewController::dataRead);

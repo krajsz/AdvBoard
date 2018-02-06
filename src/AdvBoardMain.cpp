@@ -53,6 +53,7 @@ void AdvBoardMain::setController(AdvMainController *controller)
 
     m_view->setController(m_controller->viewController());
 
+    connect(m_controller, &AdvMainController::dashboardValid, this, &AdvBoardMain::dashboardValidation);
     connect(m_controller, &AdvMainController::sensorDataInvalid, this, &AdvBoardMain::sensorDataInvalid);
     connect(ui->startProcessingButton, &QPushButton::clicked, m_controller->viewController(), &AdvViewController::play);
     connect(ui->startProcessingButton, &QPushButton::clicked, m_controller->sensorDataReader(), &SensorDataReader::startReading);
@@ -148,4 +149,16 @@ void AdvBoardMain::sensorDataInvalid(const QString &errorstring)
 void AdvBoardMain::optionsActionTriggered()
 {
 
+}
+
+void AdvBoardMain::dashboardValidation(bool valid)
+{
+    if (valid)
+    {
+        ui->validLabel->setText("Dashboard Valid");
+    }
+    else
+    {
+        ui->validLabel->setText("Dashboard Invalid");
+    }
 }
