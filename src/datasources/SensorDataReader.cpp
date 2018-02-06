@@ -118,7 +118,6 @@ void SensorDataReader::read(bool init)
                 bothValid = false;
             }
 
-
             if (m_sensorDataValidator->validateSensors(sensors))
             {
                 emit initSensors(sensors, m_interval);
@@ -131,6 +130,10 @@ void SensorDataReader::read(bool init)
             if (bothValid)
             {
                 emit dashboardValid();
+            }
+            else
+            {
+                emit dashboardValid(false);
             }
         }
     }

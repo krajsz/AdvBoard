@@ -18,6 +18,7 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QDebug>
 
 SensorDataValidator::SensorDataValidator(QObject *parent) : QObject(parent)
 {
@@ -44,9 +45,15 @@ bool SensorDataValidator::validateDashboard(const int type) const
 
 bool SensorDataValidator::validateLiveSensorData(const QJsonArray &sensorData, AbstractDashboard* const dashboard) const
 {
+    if (sensorData.size() != dashboard->sensorItems().size())
+    {
+        emit validationError("Sensor data invalid");
+        return false;
+    }
     QVector<int> ids;
     ids.reserve(sensorData.size());
     int dataidx = 0;
+
     for (const QJsonValue& data : sensorData)
     {
         if (data.isObject())
@@ -173,9 +180,8 @@ bool SensorDataValidator::validateSensors(const QVector<QJsonObject> &sensors) c
         case AbstractSensor::SensorType::TemperatureSensor:
             break;
         default:
-            emit validationError("Sensor invalid, idx: " + QString::number(sensorIdx));
+            emit validationError("Sensor type invalid, idx: " + QString::number(sensorIdx));
             return false;
-            break;
         }
         const int id = sensor["id"].toInt();
 
@@ -184,6 +190,8 @@ bool SensorDataValidator::validateSensors(const QVector<QJsonObject> &sensors) c
             emit validationError("Sensor ID multiple times, idx: " + QString::number(sensorIdx));
             return false;
         }
+
+        sensorIds.push_back(id);
 
         QJsonValue minValue;
         QJsonValue maxValue;
@@ -265,6 +273,8 @@ bool SensorDataValidator::validateSensors(const QVector<QJsonObject> &sensors) c
 
                 const int speedLimitMin = minValue.toInt();
                 const int speedLimitMax = maxValue.toInt();
+
+                qDebug() << speedMin << " " << speedMax << " " << speedLimitMin << " " << speedLimitMax;
 
                 if (speedMin > speedMax)
                 {

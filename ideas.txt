@@ -3,8 +3,8 @@ Validate data
 		- singleton ?
 		- min/max values
 			-if invalid decide..skip ?
-		- sensor types are valid
-		- dashboard types are valid
+		- sensor types are valid +++++
+		- dashboard types are valid ++++
 Update sensors
 	- use sensor ID (?) ++
 	- updateSensorWithID(...) ++
