@@ -1,5 +1,9 @@
 {
     "liveDataSettings": {
+        "sensors":[{"id": 1, "type": 1},
+            {"id": 2, "type": 3},
+            {"id": 4, "type": 5},
+            {"id": 3, "type": 2}],
         "interval": 1000,
         "source": 1,
         "tcp": {

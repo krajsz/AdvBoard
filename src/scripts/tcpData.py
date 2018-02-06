@@ -24,7 +24,13 @@ def main():
             settingsJson = json.load(settingsFile)
 
             type = int(settingsJson[LDS]['source'])
+            sensors = settingsJson[LDS]['sensors']
 
+            print (sensors)
+
+            for sensor in sensors:
+                print (sensor)
+            # "sensors":[{"id": 1, "type": 1},
             #write to file
             if type == 0:
                 fileName = settingsJson[LDS]['file']
@@ -37,7 +43,7 @@ def main():
             elif type == 1:
                  #TODO some condition
                  read = True
-                 #while True:
+                 #while read:
                  tcpPort = int(settingsJson[LDS]['tcp']['port'])
                  host = str(settingsJson[LDS]['tcp']['host'])
                  print (tcpPort)

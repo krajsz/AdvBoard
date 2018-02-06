@@ -2,6 +2,7 @@
     <qresource prefix="/json" lang="En">
         <file>data/test.json</file>
         <file>data/testnew.json</file>
+        <file>data/sensorValueBoundaries.json</file>
     </qresource>
     <qresource prefix="/pictures" lang="En">
         <file>data/coldTempSign.png</file>

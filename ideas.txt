@@ -1,13 +1,17 @@
 Validate data
-	- min/max values
-		-if invalid decide..
-	- sensor types are valid
-	- dashboard types are valid
+	- data parser
+		- min/max values
+			-if invalid decide..
+		- sensor types are valid
+		- dashboard types are valid
 Update sensors
 	- use sensor ID (?) ++
 	- updateSensorWithID(...) ++
 
 Color theming
+
+Maybe video offset
+	- post processing: maybe there's an offset in our data and video start
 
 Font sizes (QFontMetrics..) in positioning stuff
 
@@ -19,3 +23,39 @@ Dashboard setup
 	- Select dashboard type
 	- Select sensors (will have some default ones for each dashboard type)
 	- Layout sensors (move around, resize..)
+
+Steps:
+	1. Live or post processing
+	2. a) Setup live processing
+		- update interval
+		- source type
+			1. file: 
+				- file path
+			2. tcp:
+				- host
+				- port
+		- preview? stream?
+	2. b) Setup post processing
+		- load sensor data file
+			- validate data
+		- load video data file
+		- save format setup
+			- video format, resize..
+		- preview?
+	3. a) In case of live processing:
+		- Select dashboard type
+			- will have some predefined sensors
+			- add sensors, remove sensors, resize,etc
+	3. b) In case of post processing:
+		- Adding sensors is not possible, removing ok
+		- Different dashboard type can be selected if no new sensors are needed (maybe inform the user that some sensors should be removed)
+		- Move around, resize sensors
+	4. a) Preview enabled
+			- preview in full/normal screen
+			- render percentage
+	   b) Preview disabled 
+			- render percentage
+	   Cancel rendering
+		- Confirmation (pause, continue)
+		
+				
