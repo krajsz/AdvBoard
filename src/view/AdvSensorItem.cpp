@@ -40,7 +40,7 @@ AdvSensorItem::AdvSensorItem(AbstractSensor::SensorType type, const int id, QGra
     connect(this, &AdvSensorItem::updateSensor, m_sensor, &AbstractSensor::update);
 }
 
-AbstractSensor* AdvSensorItem::sensor()
+AbstractSensor* AdvSensorItem::sensor() const
 {
     return m_sensor;
 }

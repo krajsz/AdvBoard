@@ -1,32 +1,31 @@
-{
-    "temperature": {
-        "min": -50,
-        "max": 50,
-        "default": 0
+[ { "type": 1,
+            "min": -50,
+            "max": 50,
+            "default": 0
+},
+{   "type": 2 ,
+            "min": -3,
+            "max": 3,
+            "default": 0
+},
+{   "type": 3,
+            "min": 0,
+            "max": 100,
+            "default": 0
+},
+{"type": 4,
+ "min": {
+        "lat": -90,
+        "lon": -180
     },
-    "humidity": {
-        "min": 0,
-        "max": 100,
-        "default": 0
-    },
-    "speed": {
-        "min": 0,
-        "max": 350,
-        "default": 0
-    },
-    "acceleration": {
-        "min": -3,
-        "max": 3,
-        "default": 0
-    },
-    "gps": {
-        "min": {
-            "lat": -90,
-            "lon": -180
-        },
-        "max": {
-            "lat": 90,
-            "lon": 180
-        }
+    "max": {
+        "lat": 90,
+        "lon": 180
     }
-}
+},
+{   "type": 5,
+            "min": 0,
+            "max": 350,
+            "default": 0
+}]
+

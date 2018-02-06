@@ -24,6 +24,18 @@ AbstractDashboard::DashboardType AbstractDashboard::dashboardType() const
     return m_type;
 }
 
+AbstractSensor* AbstractDashboard::sensorWithId(const int id) const
+{
+    for (const AdvSensorItem* item : m_advSensorItems)
+    {
+        if (item->sensor()->id() == id)
+        {
+            return item->sensor();
+        }
+    }
+    return nullptr;
+}
+
 QVector<AdvSensorItem*> AbstractDashboard::sensorItems() const
 {
     return m_advSensorItems;

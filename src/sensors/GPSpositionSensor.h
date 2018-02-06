@@ -17,6 +17,10 @@ class GPSpositionSensor : public AbstractSensor
     Q_OBJECT
 public:
     explicit GPSpositionSensor(const int id, const QPointF& pos = QPointF(), QObject* parent = nullptr);
+    double minLatitude() const;
+    double maxLatitude() const;
+    double minLongitude() const;
+    double maxLongitude() const;
 private:
 
 };

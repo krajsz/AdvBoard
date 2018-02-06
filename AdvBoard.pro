@@ -55,7 +55,8 @@ SOURCES += \
     src/sensors/AccelerationSensor.cpp \
     src/sensors/GPSpositionSensor.cpp \
     src/dashboards/HikerDashboard.cpp \
-    src/dashboards/BikerDashboard.cpp
+    src/dashboards/BikerDashboard.cpp \
+    src/datasources/SensorDataValidator.cpp
 
 HEADERS += \
         src\AdvBoardMain.h \
@@ -87,7 +88,8 @@ HEADERS += \
     src/sensors/AccelerationSensor.h \
     src/sensors/GPSpositionSensor.h \
     src/dashboards/HikerDashboard.h \
-    src/dashboards/BikerDashboard.h
+    src/dashboards/BikerDashboard.h \
+    src/datasources/SensorDataValidator.h
 
 FORMS += \
         src/ui\advboardmain.ui \

@@ -11,3 +11,23 @@ GPSpositionSensor::GPSpositionSensor(const int id, const QPointF &pos, QObject *
     AbstractSensor(id, QPointF(0,0), QPointF{90, 90}, pos, AbstractSensor::GPSpositionSensor, parent)
 {
 }
+
+double GPSpositionSensor::minLatitude() const
+{
+    return minValue().toPointF().x();
+}
+
+double GPSpositionSensor::maxLatitude() const
+{
+    return maxValue().toPointF().x();
+}
+
+double GPSpositionSensor::minLongitude() const
+{
+    return minValue().toPointF().y();
+}
+
+double GPSpositionSensor::maxLongitude() const
+{
+    return maxValue().toPointF().y();
+}

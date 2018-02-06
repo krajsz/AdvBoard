@@ -11,7 +11,7 @@ public:
     explicit AdvSensorItem(AbstractSensor::SensorType type, const int id, QGraphicsItem *parent = nullptr,
                            const QVariant& maxValue = QVariant(), const QVariant& minValue = QVariant()
                            );
-    AbstractSensor* sensor();
+    AbstractSensor* sensor() const;
     virtual QRectF boundingRect() const final override;
 
 signals:

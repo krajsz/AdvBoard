@@ -27,6 +27,7 @@ public:
     };
 
     QVector<AdvSensorItem*> sensorItems() const;
+    AbstractSensor* sensorWithId(const int id) const;
     explicit AbstractDashboard(const DashboardType dashboardType = DashboardType::Abstract, QGraphicsObject* parent = nullptr);
     DashboardType dashboardType() const;
     int numberOfSensors() const;
