@@ -14,7 +14,7 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 #include <QJsonArray>
 
 #include "src/dashboards/AbstractDashboard.h"
-#include "src/datasources/SensorDataValidator.h"
+#include "src/datasources/validators/SensorDataSourceValidator.h"
 
 class QTimer;
 class QFileSystemWatcher;
@@ -41,7 +41,7 @@ protected:
     QTimer* m_readTimer;
     QVector<QJsonArray> m_data;
 
-    SensorDataValidator* m_sensorDataValidator;
+    SensorDataSourceValidator* m_sensorDataSourceValidator;
 
     int m_sensorCount;
     int m_interval;

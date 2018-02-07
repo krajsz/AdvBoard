@@ -1,23 +1,26 @@
 /***************************************************************************
-File		: SensorValidator.h
+File		: SensorTypeValidator.h
 Project		: AdvBoard
-Description	: Base class for validating a sensor
+Description	: Class for validating a sensor type
 --------------------------------------------------------------------
 Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 ***************************************************************************/
-#ifndef SENSORVALIDATOR_H
-#define SENSORVALIDATOR_H
-#include <QString>
+#ifndef SENSORTYPEVALIDATOR_H
+#define SENSORTYPEVALIDATOR_H
 
-class QJsonObject;
-class SensorValidator
+#include "src/sensors/AbstractSensor.h"
+
+class QString;
+class SensorTypeValidator
 {
 public:
-    SensorValidator() = default;
+    SensorTypeValidator() = default;
+    bool validate(const int type);
     QString errorString() const;
-    virtual bool validate(const QJsonObject& sensor, const QJsonObject &boundaries) = 0;
-protected:
+private:
     QString m_errorString;
+
+public slots:
 };
 
-#endif // SENSORVALIDATOR_H
+#endif // SENSORTYPEVALIDATOR_H

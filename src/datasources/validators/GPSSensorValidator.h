@@ -7,18 +7,13 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 ***************************************************************************/
 #ifndef GPSSENSORVALIDATOR_H
 #define GPSSENSORVALIDATOR_H
+#include "src/datasources/validators/SensorValidator.h"
 
-#include <QObject>
-
-class GPSSensorValidator : public QObject
+class GPSSensorValidator : public SensorValidator
 {
-    Q_OBJECT
 public:
-    explicit GPSSensorValidator(QObject *parent = nullptr);
-
-signals:
-
-public slots:
+    GPSSensorValidator() = default;
+    bool validate(const QJsonObject& sensor, const QJsonObject &boundaries);
 };
 
 #endif // GPSSENSORVALIDATOR_H

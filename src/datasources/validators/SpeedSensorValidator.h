@@ -8,11 +8,15 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 #ifndef SPEEDSENSORVALIDATOR_H
 #define SPEEDSENSORVALIDATOR_H
 
+#include "src/datasources/validators/SensorValidator.h"
 
-class SpeedSensorValidator
+#include <QObject>
+
+class SpeedSensorValidator : public SensorValidator
 {
 public:
-    SpeedSensorValidator();
+    SpeedSensorValidator() = default;
+    bool validate(const QJsonObject& sensor, const QJsonObject &boundaries);
 };
 
 #endif // SPEEDSENSORVALIDATOR_H

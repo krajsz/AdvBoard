@@ -25,7 +25,11 @@
     </widget>
    </item>
    <item row="0" column="0">
-    <widget class="QTextBrowser" name="validationErrorTextBrowser"/>
+    <widget class="QTextEdit" name="validationErrorsTextEdit">
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

@@ -5,9 +5,9 @@ Description	: Base class for validating a sensor
 --------------------------------------------------------------------
 Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 ***************************************************************************/
-#include "SensorValidator.h"
+#include "src/datasources/validators/SensorValidator.h"
 
-SensorValidator::SensorValidator(QObject *parent) : QObject(parent)
+QString SensorValidator::errorString() const
 {
-
+    return m_errorString;
 }

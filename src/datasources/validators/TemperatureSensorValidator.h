@@ -7,18 +7,14 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 ***************************************************************************/
 #ifndef TEMPERATURESENSORVALIDATOR_H
 #define TEMPERATURESENSORVALIDATOR_H
+#include "src/datasources/validators/SensorValidator.h"
 
-#include <QObject>
-
-class TemperatureSensorValidator : public QObject
+class TemperatureSensorValidator : public SensorValidator
 {
-    Q_OBJECT
+
 public:
-    explicit TemperatureSensorValidator(QObject *parent = nullptr);
-
-signals:
-
-public slots:
+    TemperatureSensorValidator() = default;
+    bool validate(const QJsonObject& sensor, const QJsonObject &boundaries);
 };
 
 #endif // TEMPERATURESENSORVALIDATOR_H

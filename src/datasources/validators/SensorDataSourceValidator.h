@@ -1,14 +1,19 @@
 /***************************************************************************
 File		: SensorDataSourceValidator.h
 Project		: AdvBoard
-Description	: Class for validating a sensor data source
+Description	: Class for sensor data validating
 --------------------------------------------------------------------
 Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 ***************************************************************************/
-#ifndef VALIDATORSSENSORDATASOURCEVALIDATOR_H
-#define VALIDATORSSENSORDATASOURCEVALIDATOR_H
+#ifndef SENSORDATASOURCEVALIDATOR_H
+#define SENSORDATASOURCEVALIDATOR_H
 
 #include <QObject>
+#include <QVector>
+#include <QJsonObject>
+#include <QJsonArray>
+
+class AbstractDashboard;
 
 class SensorDataSourceValidator : public QObject
 {
@@ -16,9 +21,16 @@ class SensorDataSourceValidator : public QObject
 public:
     explicit SensorDataSourceValidator(QObject *parent = nullptr);
 
+    bool validateSensors(const QVector<QJsonObject>& sensors) const;
+    bool validateLiveSensorData(const QJsonArray& sensorData, AbstractDashboard * const dashboard) const;
+    bool validateDashboard(const int type) const;
+
 signals:
+    void validationError(const QString& error) const;
 
 public slots:
+private:
+    QJsonArray m_sensorDataBoundaries;
 };
 
-#endif // VALIDATORSSENSORDATASOURCEVALIDATOR_H
+#endif // SENSORDATASOURCEVALIDATOR_H

@@ -23,9 +23,9 @@ SensorDataReader::SensorDataReader(QObject* parent) : QObject(parent),
     m_interval(100),
     m_dataSnapshotCount(0),
     m_dataIndex(0),
-    m_sensorDataValidator(new SensorDataValidator(this))
+    m_sensorDataSourceValidator(new SensorDataSourceValidator(this))
 {
-    connect(m_sensorDataValidator, &SensorDataValidator::validationError, this, &SensorDataReader::dataInvalid);
+    connect(m_sensorDataSourceValidator, &SensorDataSourceValidator::validationError, this, &SensorDataReader::dataInvalid);
 }
 
 int SensorDataReader::dataSnapshotCount() const
@@ -109,7 +109,7 @@ void SensorDataReader::read(bool init)
             connect(m_readTimer, &QTimer::timeout, this, &SensorDataReader::readSnapshotSlot);
 
             bool bothValid = true;
-            if (m_sensorDataValidator->validateDashboard(dashboardType))
+            if (m_sensorDataSourceValidator->validateDashboard(dashboardType))
             {
                 emit initDashBoard(dashboardType);
             }
@@ -118,7 +118,7 @@ void SensorDataReader::read(bool init)
                 bothValid = false;
             }
 
-            if (m_sensorDataValidator->validateSensors(sensors))
+            if (m_sensorDataSourceValidator->validateSensors(sensors))
             {
                 emit initSensors(sensors, m_interval);
             }

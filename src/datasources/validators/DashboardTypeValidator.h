@@ -1,23 +1,25 @@
 /***************************************************************************
-File		: SensorValidator.h
+File		: DashboardValidator.h
 Project		: AdvBoard
-Description	: Base class for validating a sensor
+Description	: Class for validating a dashboard
 --------------------------------------------------------------------
 Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 ***************************************************************************/
-#ifndef SENSORVALIDATOR_H
-#define SENSORVALIDATOR_H
+#ifndef DASHBOARDVALIDATOR_H
+#define DASHBOARDVALIDATOR_H
+
 #include <QString>
 
-class QJsonObject;
-class SensorValidator
+class DashboardValidator
 {
 public:
-    SensorValidator() = default;
+    DashboardValidator() = default;
+
+    bool validate(const int type) noexcept;
     QString errorString() const;
-    virtual bool validate(const QJsonObject& sensor, const QJsonObject &boundaries) = 0;
-protected:
+private:
     QString m_errorString;
+
 };
 
-#endif // SENSORVALIDATOR_H
+#endif // DASHBOARDVALIDATOR_H

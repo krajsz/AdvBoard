@@ -56,7 +56,6 @@ SOURCES += \
     src/sensors/GPSpositionSensor.cpp \
     src/dashboards/HikerDashboard.cpp \
     src/dashboards/BikerDashboard.cpp \
-    src/datasources/SensorDataValidator.cpp \
     src/widgets/SelectProcessingModeWidget.cpp \
     src/widgets/LiveProcessingSetupWidget.cpp \
     src/widgets/PostProcessingSetupWidget.cpp \
@@ -69,7 +68,9 @@ SOURCES += \
     src/datasources/validators/SpeedSensorValidator.cpp \
     src/datasources/validators/AccelerationSensorValidator.cpp \
     src/datasources/validators/HumiditySensorValidator.cpp \
-    src/datasources/validators/TemperatureSensorValidator.cpp
+    src/datasources/validators/TemperatureSensorValidator.cpp \
+    src/datasources/validators/DashboardTypeValidator.cpp \
+    src/datasources/validators/SensorTypeValidator.cpp
 
 HEADERS += \
         src\AdvBoardMain.h \
@@ -102,7 +103,6 @@ HEADERS += \
     src/sensors/GPSpositionSensor.h \
     src/dashboards/HikerDashboard.h \
     src/dashboards/BikerDashboard.h \
-    src/datasources/SensorDataValidator.h \
     src/widgets/SelectProcessingModeWidget.h \
     src/widgets/LiveProcessingSetupWidget.h \
     src/widgets/PostProcessingSetupWidget.h \
@@ -115,7 +115,9 @@ HEADERS += \
     src/datasources/validators/SpeedSensorValidator.h \
     src/datasources/validators/AccelerationSensorValidator.h \
     src/datasources/validators/HumiditySensorValidator.h \
-    src/datasources/validators/TemperatureSensorValidator.h
+    src/datasources/validators/TemperatureSensorValidator.h \
+    src/datasources/validators/DashboardTypeValidator.h \
+    src/datasources/validators/SensorTypeValidator.h
 
 FORMS += \
         src/ui\advboardmain.ui \

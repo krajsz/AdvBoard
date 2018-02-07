@@ -7,18 +7,16 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 ***************************************************************************/
 #ifndef HUMIDITYSENSORVALIDATOR_H
 #define HUMIDITYSENSORVALIDATOR_H
+#include "src/datasources/validators/SensorValidator.h"
 
 #include <QObject>
 
-class HumiditySensorValidator : public QObject
+class HumiditySensorValidator : public SensorValidator
 {
-    Q_OBJECT
+
 public:
-    explicit HumiditySensorValidator(QObject *parent = nullptr);
-
-signals:
-
-public slots:
+    HumiditySensorValidator() = default;
+    bool validate(const QJsonObject& sensor, const QJsonObject &boundaries);
 };
 
 #endif // HUMIDITYSENSORVALIDATOR_H
