@@ -23,7 +23,7 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 #include "src/datasources/validators/DashboardTypeValidator.h"
 #include "src/datasources/validators/SensorTypeValidator.h"
 
-
+#include <QFile>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
@@ -31,7 +31,19 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 
 SensorDataSourceValidator::SensorDataSourceValidator(QObject *parent) : QObject(parent)
 {
-    m_sensorDataBoundaries = QJsonDocument::fromJson(":/json/data/sensorValueBoundaries.json").array();
+    QJsonParseError err;
+    QFile boundariesFile(":/json/data/sensorValueBoundaries.json");
+    if (boundariesFile.open(QFile::ReadOnly))
+    {
+        const QByteArray arr = boundariesFile.readAll();
+        QJsonDocument doc = QJsonDocument::fromJson(arr, &err);
+
+        m_sensorDataBoundaries = doc.array();
+    }
+    else
+    {
+        emit validationError("Boundaries file cannot be opened!");
+    }
 }
 
 bool SensorDataSourceValidator::validateDashboard(const int type) const
@@ -186,9 +198,10 @@ bool SensorDataSourceValidator::validateSensors(const QVector<QJsonObject> &sens
         sensorIds.push_back(id);
 
         QJsonObject boundaryObj;
+
         for (const QJsonValue& sensorBoundaryValue : m_sensorDataBoundaries)
         {
-            const QJsonObject& obj = sensorBoundaryValue.toObject();
+            const QJsonObject obj = sensorBoundaryValue.toObject();
             const int objtype = obj["type"].toInt();
 
             if (objtype == type)
@@ -257,8 +270,13 @@ bool SensorDataSourceValidator::validateSensors(const QVector<QJsonObject> &sens
                 emit validationError("Sensor type invalid somehow, idx: " + QString::number(sensorIdx));
                 return false;
             }
+            ++sensorIdx;
         }
-        ++sensorIdx;
+        else
+        {
+            qDebug() << "bobjnull";
+        }
+
     }
     return true;
 }

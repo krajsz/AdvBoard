@@ -9,6 +9,7 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QJsonValue>
+#include <QDebug>
 
 bool AccelerationSensorValidator::validate(const QJsonObject &sensor, const QJsonObject &boundaries)
 {
@@ -51,6 +52,7 @@ bool AccelerationSensorValidator::validate(const QJsonObject &sensor, const QJso
                            QString::number(id);
         return false;
     }
+
 
     const double yMin = accvalMin["y"].toDouble();
     const double yMax = accvalMax["y"].toDouble();

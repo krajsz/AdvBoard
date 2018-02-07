@@ -140,16 +140,55 @@ void AbstractDashboard::initSensors(const QVector<QJsonObject> &sensorInfoData, 
 
         const QJsonValue& min = sensorData["min"];
         QVariant minVal;
+        const AbstractSensor::SensorType ttype = static_cast<AbstractSensor::SensorType>(type);
         if (!min.isUndefined())
         {
-            minVal = min.toVariant();
+            if (ttype == AbstractSensor::SensorType::GPSpositionSensor)
+            {
+                QPointF minpos;
+                minpos.setX(min["lat"].toDouble());
+                minpos.setY(min["lon"].toDouble());
+
+                minVal = minpos;
+            }
+            else if (AbstractSensor::SensorType::AccelerationSensor)
+            {
+                QPointF minAcc;
+                minAcc.setX(min["x"].toDouble());
+                minAcc.setY(min["y"].toDouble());
+
+                minVal = minAcc;
+            }
+            else
+            {
+                minVal = min.toVariant();
+            }
         }
 
         const QJsonValue& max = sensorData["max"];
         QVariant maxVal;
         if (!max.isUndefined())
         {
-            maxVal = max.toVariant();
+            if (ttype == AbstractSensor::SensorType::GPSpositionSensor)
+            {
+                QPointF maxpos;
+                maxpos.setX(max["lat"].toDouble());
+                maxpos.setY(max["lon"].toDouble());
+
+                maxVal = maxpos;
+            }
+            else if (AbstractSensor::SensorType::AccelerationSensor)
+            {
+                QPointF maxAcc;
+                maxAcc.setX(max["x"].toDouble());
+                maxAcc.setY(max["y"].toDouble());
+
+                maxVal = maxAcc;
+            }
+            else
+            {
+                maxVal = max.toVariant();
+            }
         }
 
         AdvSensorItem* sensor;
