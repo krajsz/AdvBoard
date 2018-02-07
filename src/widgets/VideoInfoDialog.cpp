@@ -1,4 +1,4 @@
-#include "src/dialogs/VideoInfoDialog.h"
+#include "src/widgets/VideoInfoDialog.h"
 #include "ui_videoinfodialog.h"
 
 VideoInfoDialog::VideoInfoDialog(QWidget *parent) :

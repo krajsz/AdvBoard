@@ -3,12 +3,12 @@
 
 #include <QMainWindow>
 #include "src/controllers/AdvMainController.h"
-#include "src/dialogs/SensorDataInfoDialog.h"
-#include "src/dialogs/VideoInfoDialog.h"
-#include "src/dialogs/SensorDataValidatingDialog.h"
-#include "src/dialogs/SettingDialog.h"
+#include "src/widgets//SensorDataInfoDialog.h"
+#include "src/widgets/VideoInfoDialog.h"
+#include "src/widgets/SensorDataValidatingDialog.h"
+#include "src/widgets/SettingDialog.h"
 #include "src/view/AdvVideoView.h"
-#include "src/dialogs/VideoLoadingDialog.h"
+#include "src/widgets/VideoLoadingDialog.h"
 
 namespace Ui {
 class AdvBoardMain;

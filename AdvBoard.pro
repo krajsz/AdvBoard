@@ -38,10 +38,10 @@ SOURCES += \
     src/datasources/LiveVideoSource.cpp \
     src/datasources/SensorDataReader.cpp \
     src/datasources/LiveSensorDataReader.cpp \
-    src/dialogs/SensorDataValidatingDialog.cpp \
-    src/dialogs/VideoInfoDialog.cpp \
-    src/dialogs/SensorDataInfoDialog.cpp \
-    src/dialogs/SettingDialog.cpp \
+    src/widgets/SensorDataValidatingDialog.cpp \
+    src/widgets/VideoInfoDialog.cpp \
+    src/widgets/SensorDataInfoDialog.cpp \
+    src/widgets/SettingDialog.cpp \
     src/sensors/AbstractSensor.cpp \
     src/sensors/TemperatureSensor.cpp \
     src/view/AdvVideoView.cpp \
@@ -49,14 +49,20 @@ SOURCES += \
     src/view/AdvVideoScene.cpp \
     src/VideoRecorder.cpp \
     src/controllers/SettingDialogController.cpp \
-    src/dialogs/VideoLoadingDialog.cpp \
+    src/widgets/VideoLoadingDialog.cpp \
     src/sensors/HumiditySensor.cpp \
     src/sensors/SpeedSensor.cpp \
     src/sensors/AccelerationSensor.cpp \
     src/sensors/GPSpositionSensor.cpp \
     src/dashboards/HikerDashboard.cpp \
     src/dashboards/BikerDashboard.cpp \
-    src/datasources/SensorDataValidator.cpp
+    src/datasources/SensorDataValidator.cpp \
+    src/widgets/SelectProcessingModeWidget.cpp \
+    src/widgets/LiveProcessingSetupWidget.cpp \
+    src/widgets/PostProcessingSetupWidget.cpp \
+    src/widgets/DashboardSetupWidget.cpp \
+    src/widgets/PreviewWidget.cpp \
+    src/widgets/ValidationErrorsDialog.cpp
 
 HEADERS += \
         src\AdvBoardMain.h \
@@ -71,10 +77,10 @@ HEADERS += \
     src/datasources/LiveVideoSource.h \
     src/datasources/SensorDataReader.h \
     src/datasources/LiveSensorDataReader.h \
-    src/dialogs/VideoInfoDialog.h \
-    src/dialogs/SensorDataInfoDialog.h \
-    src/dialogs/SensorDataValidatingDialog.h \
-    src/dialogs/SettingDialog.h \
+    src/widgets/VideoInfoDialog.h \
+    src/widgets/SensorDataInfoDialog.h \
+    src/widgets/SensorDataValidatingDialog.h \
+    src/widgets/SettingDialog.h \
     src/sensors/TemperatureSensor.h \
     src/sensors/AbstractSensor.h \
     src/view/AdvVideoView.h \
@@ -82,14 +88,20 @@ HEADERS += \
     src/view/AdvVideoScene.h \
     src/VideoRecorder.h \
     src/controllers/SettingDialogController.h \
-    src/dialogs/VideoLoadingDialog.h \
+    src/widgets/VideoLoadingDialog.h \
     src/sensors/HumiditySensor.h \
     src/sensors/SpeedSensor.h \
     src/sensors/AccelerationSensor.h \
     src/sensors/GPSpositionSensor.h \
     src/dashboards/HikerDashboard.h \
     src/dashboards/BikerDashboard.h \
-    src/datasources/SensorDataValidator.h
+    src/datasources/SensorDataValidator.h \
+    src/widgets/SelectProcessingModeWidget.h \
+    src/widgets/LiveProcessingSetupWidget.h \
+    src/widgets/PostProcessingSetupWidget.h \
+    src/widgets/DashboardSetupWidget.h \
+    src/widgets/PreviewWidget.h \
+    src/widgets/ValidationErrorsDialog.h
 
 FORMS += \
         src/ui\advboardmain.ui \
@@ -97,7 +109,13 @@ FORMS += \
     src/ui/videoinfodialog.ui \
     src/ui/sensordatainfodialog.ui \
     src/ui/settingdialog.ui \
-    src/ui/videoloadingdialog.ui
+    src/ui/videoloadingdialog.ui \
+    src/ui/selectprocessingmodewidget.ui \
+    src/ui/liveprocessingsetupwidget.ui \
+    src/ui/postprocessingsetupwidget.ui \
+    src/ui/dashboardsetupwidget.ui \
+    src/ui/previewwidget.ui \
+    src/ui/validationerrorsdialog.ui
 
 RESOURCES +=\
     src/resources.qrc

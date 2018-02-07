@@ -1,4 +1,4 @@
-#include "src/dialogs/VideoLoadingDialog.h"
+#include "src/widgets/VideoLoadingDialog.h"
 #include "ui_videoloadingdialog.h"
 
 #include <QDebug>
