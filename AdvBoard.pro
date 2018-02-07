@@ -62,7 +62,14 @@ SOURCES += \
     src/widgets/PostProcessingSetupWidget.cpp \
     src/widgets/DashboardSetupWidget.cpp \
     src/widgets/PreviewWidget.cpp \
-    src/widgets/ValidationErrorsDialog.cpp
+    src/widgets/ValidationErrorsDialog.cpp \
+    src/datasources/validators/SensorDataSourceValidator.cpp \
+    src/datasources/validators/SensorValidator.cpp \
+    src/datasources/validators/GPSSensorValidator.cpp \
+    src/datasources/validators/SpeedSensorValidator.cpp \
+    src/datasources/validators/AccelerationSensorValidator.cpp \
+    src/datasources/validators/HumiditySensorValidator.cpp \
+    src/datasources/validators/TemperatureSensorValidator.cpp
 
 HEADERS += \
         src\AdvBoardMain.h \
@@ -101,7 +108,14 @@ HEADERS += \
     src/widgets/PostProcessingSetupWidget.h \
     src/widgets/DashboardSetupWidget.h \
     src/widgets/PreviewWidget.h \
-    src/widgets/ValidationErrorsDialog.h
+    src/widgets/ValidationErrorsDialog.h \
+    src/datasources/validators/SensorDataSourceValidator.h \
+    src/datasources/validators/SensorValidator.h \
+    src/datasources/validators/GPSSensorValidator.h \
+    src/datasources/validators/SpeedSensorValidator.h \
+    src/datasources/validators/AccelerationSensorValidator.h \
+    src/datasources/validators/HumiditySensorValidator.h \
+    src/datasources/validators/TemperatureSensorValidator.h
 
 FORMS += \
         src/ui\advboardmain.ui \
