@@ -17,11 +17,20 @@ AdvBoardMain::AdvBoardMain(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::AdvBoardMain),
     m_sensorDataInfoDialog(nullptr),
-    m_videoInfoDialog(nullptr)
+    m_videoInfoDialog(nullptr),
+    m_selectProcessingModeWidget(new SelectProcessingModeWidget),
+    m_dashboardSetupWidget(nullptr),
+    m_liveProcessingWidget(nullptr),
+    m_postProcessingWidget(nullptr),
+    m_previewWidget(nullptr)
 {
     ui->setupUi(this);
+    m_stackedWidget = ui->advBoardWidgets;
 
-    connect(ui->openSensorDataAction, &QAction::triggered, this, &AdvBoardMain::openSensorData);
+    m_stackedWidget->addWidget(m_selectProcessingModeWidget);
+    m_stackedWidget->setCurrentWidget(m_selectProcessingModeWidget);
+
+  /*  connect(ui->openSensorDataAction, &QAction::triggered, this, &AdvBoardMain::openSensorData);
     connect(ui->exitAppAction, &QAction::triggered, this, &AdvBoardMain::closeApp);
     connect(ui->aboutAction, &QAction::triggered, this, &AdvBoardMain::about);
     connect(ui->loadSensorDataButton, &QPushButton::clicked, this, &AdvBoardMain::openSensorData);
@@ -32,9 +41,14 @@ AdvBoardMain::AdvBoardMain(QWidget *parent) :
     connect(ui->showDataInfoDialog, &QPushButton::clicked, this, &AdvBoardMain::sensorDataInfoDialogButtonClicked);
     connect(ui->showVideoInfoDialog, &QPushButton::clicked, this, &AdvBoardMain::videoInfoDialogButtonClicked);
     connect(ui->optionsAction, &QAction::triggered, this, &AdvBoardMain::optionsActionTriggered);
+*/
+    ui->backButton->setEnabled(false);
 
-    ui->startProcessingButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
-    ui->startProcessingButton->setEnabled(false);
+    ui->nextButton->setIcon(style()->standardIcon(QStyle::SP_ArrowRight));
+    ui->backButton->setIcon(style()->standardIcon(QStyle::SP_ArrowLeft));
+
+    connect(ui->nextButton, &QPushButton::clicked, this, &AdvBoardMain::nextWidget);
+    connect(ui->backButton, &QPushButton::clicked, this, &AdvBoardMain::previousWidget);
 }
 
 AdvBoardMain::~AdvBoardMain()
@@ -48,7 +62,7 @@ AdvBoardMain::~AdvBoardMain()
 void AdvBoardMain::setController(AdvMainController *controller)
 {
     m_controller = controller;
-    m_view = ui->videoView;
+    /*m_view = ui->videoView;
     m_view->show();
 
     m_view->setController(m_controller->viewController());
@@ -57,6 +71,7 @@ void AdvBoardMain::setController(AdvMainController *controller)
     connect(m_controller, &AdvMainController::sensorDataInvalid, this, &AdvBoardMain::sensorDataInvalid);
     connect(ui->startProcessingButton, &QPushButton::clicked, m_controller->viewController(), &AdvViewController::play);
     connect(ui->startProcessingButton, &QPushButton::clicked, m_controller->sensorDataReader(), &SensorDataReader::startReading);
+*/
 }
 
 void AdvBoardMain::openSensorData()
@@ -66,69 +81,88 @@ void AdvBoardMain::openSensorData()
     m_controller->openSensorData(":/json/data/testnew.json");
 }
 
-void AdvBoardMain::openVideoSource()
+void AdvBoardMain::nextWidget()
 {
-    const QUrl path = QFileDialog::getOpenFileName(0, tr("Open your video"), QDir::homePath());
-
-    VideoLoadingDialog* dialog = new VideoLoadingDialog;
-    connect(m_view->videoScene()->video(), &VideoSource::loadPercent, dialog, &VideoLoadingDialog::setPercent);
-    connect(m_view->videoScene()->video(), &VideoSource::videoLoaded, dialog, &VideoLoadingDialog::close);
-    connect(m_view->videoScene()->video(), &VideoSource::videoLoaded, this, [=](){
-        ui->startProcessingButton->setEnabled(true);
-    });
-
-    emit m_controller->viewController()->setVideo(path);
-    dialog->show();
-}
-
-void AdvBoardMain::sensorDataInfoDialogButtonClicked()
-{
-    if (m_sensorDataInfoDialog == nullptr)
+    if (m_stackedWidget->currentWidget() == m_selectProcessingModeWidget)
     {
-        m_sensorDataInfoDialog = new SensorDataInfoDialog();
+        SelectProcessingModeWidget::ProcessingMode processingMode = m_selectProcessingModeWidget->processingMode();
+        if (processingMode == SelectProcessingModeWidget::ProcessingMode::LiveProcessing)
+        {
+            if (m_liveProcessingWidget == nullptr)
+            {
+                m_liveProcessingWidget = new LiveProcessingSetupWidget;
+                m_stackedWidget->addWidget(m_liveProcessingWidget);
+            }
+            m_stackedWidget->setCurrentWidget(m_liveProcessingWidget);
+        }
+        else if (processingMode == SelectProcessingModeWidget::ProcessingMode::PostProcessing)
+        {
+            if (m_postProcessingWidget == nullptr)
+            {
+                m_postProcessingWidget = new PostProcessingSetupWidget;
+                m_stackedWidget->addWidget(m_postProcessingWidget);
+            }
+            m_stackedWidget->setCurrentWidget(m_postProcessingWidget);
+        }
+
+        ui->backButton->setEnabled(true);
     }
-
-    QVector<AbstractSensor*> sensors;
-    for (AdvSensorItem* sensorItem : m_view->videoScene()->dashboard()->sensorItems())
+    else if ((m_stackedWidget->currentWidget() == m_liveProcessingWidget) ||
+               (m_stackedWidget->currentWidget() == m_postProcessingWidget))
     {
-        AbstractSensor* sensor = sensorItem->sensor();
-        sensors.push_back(sensor);
+        if (m_dashboardSetupWidget == nullptr)
+        {
+            m_dashboardSetupWidget = new DashboardSetupWidget;
+            m_stackedWidget->addWidget(m_dashboardSetupWidget);
+        }
+        ui->nextButton->setText(tr("Start processing"));
+        ui->nextButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
+
+        m_stackedWidget->setCurrentWidget(m_dashboardSetupWidget);
     }
-    m_sensorDataInfoDialog->show();
-    m_sensorDataInfoDialog->setSensors(sensors);
-
-}
-
-void AdvBoardMain::videoInfoDialogButtonClicked()
-{
-    if (m_videoInfoDialog == nullptr)
+    else if (m_stackedWidget->currentWidget() == m_dashboardSetupWidget)
     {
-        m_videoInfoDialog = new VideoInfoDialog;
+        //preview enabled?
+        if (m_previewWidget == nullptr)
+        {
+            m_previewWidget = new PreviewWidget;
+            m_stackedWidget->addWidget(m_previewWidget);
+        }
+        ui->nextButton->setText(tr("Stop processing"));
+        ui->nextButton->setIcon(style()->standardIcon(QStyle::SP_MediaStop));
+
+        m_stackedWidget->setCurrentWidget(m_previewWidget);
     }
-    m_videoInfoDialog->show();
 }
 
-void AdvBoardMain::startProcessing()
+void AdvBoardMain::previousWidget()
 {
-
-}
-
-void AdvBoardMain::liveProcessingButtonClicked()
-{
-
-}
-
-void AdvBoardMain::liveProcessingChecked(bool checked)
-{
-    if (checked)
+    if ((m_stackedWidget->currentWidget() == m_liveProcessingWidget) ||
+            (m_stackedWidget->currentWidget() == m_postProcessingWidget))
     {
-        ui->liveProcessingSettingsPushButton->setEnabled(true);
-        ui->loadSourcesGroupBox->setEnabled(false);
+        ui->backButton->setEnabled(false);
+        m_stackedWidget->setCurrentWidget(m_selectProcessingModeWidget);
     }
-    else
+    else if (m_stackedWidget->currentWidget() == m_previewWidget)
     {
-        ui->liveProcessingSettingsPushButton->setEnabled(false);
-        ui->loadSourcesGroupBox->setEnabled(false);
+        // quit rendering?
+        m_stackedWidget->setCurrentWidget(m_dashboardSetupWidget);
+        ui->nextButton->setText(tr("Start processing"));
+        ui->nextButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
+    }
+    else if (m_stackedWidget->currentWidget() == m_dashboardSetupWidget)
+    {
+        // lose changes?
+        SelectProcessingModeWidget::ProcessingMode processingMode = m_selectProcessingModeWidget->processingMode();
+        if (processingMode == SelectProcessingModeWidget::ProcessingMode::LiveProcessing)
+        {
+            m_stackedWidget->setCurrentWidget(m_liveProcessingWidget);
+        }
+        else if (processingMode == SelectProcessingModeWidget::ProcessingMode::PostProcessing)
+        {
+            m_stackedWidget->setCurrentWidget(m_postProcessingWidget);
+        }
+        ui->nextButton->setText(tr("Next"));
     }
 }
 
@@ -149,16 +183,4 @@ void AdvBoardMain::sensorDataInvalid(const QString &errorstring)
 void AdvBoardMain::optionsActionTriggered()
 {
 
-}
-
-void AdvBoardMain::dashboardValidation(bool valid)
-{
-    if (valid)
-    {
-        ui->validLabel->setText("Dashboard Valid");
-    }
-    else
-    {
-        ui->validLabel->setText("Dashboard Invalid");
-    }
 }

@@ -1,3 +1,10 @@
+/***************************************************************************
+File		: DashboardSetupWidget.h
+Project		: AdvBoard
+Description	: Dashboard setup widget
+--------------------------------------------------------------------
+Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
+***************************************************************************/
 #ifndef DASHBOARDSETUPWIDGET_H
 #define DASHBOARDSETUPWIDGET_H
 

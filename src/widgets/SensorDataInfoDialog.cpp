@@ -1,3 +1,10 @@
+/***************************************************************************
+File		: SensorDataInfoDialog.cpp
+Project		: AdvBoard
+Description	: Dialog for accessing the loaded sensor data
+--------------------------------------------------------------------
+Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
+***************************************************************************/
 #include "SensorDataInfoDialog.h"
 #include "ui_SensorDataInfoDialog.h"
 #include "src/sensors/AccelerationSensor.h"

@@ -1,3 +1,10 @@
+/***************************************************************************
+File		: PreviewWidget.cpp
+Project		: AdvBoard
+Description	: Preview widget for the processing
+--------------------------------------------------------------------
+Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
+***************************************************************************/
 #ifndef PREVIEWWIDGET_H
 #define PREVIEWWIDGET_H
 

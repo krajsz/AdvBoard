@@ -14,148 +14,78 @@
    <string>AdvBoardMain</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QGridLayout" name="gridLayout_2">
-    <item row="5" column="1">
-     <widget class="QGroupBox" name="groupBox">
-      <property name="title">
-       <string>Live processing</string>
+   <layout class="QGridLayout" name="gridLayout" columnstretch="1,0,0,0,1">
+    <item row="0" column="0" colspan="5">
+     <widget class="QStackedWidget" name="advBoardWidgets">
+      <property name="currentIndex">
+       <number>1</number>
       </property>
-      <layout class="QGridLayout" name="gridLayout_3">
-       <item row="0" column="0">
-        <widget class="QCheckBox" name="liveProcessingCheckBox">
-         <property name="text">
-          <string>Live processing</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QPushButton" name="liveProcessingSettingsPushButton">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="text">
-          <string>Settings</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
+      <widget class="QWidget" name="page"/>
+      <widget class="QWidget" name="page_2"/>
      </widget>
     </item>
-    <item row="0" column="1">
-     <widget class="QGroupBox" name="loadSourcesGroupBox">
-      <property name="title">
-       <string>Load sources</string>
-      </property>
-      <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="0">
-        <widget class="QPushButton" name="loadSensorDataButton">
-         <property name="text">
-          <string>Sensor data</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QPushButton" name="loadVideoSourceButton">
-         <property name="text">
-          <string>Video</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item row="6" column="1">
-     <widget class="QPushButton" name="startProcessingButton">
-      <property name="text">
-       <string>Start processing</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="1">
-     <spacer name="verticalSpacer">
+    <item row="1" column="0">
+     <spacer name="horizontalSpacer_2">
       <property name="orientation">
-       <enum>Qt::Vertical</enum>
+       <enum>Qt::Horizontal</enum>
       </property>
       <property name="sizeHint" stdset="0">
        <size>
-        <width>20</width>
-        <height>40</height>
+        <width>460</width>
+        <height>20</height>
        </size>
       </property>
      </spacer>
     </item>
-    <item row="6" column="0">
-     <widget class="QProgressBar" name="renderProgressBar">
-      <property name="value">
-       <number>0</number>
+    <item row="1" column="1">
+     <widget class="QPushButton" name="nextButton">
+      <property name="font">
+       <font>
+        <pointsize>11</pointsize>
+       </font>
       </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
+      <property name="text">
+       <string>Next</string>
       </property>
+     </widget>
+    </item>
+    <item row="1" column="2">
+     <spacer name="horizontalSpacer">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
-      <property name="invertedAppearance">
-       <bool>false</bool>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
       </property>
-      <property name="textDirection">
-       <enum>QProgressBar::BottomToTop</enum>
-      </property>
-      <property name="format">
-       <string>Rendering...%p%</string>
-      </property>
-     </widget>
+     </spacer>
     </item>
-    <item row="2" column="1" rowspan="2">
-     <widget class="QGroupBox" name="infoGroupBox">
-      <property name="title">
-       <string>Info</string>
+    <item row="1" column="3">
+     <widget class="QPushButton" name="backButton">
+      <property name="font">
+       <font>
+        <pointsize>11</pointsize>
+       </font>
       </property>
-      <layout class="QGridLayout" name="gridLayout_4">
-       <item row="0" column="0">
-        <widget class="QPushButton" name="showDataInfoDialog">
-         <property name="text">
-          <string>Data</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QPushButton" name="showVideoInfoDialog">
-         <property name="text">
-          <string>Video</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item row="0" column="0" rowspan="6">
-     <widget class="AdvVideoView" name="videoView">
-      <property name="interactive">
-       <bool>false</bool>
-      </property>
-      <property name="sceneRect">
-       <rectf>
-        <x>0.000000000000000</x>
-        <y>0.000000000000000</y>
-        <width>0.000000000000000</width>
-        <height>0.000000000000000</height>
-       </rectf>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-      </property>
-      <property name="dragMode">
-       <enum>QGraphicsView::NoDrag</enum>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="1">
-     <widget class="QLabel" name="validLabel">
       <property name="text">
-       <string>valide</string>
+       <string>Back</string>
       </property>
      </widget>
+    </item>
+    <item row="1" column="4">
+     <spacer name="horizontalSpacer_3">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>460</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
     </item>
    </layout>
   </widget>
@@ -165,7 +95,7 @@
      <x>0</x>
      <y>0</y>
      <width>1179</width>
-     <height>20</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -232,13 +162,6 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <customwidgets>
-  <customwidget>
-   <class>AdvVideoView</class>
-   <extends>QGraphicsView</extends>
-   <header>src/view/AdvVideoView.h</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>

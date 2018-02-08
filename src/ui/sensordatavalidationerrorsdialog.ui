@@ -1,44 +1,44 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ValidationErrorsDialog</class>
- <widget class="QDialog" name="ValidationErrorsDialog">
+ <author/>
+ <comment/>
+ <exportmacro/>
+ <class>SensorDataValidationErrorsDialog</class>
+ <widget name="SensorDataValidationErrorsDialog" class="QDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>946</width>
-    <height>507</height>
+    <width>400</width>
+    <height>300</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="1" column="0">
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Close</set>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="0">
-    <widget class="QTextEdit" name="validationErrorsTextEdit">
-     <property name="readOnly">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-  </layout>
+  <widget name="buttonBox" class="QDialogButtonBox">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>240</y>
+     <width>341</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+   <property name="standardButtons">
+    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+   </property>
+  </widget>
  </widget>
+ <pixmapfunction/>
  <resources/>
  <connections>
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>ValidationErrorsDialog</receiver>
+   <receiver>SensorDataValidationErrorsDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -54,7 +54,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>ValidationErrorsDialog</receiver>
+   <receiver>SensorDataValidationErrorsDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

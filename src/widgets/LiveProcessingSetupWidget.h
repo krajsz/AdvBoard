@@ -1,3 +1,10 @@
+/***************************************************************************
+File		: LiveProcessingSetupWidget.h
+Project		: AdvBoard
+Description	: Live processing setup widget
+--------------------------------------------------------------------
+Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
+***************************************************************************/
 #ifndef LIVEPROCESSINGSETUPWIDGET_H
 #define LIVEPROCESSINGSETUPWIDGET_H
 

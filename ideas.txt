@@ -17,7 +17,7 @@ Maybe video offset
 Font sizes (QFontMetrics..) in positioning stuff
 
 Script
-	- which sensors
+	- which sensors (use ID)
 	- sensor order
 	- stop it from Qt
 Dashboard setup
