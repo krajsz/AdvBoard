@@ -12,6 +12,7 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 #include <QFileDialog>
 #include <QDir>
 #include <QString>
+#include <QKeyEvent>
 
 AdvBoardMain::AdvBoardMain(QWidget *parent) :
     QMainWindow(parent),
@@ -62,6 +63,25 @@ AdvBoardMain::~AdvBoardMain()
     delete ui;
 }
 
+void AdvBoardMain::keyPressEvent(QKeyEvent *event)
+{
+    if (m_stackedWidget->currentWidget() == m_selectProcessingModeWidget)
+    {
+        m_selectProcessingModeWidget->keyPressEvent(event);
+    }
+
+    if (event->key() == Qt::Key_N)
+    {
+        emit ui->nextButton->clicked();
+    }
+    else if (event->key() == Qt::Key_B)
+    {
+        if (ui->backButton->isEnabled())
+        {
+            emit ui->backButton->clicked();
+        }
+    }
+}
 void AdvBoardMain::setController(AdvMainController *controller)
 {
     m_controller = controller;

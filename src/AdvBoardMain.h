@@ -13,6 +13,7 @@
 #include <QMainWindow>
 #include <QStackedWidget>
 
+class QKeyEvent;
 namespace Ui {
 class AdvBoardMain;
 }
@@ -25,6 +26,9 @@ public:
     explicit AdvBoardMain(QWidget *parent = 0);
     ~AdvBoardMain();
     void setController(AdvMainController* controller);
+
+protected:
+    void keyPressEvent(QKeyEvent *event);
 
 private slots:
 

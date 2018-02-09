@@ -23,7 +23,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Next</string>
+       <string>&amp;Next</string>
       </property>
      </widget>
     </item>
@@ -83,7 +83,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Back</string>
+       <string>&amp;Back</string>
       </property>
      </widget>
     </item>

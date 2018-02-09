@@ -4,3 +4,8 @@ LiveProcessingSetupController::LiveProcessingSetupController(QObject *parent) : 
 {
 
 }
+
+void LiveProcessingSetupController::setPreview(const LiveProcessingSetupController::Preview preview)
+{
+    m_preview = preview;
+}

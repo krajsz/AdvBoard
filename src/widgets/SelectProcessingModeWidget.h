@@ -10,6 +10,7 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 
 #include <QWidget>
 
+class QKeyEvent;
 namespace Ui {
 class SelectProcessingModeWidget;
 }
@@ -28,7 +29,9 @@ public:
     ~SelectProcessingModeWidget();
 
     ProcessingMode processingMode() const;
+    void keyPressEvent(QKeyEvent *event);
 
+protected:
 private:
     Ui::SelectProcessingModeWidget *ui;
 };

@@ -8,6 +8,9 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 #include "src\widgets\SelectProcessingModeWidget.h"
 #include "ui_selectprocessingmodewidget.h"
 
+
+#include <QKeyEvent>
+
 SelectProcessingModeWidget::SelectProcessingModeWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::SelectProcessingModeWidget)
@@ -27,4 +30,16 @@ SelectProcessingModeWidget::ProcessingMode SelectProcessingModeWidget::processin
         return SelectProcessingModeWidget::ProcessingMode::LiveProcessing;
     }
     return SelectProcessingModeWidget::ProcessingMode::PostProcessing;
+}
+
+void SelectProcessingModeWidget::keyPressEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_P)
+    {
+        ui->postProcessingRadioButton->setChecked(true);
+    }
+    else if (event->key() == Qt::Key_L)
+    {
+        ui->liveProcessingRadioButton->setChecked(true);
+    }
 }
