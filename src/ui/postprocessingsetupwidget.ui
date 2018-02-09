@@ -16,6 +16,11 @@
   <layout class="QGridLayout" name="gridLayout_3" rowstretch="2,1,3">
    <item row="1" column="0" colspan="2">
     <widget class="QGroupBox" name="infoGroupBox">
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
      <property name="title">
       <string>Info</string>
      </property>
@@ -52,6 +57,11 @@
    </item>
    <item row="2" column="0">
     <widget class="QGroupBox" name="viewSettingsGroupBox">
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
      <property name="title">
       <string>View settings</string>
      </property>
@@ -60,6 +70,9 @@
        <widget class="QCheckBox" name="previewCheckBox">
         <property name="text">
          <string>Preview</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -75,6 +88,9 @@
         <property name="text">
          <string>Normal</string>
         </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
      </layout>
@@ -82,6 +98,11 @@
    </item>
    <item row="2" column="1">
     <widget class="QGroupBox" name="postProcessingGroupBox">
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
      <property name="title">
       <string>Post processing settings</string>
      </property>
@@ -126,7 +147,14 @@
          </widget>
         </item>
         <item>
-         <widget class="QSpinBox" name="xResolutionSpinBox"/>
+         <widget class="QSpinBox" name="xResolutionSpinBox">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>4000</number>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QLabel" name="label_6">
@@ -136,11 +164,18 @@
          </widget>
         </item>
         <item>
-         <widget class="QSpinBox" name="yResolutionSpinBox"/>
+         <widget class="QSpinBox" name="yResolutionSpinBox">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>4000</number>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
-      <item row="2" column="2">
+      <item row="2" column="3">
        <spacer name="horizontalSpacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -156,28 +191,14 @@
         </property>
        </spacer>
       </item>
-      <item row="6" column="2">
-       <widget class="QLabel" name="resizePercentLabel">
-        <property name="text">
-         <string>%</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QCheckBox" name="resizeCheckBox">
-        <property name="text">
-         <string>Resize</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="0">
+      <item row="4" column="0">
        <widget class="QCheckBox" name="keepAspectRatioCheckBox">
         <property name="text">
          <string>Keep aspect ratio</string>
         </property>
        </widget>
       </item>
-      <item row="6" column="1">
+      <item row="6" column="2">
        <widget class="QSlider" name="resizePercentSlider">
         <property name="minimum">
          <number>1</number>
@@ -191,22 +212,12 @@
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
-       </widget>
-      </item>
-      <item row="6" column="0">
-       <widget class="QSpinBox" name="resizeSpinBox">
-        <property name="minimum">
-         <number>1</number>
-        </property>
-        <property name="maximum">
-         <number>200</number>
-        </property>
-        <property name="value">
-         <number>100</number>
+        <property name="tickPosition">
+         <enum>QSlider::TicksBelow</enum>
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
+      <item row="2" column="2">
        <widget class="QComboBox" name="predefinedResolutionsComboBox">
         <item>
          <property name="text">
@@ -230,6 +241,19 @@
         </item>
        </widget>
       </item>
+      <item row="6" column="0">
+       <widget class="QSpinBox" name="resizeSpinBox">
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>200</number>
+        </property>
+        <property name="value">
+         <number>100</number>
+        </property>
+       </widget>
+      </item>
       <item row="0" column="0">
        <widget class="QCheckBox" name="processingSettingsSameAsSourceCheckBox">
         <property name="text">
@@ -240,11 +264,30 @@
         </property>
        </widget>
       </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Resize</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>%</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
    <item row="0" column="0" colspan="2">
     <widget class="QGroupBox" name="loadDataGoupBox">
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
      <property name="title">
       <string>Load data</string>
      </property>

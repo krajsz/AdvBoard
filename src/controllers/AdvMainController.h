@@ -10,12 +10,10 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 
 #include <QObject>
 #include "src/controllers/AdvViewController.h"
-#include "src/controllers/SensorDataInfoDialogController.h"
-#include "src/controllers/SensorDataValidatingDialogController.h"
-#include "src/controllers/VideoInfoDialogController.h"
-#include "src/controllers/SettingDialogController.h"
-#include "src/datasources/LiveSensorDataReader.h"
-#include "src/datasources/SensorDataReader.h"
+#include "src/controllers/PostProcessingSetupController.h"
+#include "src/controllers/LiveProcessingSetupController.h"
+#include "src/controllers/PreviewController.h"
+#include "src/controllers/DashboardSetupController"
 
 class AdvMainController : public QObject
 {
@@ -23,33 +21,18 @@ class AdvMainController : public QObject
 public:
     explicit AdvMainController(QObject* parent = nullptr);
     ~AdvMainController();
-    enum Mode {
-        GuiMode = 0,
-        SilentMode
-    };
-    void start(const Mode mode, bool live = false);
 
-    AdvViewController* viewController();
-    SensorDataInfoDialogController* sensorDataInfoDialogController();
-    SensorDataValidatingDialogController* sensorDataValidatingDialogController();
-    VideoInfoDialogController* videoInfoDialogController();
-    SettingDialogController* settingDialogController();
-    SensorDataReader* sensorDataReader();
-
-    void openSensorData(const QString& dataFile);
+    PostProcessingSetupController* postProcessingSetupController();
+    LiveProcessingSetupController* liveProcessingSetupController();
+    DashboardSetupController* dashboardSetupController();
+    PreviewController* previewController();
 
 private:
-    AdvViewController* m_viewController;
-    SensorDataInfoDialogController* m_sensorDataInfoDialogController;
-    SensorDataValidatingDialogController* m_sensorDataValidatingDialogController;
-    SettingDialogController* m_settingDialogController;
-    VideoInfoDialogController* m_videoInfoDialogController;
-    SensorDataReader* m_sensorDataReader;
 
-
-signals:
-    void dashboardValid(bool valid = true);
-    void sensorDataInvalid(const QString& errorString);
+    PostProcessingSetupController* m_postProcessingSetupController;
+    LiveProcessingSetupController* m_liveProcessingSetupController;
+    DashboardSetupController* m_dashboardSetupController;
+    PreviewController* m_previewController;
 };
 
 #endif // ADVMAINCONTROLLER_H

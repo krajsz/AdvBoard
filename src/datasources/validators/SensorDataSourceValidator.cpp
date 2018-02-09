@@ -42,26 +42,26 @@ SensorDataSourceValidator::SensorDataSourceValidator(QObject *parent) : QObject(
     }
     else
     {
-        emit validationError("Boundaries file cannot be opened!");
+        m_validationErrors.push_back("Boundaries file cannot be opened!");
     }
 }
 
-bool SensorDataSourceValidator::validateDashboard(const int type) const
+bool SensorDataSourceValidator::validateDashboard(const int type)
 {
     DashboardValidator dashboardTypeValidator;
     if (!dashboardTypeValidator.validate(type))
     {
-        emit validationError(dashboardTypeValidator.errorString());
+        m_validationErrors.push_back(dashboardTypeValidator.errorString());
         return false;
     }
     return true;
 }
 
-bool SensorDataSourceValidator::validateLiveSensorData(const QJsonArray &sensorData, AbstractDashboard* const dashboard) const
+bool SensorDataSourceValidator::validateLiveSensorData(const QJsonArray &sensorData, AbstractDashboard* const dashboard)
 {
     if (sensorData.size() != dashboard->sensorItems().size())
     {
-        emit validationError("Sensor data invalid");
+        m_validationErrors.push_back("Sensor data invalid, invalid data count");
         return false;
     }
     QVector<int> ids;
@@ -77,14 +77,14 @@ bool SensorDataSourceValidator::validateLiveSensorData(const QJsonArray &sensorD
 
             if (ids.contains(id))
             {
-                emit validationError("Sensor ID multiple times, idx: " + QString::number(dataidx));
+                m_validationErrors.push_back("Sensor ID multiple times, idx: " + QString::number(dataidx));
                 return false;
             }
             const AbstractSensor* const sensor = dashboard->sensorWithId(id);
 
             if (sensor == nullptr)
             {
-                emit validationError("Sensor ID not existing, idx: " + QString::number(dataidx));
+                m_validationErrors.push_back("Sensor ID not existing, idx: " + QString::number(dataidx));
                 return false;
             }
             ids.push_back(id);
@@ -103,13 +103,12 @@ bool SensorDataSourceValidator::validateLiveSensorData(const QJsonArray &sensorD
 
                     if ((xval < accsensor->xMinAcceleration()) || (xval > accsensor->xMaxAcceleration()))
                     {
-                        emit validationError("Acceleration sensor data invalid, idx: " + QString::number(dataidx) + value.toString());
+                        m_validationErrors.push_back("Acceleration sensor data invalid, idx: " + QString::number(dataidx) + value.toString());
                         return false;
                     }
-
                     if ((yval < accsensor->yMinAcceleration()) || (yval > accsensor->yMaxAcceleration()))
                     {
-                        emit validationError("Acceleration sensor data invalid, idx: " + QString::number(dataidx) + value.toString());
+                        m_validationErrors.push_back("Acceleration sensor data invalid, idx: " + QString::number(dataidx) + value.toString());
                         return false;
                     }
                 }
@@ -119,13 +118,12 @@ bool SensorDataSourceValidator::validateLiveSensorData(const QJsonArray &sensorD
 
                     if ((xval < gpsposSensor->minLatitude()) || (xval > gpsposSensor->maxLatitude()))
                     {
-                        emit validationError("GPS sensor data invalid, idx: " + QString::number(dataidx) + value.toString());
+                        m_validationErrors.push_back("GPS sensor data invalid, idx: " + QString::number(dataidx) + value.toString());
                         return false;
                     }
-
                     if ((yval < gpsposSensor->minLongitude()) || (yval > gpsposSensor->maxLongitude()))
                     {
-                        emit validationError("GPS sensor data invalid, idx: " + QString::number(dataidx) + value.toString());
+                        m_validationErrors.push_back("GPS sensor data invalid, idx: " + QString::number(dataidx) + value.toString());
                         return false;
                     }
                 }
@@ -139,7 +137,7 @@ bool SensorDataSourceValidator::validateLiveSensorData(const QJsonArray &sensorD
 
                     if ((temp < temperatureSensor->minValue().toDouble()) || (temp > temperatureSensor->maxValue().toDouble()))
                     {
-                        emit validationError("Temperature sensor data invalid, idx: " + QString::number(dataidx) + value.toString());
+                        m_validationErrors.push_back("Temperature sensor data invalid, idx: " + QString::number(dataidx) + value.toString());
                         return false;
                     }
                 }
@@ -150,7 +148,7 @@ bool SensorDataSourceValidator::validateLiveSensorData(const QJsonArray &sensorD
 
                     if ((humidity < humiditySensor->minValue().toDouble()) || (humidity > humiditySensor->maxValue().toDouble()))
                     {
-                        emit validationError("Humidity sensor data invalid, idx: " + QString::number(dataidx) + value.toString());
+                        m_validationErrors.push_back("Humidity sensor data invalid, idx: " + QString::number(dataidx) + value.toString());
                         return false;
                     }
                 }
@@ -161,7 +159,7 @@ bool SensorDataSourceValidator::validateLiveSensorData(const QJsonArray &sensorD
 
                     if ((speed < speedSensor->minValue().toInt()) || (speed > speedSensor->maxValue().toInt()))
                     {
-                        emit validationError("Speed sensor data invalid, idx: " + QString::number(dataidx) + value.toString());
+                        m_validationErrors.push_back("Speed sensor data invalid, idx: " + QString::number(dataidx) + value.toString());
                         return false;
                     }
                 }
@@ -171,12 +169,13 @@ bool SensorDataSourceValidator::validateLiveSensorData(const QJsonArray &sensorD
     }
     return true;
 }
-bool SensorDataSourceValidator::validateSensors(const QVector<QJsonObject> &sensors) const
+bool SensorDataSourceValidator::validateSensors(const QVector<QJsonObject> &sensors)
 {
     int sensorIdx = 0;
     QVector<int> sensorIds;
     sensorIds.reserve(sensors.size());
 
+    bool valid = true;
     for(const QJsonObject& sensor : sensors)
     {
         const int type = sensor["type"].toInt();
@@ -184,15 +183,15 @@ bool SensorDataSourceValidator::validateSensors(const QVector<QJsonObject> &sens
         SensorTypeValidator sensorTypeValidator;
         if (!sensorTypeValidator.validate(type))
         {
-            emit validationError(sensorTypeValidator.errorString() + ", idx: " + QString::number(sensorIdx));
-            return false;
+            m_validationErrors.push_back(sensorTypeValidator.errorString() + ", idx: " + QString::number(sensorIdx));
+            valid = false;
         }
         const int id = sensor["id"].toInt();
 
         if (sensorIds.contains(id))
         {
-            emit validationError("Sensor ID multiple times, idx: " + QString::number(sensorIdx));
-            return false;
+            m_validationErrors.push_back("Sensor ID multiple times, idx: " + QString::number(sensorIdx));
+            valid = false;
         }
 
         sensorIds.push_back(id);
@@ -220,9 +219,9 @@ bool SensorDataSourceValidator::validateSensors(const QVector<QJsonObject> &sens
                 AccelerationSensorValidator accelerationSensorValidator;
                 if (!accelerationSensorValidator.validate(sensor, boundaryObj))
                 {
-                    emit validationError(accelerationSensorValidator.errorString() + ", idx: " +
-                                         QString::number(sensorIdx));
-                    return false;
+                    m_validationErrors.push_back(accelerationSensorValidator.errorString() + ", idx: " +
+                                                 QString::number(sensorIdx));
+                    valid = false;
                 }
             }
             else if (stype == AbstractSensor::SensorType::SpeedSensor)
@@ -230,9 +229,9 @@ bool SensorDataSourceValidator::validateSensors(const QVector<QJsonObject> &sens
                 SpeedSensorValidator speedSensorValidator;
                 if (!speedSensorValidator.validate(sensor, boundaryObj))
                 {
-                    emit validationError(speedSensorValidator.errorString() + ", idx: " +
-                                         QString::number(sensorIdx));
-                    return false;
+                    m_validationErrors.push_back(speedSensorValidator.errorString() + ", idx: " +
+                                                 QString::number(sensorIdx));
+                    valid = false;
                 }
             }
             else if (stype == AbstractSensor::SensorType::GPSpositionSensor)
@@ -240,9 +239,9 @@ bool SensorDataSourceValidator::validateSensors(const QVector<QJsonObject> &sens
                 GPSSensorValidator gpsSensorValidator;
                 if (!gpsSensorValidator.validate(sensor, boundaryObj))
                 {
-                    emit validationError(gpsSensorValidator.errorString() + ", idx: " +
-                                         QString::number(sensorIdx));
-                    return false;
+                    m_validationErrors.push_back(gpsSensorValidator.errorString() + ", idx: " +
+                                                 QString::number(sensorIdx));
+                    valid = false;
                 }
             }
             else if (stype == AbstractSensor::SensorType::HumiditySensor)
@@ -250,9 +249,9 @@ bool SensorDataSourceValidator::validateSensors(const QVector<QJsonObject> &sens
                 HumiditySensorValidator humiditySensorValidator;
                 if (!humiditySensorValidator.validate(sensor, boundaryObj))
                 {
-                    emit validationError(humiditySensorValidator.errorString() + ", idx: " +
-                                         QString::number(sensorIdx));
-                    return false;
+                    m_validationErrors.push_back(humiditySensorValidator.errorString() + ", idx: " +
+                                                 QString::number(sensorIdx));
+                    valid = false;
                 }
             }
             else if (stype == AbstractSensor::SensorType::TemperatureSensor)
@@ -260,15 +259,15 @@ bool SensorDataSourceValidator::validateSensors(const QVector<QJsonObject> &sens
                 TemperatureSensorValidator temperatureSensorValidator;
                 if (!temperatureSensorValidator.validate(sensor, boundaryObj))
                 {
-                    emit validationError(temperatureSensorValidator.errorString() + ", idx: " +
-                                         QString::number(sensorIdx));
-                    return false;
+                    m_validationErrors.push_back(temperatureSensorValidator.errorString() + ", idx: " +
+                                                 QString::number(sensorIdx));
+                    valid = false;
                 }
             }
             else
             {
-                emit validationError("Sensor type invalid somehow, idx: " + QString::number(sensorIdx));
-                return false;
+                m_validationErrors.push_back("Sensor type invalid somehow, idx: " + QString::number(sensorIdx));
+                valid = false;
             }
             ++sensorIdx;
         }
@@ -276,7 +275,11 @@ bool SensorDataSourceValidator::validateSensors(const QVector<QJsonObject> &sens
         {
             qDebug() << "bobjnull";
         }
-
     }
-    return true;
+    return valid;
+}
+
+QVector<QString> SensorDataSourceValidator::validationErrors() const
+{
+    return m_validationErrors;
 }

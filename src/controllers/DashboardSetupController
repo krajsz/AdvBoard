@@ -1,0 +1,17 @@
+#ifndef DASHBOARDSETUPCONTROLLER
+#define DASHBOARDSETUPCONTROLLER
+
+#include <QObject>
+
+class DashboardSetupController : public QObject
+{
+     Q_OBJECT
+public:
+    explicit DashboardSetupController(QObject *parent = nullptr);
+
+signals:
+
+public slots:
+};
+
+#endif // DASHBOARDSETUPCONTROLLER

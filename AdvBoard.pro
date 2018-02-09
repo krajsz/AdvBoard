@@ -28,7 +28,6 @@ SOURCES += \
         src/main.cpp \
         src/AdvBoardMain.cpp \
     src/controllers/AdvMainController.cpp \
-    src/controllers/SensorDataValidatingDialogController.cpp \
     src/controllers/VideoInfoDialogController.cpp \
     src/controllers/SensorDataInfoDialogController.cpp \
     src/controllers/AdvViewController.cpp \
@@ -38,10 +37,8 @@ SOURCES += \
     src/datasources/LiveVideoSource.cpp \
     src/datasources/SensorDataReader.cpp \
     src/datasources/LiveSensorDataReader.cpp \
-    src/widgets/SensorDataValidatingDialog.cpp \
     src/widgets/VideoInfoDialog.cpp \
     src/widgets/SensorDataInfoDialog.cpp \
-    src/widgets/SettingDialog.cpp \
     src/sensors/AbstractSensor.cpp \
     src/sensors/TemperatureSensor.cpp \
     src/view/AdvVideoView.cpp \
@@ -70,7 +67,11 @@ SOURCES += \
     src/datasources/validators/TemperatureSensorValidator.cpp \
     src/datasources/validators/DashboardTypeValidator.cpp \
     src/datasources/validators/SensorTypeValidator.cpp \
-    src/widgets/SensorDataValidationErrorsDialog.cpp
+    src/widgets/SensorDataValidationErrorsDialog.cpp \
+    src/controllers/DashboardSetupController.cpp \
+    src/controllers/PostProcessingSetupController.cpp \
+    src/controllers/LiveProcessingSetupController.cpp \
+    src/controllers/PreviewController.cpp
 
 HEADERS += \
         src\AdvBoardMain.h \
@@ -78,7 +79,6 @@ HEADERS += \
     src/controllers/AdvMainController.h \
     src/controllers/VideoInfoDialogController.h \
     src/controllers/SensorDataInfoDialogController.h \
-    src/controllers/SensorDataValidatingDialogController.h \
     src/dashboards/AbstractDashboard.h \
     src/dashboards/MotorcycleDashboard.h \
     src/datasources/VideoSource.h \
@@ -87,8 +87,6 @@ HEADERS += \
     src/datasources/LiveSensorDataReader.h \
     src/widgets/VideoInfoDialog.h \
     src/widgets/SensorDataInfoDialog.h \
-    src/widgets/SensorDataValidatingDialog.h \
-    src/widgets/SettingDialog.h \
     src/sensors/TemperatureSensor.h \
     src/sensors/AbstractSensor.h \
     src/view/AdvVideoView.h \
@@ -117,14 +115,16 @@ HEADERS += \
     src/datasources/validators/TemperatureSensorValidator.h \
     src/datasources/validators/DashboardTypeValidator.h \
     src/datasources/validators/SensorTypeValidator.h \
-    src/widgets/SensorDataValidationErrorsDialog.h
+    src/widgets/SensorDataValidationErrorsDialog.h \
+    src/controllers/DashboardSetupController \
+    src/controllers/PostProcessingSetupController.h \
+    src/controllers/LiveProcessingSetupController.h \
+    src/controllers/PreviewController.h
 
 FORMS += \
         src/ui\advboardmain.ui \
-    src/ui/sensordatavalidatingdialog.ui \
     src/ui/videoinfodialog.ui \
     src/ui/sensordatainfodialog.ui \
-    src/ui/settingdialog.ui \
     src/ui/videoloadingdialog.ui \
     src/ui/selectprocessingmodewidget.ui \
     src/ui/liveprocessingsetupwidget.ui \

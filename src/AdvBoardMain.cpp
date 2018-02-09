@@ -16,8 +16,6 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 AdvBoardMain::AdvBoardMain(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::AdvBoardMain),
-    m_sensorDataInfoDialog(nullptr),
-    m_videoInfoDialog(nullptr),
     m_selectProcessingModeWidget(new SelectProcessingModeWidget),
     m_dashboardSetupWidget(nullptr),
     m_liveProcessingWidget(nullptr),
@@ -35,11 +33,8 @@ AdvBoardMain::AdvBoardMain(QWidget *parent) :
     connect(ui->aboutAction, &QAction::triggered, this, &AdvBoardMain::about);
     connect(ui->loadSensorDataButton, &QPushButton::clicked, this, &AdvBoardMain::openSensorData);
     connect(ui->loadVideoSourceButton, &QPushButton::clicked, this, &AdvBoardMain::openVideoSource);
-    connect(ui->liveProcessingCheckBox, &QCheckBox::toggled, this, &AdvBoardMain::liveProcessingChecked);
-    connect(ui->liveProcessingSettingsPushButton, &QPushButton::clicked, this, &AdvBoardMain::liveProcessingButtonClicked);
     connect(ui->openVideoAction, &QAction::triggered, this, &AdvBoardMain::openVideoSource);
     connect(ui->showDataInfoDialog, &QPushButton::clicked, this, &AdvBoardMain::sensorDataInfoDialogButtonClicked);
-    connect(ui->showVideoInfoDialog, &QPushButton::clicked, this, &AdvBoardMain::videoInfoDialogButtonClicked);
     connect(ui->optionsAction, &QAction::triggered, this, &AdvBoardMain::optionsActionTriggered);
 */
     ui->backButton->setEnabled(false);
@@ -54,8 +49,16 @@ AdvBoardMain::AdvBoardMain(QWidget *parent) :
 AdvBoardMain::~AdvBoardMain()
 {
     delete m_controller;
-    delete m_view;
 
+    delete m_selectProcessingModeWidget;
+    if (m_dashboardSetupWidget)
+        delete m_dashboardSetupWidget;
+    if (m_postProcessingWidget)
+        delete m_postProcessingWidget;
+    if (m_liveProcessingWidget)
+        delete m_liveProcessingWidget;
+    if (m_previewWidget)
+        delete m_previewWidget;
     delete ui;
 }
 
@@ -74,13 +77,6 @@ void AdvBoardMain::setController(AdvMainController *controller)
 */
 }
 
-void AdvBoardMain::openSensorData()
-{
-    //QString fileName = QFileDialog::getOpenFileName(0, tr("Open sensor data"), QDir::homePath(), "JSON (*.JSON *.json);");
-
-    m_controller->openSensorData(":/json/data/testnew.json");
-}
-
 void AdvBoardMain::nextWidget()
 {
     if (m_stackedWidget->currentWidget() == m_selectProcessingModeWidget)
@@ -91,6 +87,7 @@ void AdvBoardMain::nextWidget()
             if (m_liveProcessingWidget == nullptr)
             {
                 m_liveProcessingWidget = new LiveProcessingSetupWidget;
+
                 m_stackedWidget->addWidget(m_liveProcessingWidget);
             }
             m_stackedWidget->setCurrentWidget(m_liveProcessingWidget);
@@ -100,6 +97,7 @@ void AdvBoardMain::nextWidget()
             if (m_postProcessingWidget == nullptr)
             {
                 m_postProcessingWidget = new PostProcessingSetupWidget;
+                m_postProcessingWidget->setController(m_controller->postProcessingSetupController());
                 m_stackedWidget->addWidget(m_postProcessingWidget);
             }
             m_stackedWidget->setCurrentWidget(m_postProcessingWidget);
@@ -163,6 +161,7 @@ void AdvBoardMain::previousWidget()
             m_stackedWidget->setCurrentWidget(m_postProcessingWidget);
         }
         ui->nextButton->setText(tr("Next"));
+        ui->nextButton->setIcon(style()->standardIcon(QStyle::SP_ArrowRight));
     }
 }
 
@@ -174,13 +173,4 @@ void AdvBoardMain::closeApp()
 void AdvBoardMain::about()
 {
     QMessageBox::information(0, tr("About"), "Author: Fábián Kristóf - Szabolcs", QMessageBox::Ok);
-}
-
-void AdvBoardMain::sensorDataInvalid(const QString &errorstring)
-{
-    QMessageBox::warning(0, tr("Sensor Data Invalid"), errorstring, QMessageBox::Ok);
-}
-void AdvBoardMain::optionsActionTriggered()
-{
-
 }

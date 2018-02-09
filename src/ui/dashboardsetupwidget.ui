@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>990</width>
-    <height>599</height>
+    <width>1130</width>
+    <height>620</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -31,6 +31,11 @@
     <layout class="QHBoxLayout" name="dashboardTypeHLayout">
      <item>
       <widget class="QLabel" name="dashboardTypeLabel">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
        <property name="text">
         <string>Dashboard type:</string>
        </property>
@@ -38,6 +43,11 @@
      </item>
      <item>
       <widget class="QComboBox" name="dashboardTypeComboBox">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
        <item>
         <property name="text">
          <string>Motorcyclist</string>
@@ -61,6 +71,11 @@
     <layout class="QVBoxLayout" name="sensorsVLayout">
      <item>
       <widget class="QLabel" name="dashboardSensorsLabel">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
        <property name="text">
         <string>Sensors:</string>
        </property>
@@ -70,7 +85,11 @@
       </widget>
      </item>
      <item>
-      <widget class="QListWidget" name="dashboardSensorsListWidget"/>
+      <widget class="QListWidget" name="dashboardSensorsListWidget">
+       <property name="editTriggers">
+        <set>QAbstractItemView::NoEditTriggers</set>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

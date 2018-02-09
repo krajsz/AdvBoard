@@ -14,8 +14,20 @@
    <string>AdvBoardMain</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QGridLayout" name="gridLayout" columnstretch="1,0,0,0,1">
-    <item row="0" column="0" colspan="5">
+   <layout class="QGridLayout" name="gridLayout" columnstretch="2,0,1,0,1,2">
+    <item row="1" column="4">
+     <widget class="QPushButton" name="nextButton">
+      <property name="font">
+       <font>
+        <pointsize>11</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Next</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0" colspan="6">
      <widget class="QStackedWidget" name="advBoardWidgets">
       <property name="currentIndex">
        <number>1</number>
@@ -37,19 +49,7 @@
       </property>
      </spacer>
     </item>
-    <item row="1" column="1">
-     <widget class="QPushButton" name="nextButton">
-      <property name="font">
-       <font>
-        <pointsize>11</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Next</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="2">
+    <item row="1" column="3">
      <spacer name="horizontalSpacer">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
@@ -62,19 +62,7 @@
       </property>
      </spacer>
     </item>
-    <item row="1" column="3">
-     <widget class="QPushButton" name="backButton">
-      <property name="font">
-       <font>
-        <pointsize>11</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Back</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="4">
+    <item row="1" column="5">
      <spacer name="horizontalSpacer_3">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
@@ -86,6 +74,18 @@
        </size>
       </property>
      </spacer>
+    </item>
+    <item row="1" column="2">
+     <widget class="QPushButton" name="backButton">
+      <property name="font">
+       <font>
+        <pointsize>11</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Back</string>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>

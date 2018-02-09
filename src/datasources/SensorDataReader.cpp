@@ -25,7 +25,6 @@ SensorDataReader::SensorDataReader(QObject* parent) : QObject(parent),
     m_dataIndex(0),
     m_sensorDataSourceValidator(new SensorDataSourceValidator(this))
 {
-    connect(m_sensorDataSourceValidator, &SensorDataSourceValidator::validationError, this, &SensorDataReader::dataInvalid);
 }
 
 int SensorDataReader::dataSnapshotCount() const

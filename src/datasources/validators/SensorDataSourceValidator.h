@@ -12,6 +12,7 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 #include <QVector>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QString>
 
 class AbstractDashboard;
 
@@ -21,16 +22,15 @@ class SensorDataSourceValidator : public QObject
 public:
     explicit SensorDataSourceValidator(QObject *parent = nullptr);
 
-    bool validateSensors(const QVector<QJsonObject>& sensors) const;
-    bool validateLiveSensorData(const QJsonArray& sensorData, AbstractDashboard * const dashboard) const;
-    bool validateDashboard(const int type) const;
+    bool validateSensors(const QVector<QJsonObject>& sensors);
+    bool validateLiveSensorData(const QJsonArray& sensorData, AbstractDashboard * const dashboard);
+    bool validateDashboard(const int type);
 
-signals:
-    void validationError(const QString& error) const;
-
+     QVector<QString> validationErrors() const;
 public slots:
 private:
     QJsonArray m_sensorDataBoundaries;
+    QVector<QString> m_validationErrors;
 };
 
 #endif // SENSORDATASOURCEVALIDATOR_H
