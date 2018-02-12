@@ -38,6 +38,8 @@ private slots:
     void closeApp();
 
     void about();
+
+    void dataReady(bool ready);
 private:
     Ui::AdvBoardMain *ui;
     AdvMainController* m_controller;

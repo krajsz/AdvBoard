@@ -28,10 +28,10 @@ SensorDataInfoDialog::~SensorDataInfoDialog()
     delete ui;
 }
 
-void SensorDataInfoDialog::setSensors(const QVector<AbstractSensor *> &sensors)
+void SensorDataInfoDialog::setSensors(const QVector<QJsonObject> &sensors)
 {
     ui->sensorDataTreeView->clear();
-    for (AbstractSensor* sensor : sensors)
+    /*for (AbstractSensor* sensor : sensors)
     {
         QTreeWidgetItem* sensorTreeItem = new QTreeWidgetItem;
         QTreeWidgetItem* sensorDataNameTreeItem;;
@@ -276,5 +276,5 @@ void SensorDataInfoDialog::setSensors(const QVector<AbstractSensor *> &sensors)
         if (sensorTreeItem)
             ui->sensorDataTreeView->addTopLevelItem(sensorTreeItem);
 
-    }
+    }*/
 }

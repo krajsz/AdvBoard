@@ -8,7 +8,7 @@ PostProcessingSetupController::PostProcessingSetupController(QObject *parent): Q
     m_keepAspectRatio(true),
     m_sameAsSource(true)
 {
-    connect(m_sensorDataReader, &SensorDataReader::sensorDataIsValid, this, &PostProcessingSetupController::sensorDataIsValid);
+    connect(m_sensorDataReader, &SensorDataReader::sensorDataIsValid, this, &PostProcessingSetupController::sensorDataIsValidSlot);
 }
 
 PostProcessingSetupController::~PostProcessingSetupController()
@@ -16,9 +16,10 @@ PostProcessingSetupController::~PostProcessingSetupController()
     delete m_sensorDataSourceValidator;
 }
 
-void PostProcessingSetupController::process()
+void PostProcessingSetupController::sensorDataIsValidSlot(bool valid)
 {
-    // TODO LOTS
+    m_sensorDataLoaded = valid;
+    emit sensorDataIsValid(valid);
 }
 
 void PostProcessingSetupController::setResolutionWidth(const int width)
@@ -56,15 +57,27 @@ bool PostProcessingSetupController::ready() const
     return m_sensorDataLoaded && m_videoSourceLoaded;
 }
 
+void PostProcessingSetupController::videoLoaded()
+{
+    m_videoSourceLoaded = true;
+
+    qDebug() << "loadedvid";
+
+    emit videoLoadedSignal();
+}
+
 void PostProcessingSetupController::loadSensorData(const QString& fileName)
 {
     m_sensorDataReader->setFile(fileName);
     m_sensorDataReader->read(true);
 }
 
-void PostProcessingSetupController::loadVideoSource(const QString& fileName)
+void PostProcessingSetupController::loadVideoSource(const QUrl& fileUrl)
 {
+    m_videoSource = new VideoSource;
+    m_videoSource->setVideo(fileUrl);
 
+    connect(m_videoSource, &VideoSource::videoLoaded, this, &PostProcessingSetupController::videoLoaded);
 }
 
 QVector<QString> PostProcessingSetupController::validationErrors() const

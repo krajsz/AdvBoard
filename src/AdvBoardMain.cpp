@@ -107,12 +107,14 @@ void AdvBoardMain::nextWidget()
             if (m_postProcessingWidget == nullptr)
             {
                 m_postProcessingWidget = new PostProcessingSetupWidget;
+                connect(m_postProcessingWidget, &PostProcessingSetupWidget::ready, this, &AdvBoardMain::dataReady);
                 m_postProcessingWidget->setController(m_controller->postProcessingSetupController());
                 m_stackedWidget->addWidget(m_postProcessingWidget);
             }
             m_stackedWidget->setCurrentWidget(m_postProcessingWidget);
         }
 
+        ui->nextButton->setEnabled(false);
         ui->backButton->setEnabled(true);
     }
     else if ((m_stackedWidget->currentWidget() == m_liveProcessingWidget) ||
@@ -186,6 +188,14 @@ void AdvBoardMain::previousWidget()
         }
         ui->nextButton->setText(tr("Next"));
         ui->nextButton->setIcon(style()->standardIcon(QStyle::SP_ArrowRight));
+    }
+}
+
+void AdvBoardMain::dataReady(bool ready)
+{
+    if (ready)
+    {
+        ui->nextButton->setEnabled(true);
     }
 }
 

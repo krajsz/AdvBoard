@@ -38,17 +38,8 @@ PostProcessingSetupWidget::PostProcessingSetupWidget(QWidget *parent) :
 void PostProcessingSetupWidget::setController(PostProcessingSetupController *controller)
 {
     m_controller = controller;
-
+    connect(m_controller, &PostProcessingSetupController::videoLoadedSignal, this, &PostProcessingSetupWidget::videoLoaded);
     connect(m_controller, &PostProcessingSetupController::sensorDataIsValid, this, &PostProcessingSetupWidget::sensorDataIsValid);
-}
-
-bool PostProcessingSetupWidget::ready() const
-{
-    return m_controller->ready();
-}
-void PostProcessingSetupWidget::process()
-{
-    m_controller->process();
 }
 
 PostProcessingSetupWidget::~PostProcessingSetupWidget()
@@ -77,14 +68,13 @@ void PostProcessingSetupWidget::sensorDataInfoDialogButtonClicked()
         m_sensorDataInfoDialog = new SensorDataInfoDialog();
     }
 
-    QVector<AbstractSensor*> sensors;
-    /*for (AdvSensorItem* sensorItem : m_view->videoScene()->dashboard()->sensorItems())
-    {
-        AbstractSensor* sensor = sensorItem->sensor();
-        sensors.push_back(sensor);
-    }*/
+    m_sensorDataInfoDialog->setSensors(m_controller->sensorDataReader()->sensorData());
     m_sensorDataInfoDialog->show();
-    m_sensorDataInfoDialog->setSensors(sensors);
+}
+
+void PostProcessingSetupWidget::videoLoaded()
+{
+    emit ready(m_controller->ready());
 }
 
 void PostProcessingSetupWidget::sensorDataIsValid(bool valid)
@@ -98,6 +88,8 @@ void PostProcessingSetupWidget::sensorDataIsValid(bool valid)
         ui->showValidationErrorsButton->show();
         ui->sensorDataValidLabel->setText("Invalid sensor data");
     }
+
+    emit ready(m_controller->ready());
 }
 
 void PostProcessingSetupWidget::keepAspectRatioChecked(bool checked)
@@ -144,6 +136,7 @@ void PostProcessingSetupWidget::resizePercentageSliderValueChanged(int value)
 {
 
 }
+
 void PostProcessingSetupWidget::resizePercentageSpinboxValueChanged(int value)
 {
 
@@ -204,16 +197,7 @@ void PostProcessingSetupWidget::loadVideoSource()
 {
     const QUrl path = QFileDialog::getOpenFileName(0, tr("Open your video"), QDir::homePath());
 
-    /*VideoLoadingDialog* dialog = new VideoLoadingDialog;
-    connect(m_view->videoScene()->video(), &VideoSource::loadPercent, dialog, &VideoLoadingDialog::setPercent);
-    connect(m_view->videoScene()->video(), &VideoSource::videoLoaded, dialog, &VideoLoadingDialog::close);
-
-
-
-
-    emit m_controller->viewController()->setVideo(path);
-    dialog->show();
-    m_controller->loadVideoSource();*/
+    m_controller->loadVideoSource(path);
 }
 
 void PostProcessingSetupWidget::showVideoInfo()

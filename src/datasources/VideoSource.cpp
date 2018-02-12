@@ -16,7 +16,6 @@ QUrl VideoSource::path() const
     return m_path;
 }
 
-
 void VideoSource::resize(const QSize &size)
 {
     setSize(size);

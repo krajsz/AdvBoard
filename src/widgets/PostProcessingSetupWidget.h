@@ -28,10 +28,9 @@ public:
     void setController(PostProcessingSetupController* controller);
     void process();
 
-    bool ready() const;
-
 signals:
     void viewCompleted(AdvVideoView* view);
+    void ready(bool ready) const;
 private:
     Ui::PostProcessingSetupWidget *ui;
     SensorDataInfoDialog* m_sensorDataInfoDialog;
@@ -39,6 +38,7 @@ private:
 private slots:
 
     void sensorDataIsValid(bool valid);
+    void videoLoaded();
 
     void sensorDataInfoDialogButtonClicked();
 

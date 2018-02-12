@@ -33,7 +33,7 @@ void DashboardSetupWidget::setController(DashboardSetupController *controller)
 
 void DashboardSetupWidget::setDashboardType(int dashboardType)
 {
-    ui->dashboardTypeComboBox->setCurrentIndex(dashboardType);
+    ui->dashboardTypeComboBox->setCurrentIndex(dashboardType - 1);
 }
 
 

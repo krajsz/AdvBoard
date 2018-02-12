@@ -37,7 +37,6 @@ public:
         VGA
     };
 
-    void process();
     bool ready() const;
 
     void setResolutionWidth(const int width);
@@ -51,7 +50,7 @@ public:
     void setResizePercent(const int percent);
 
     void loadSensorData(const QString& fileName);
-    void loadVideoSource(const QString& fileName);
+    void loadVideoSource(const QUrl &fileUrl);
     QVector<QString> validationErrors() const;
 
     SensorDataInfoDialogController* sensorDataInfoDialogController();
@@ -63,11 +62,16 @@ public:
 signals:
     void dashboardValid(bool valid = true);
     void sensorDataInvalid(const QString& errorString);
-
+    void videoLoadedSignal();
 signals:
     void sensorDataIsValid(bool valid);
+private slots:
+    void videoLoaded();
+    void sensorDataIsValidSlot(bool valid);
 private:
     AdvViewController* m_viewController;
+
+    VideoSource* m_videoSource;
     SensorDataReader* m_sensorDataReader;
     VideoInfoDialogController* m_videoInfoDialogController;
     SensorDataInfoDialogController* m_sensorDataInfoDialogController;
