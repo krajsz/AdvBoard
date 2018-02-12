@@ -42,5 +42,4 @@ private:
     LiveProcessingSetupController* m_controller;
 };
 
-
 #endif // LIVEPROCESSINGSETUPWIDGET_H

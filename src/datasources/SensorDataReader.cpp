@@ -27,9 +27,28 @@ SensorDataReader::SensorDataReader(QObject* parent) : QObject(parent),
 {
 }
 
+SensorDataReader::~SensorDataReader()
+{
+    delete m_sensorDataSourceValidator;
+}
 int SensorDataReader::dataSnapshotCount() const
 {
     return m_dataSnapshotCount;
+}
+
+int SensorDataReader::dashboardType() const
+{
+    return m_dashboardType;
+}
+
+int SensorDataReader::interval() const
+{
+    return m_interval;
+}
+
+QVector<QJsonObject> SensorDataReader::sensorData() const
+{
+    return m_sensorData;
 }
 
 void SensorDataReader::startReading()
@@ -81,8 +100,14 @@ void SensorDataReader::read(bool init)
         QJsonObject sensorDataObject = sensorDocument.object();
         QJsonArray data = sensorDataObject["sensorData"].toArray();
 
+        if (!m_data.empty())
+        {
+            m_data.clear();
+        }
+
         m_dataSnapshotCount = data.size();
 
+        m_data.reserve(m_dataSnapshotCount);
         for (int i = 0; i < m_dataSnapshotCount; ++i)
         {
             m_data.push_back(data[i].toArray());
@@ -110,7 +135,9 @@ void SensorDataReader::read(bool init)
             bool bothValid = true;
             if (m_sensorDataSourceValidator->validateDashboard(dashboardType))
             {
-                emit initDashBoard(dashboardType);
+                qDebug() << "initdashboard";
+                //emit initDashBoard(dashboardType);
+                m_dashboardType = dashboardType;
             }
             else
             {
@@ -119,7 +146,9 @@ void SensorDataReader::read(bool init)
 
             if (m_sensorDataSourceValidator->validateSensors(sensors))
             {
-                emit initSensors(sensors, m_interval);
+                qDebug() << "initsensors";
+                //emit initSensors(sensors, m_interval);
+                m_sensorData = sensors;
             }
             else
             {
@@ -128,11 +157,11 @@ void SensorDataReader::read(bool init)
 
             if (bothValid)
             {
-                emit dashboardValid();
+                emit sensorDataIsValid(true);
             }
             else
             {
-                emit dashboardValid(false);
+                emit sensorDataIsValid(false);
             }
         }
     }

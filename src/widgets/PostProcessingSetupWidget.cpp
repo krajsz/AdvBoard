@@ -31,11 +31,15 @@ PostProcessingSetupWidget::PostProcessingSetupWidget(QWidget *parent) :
     connect(ui->yResolutionSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &PostProcessingSetupWidget::resolutionHeightChanged);
     connect(ui->loadSensorDataButton, &QPushButton::clicked, this, &PostProcessingSetupWidget::loadSensorData);
     connect(ui->loadVideoSourceButton, &QPushButton::clicked, this, &PostProcessingSetupWidget::loadVideoSource);
+
+    ui->showValidationErrorsButton->hide();
 }
 
 void PostProcessingSetupWidget::setController(PostProcessingSetupController *controller)
 {
     m_controller = controller;
+
+    connect(m_controller, &PostProcessingSetupController::sensorDataIsValid, this, &PostProcessingSetupWidget::sensorDataIsValid);
 }
 
 bool PostProcessingSetupWidget::ready() const
@@ -91,6 +95,7 @@ void PostProcessingSetupWidget::sensorDataIsValid(bool valid)
     }
     else
     {
+        ui->showValidationErrorsButton->show();
         ui->sensorDataValidLabel->setText("Invalid sensor data");
     }
 }

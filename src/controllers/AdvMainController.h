@@ -15,6 +15,8 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 #include "src/controllers/PreviewController.h"
 #include "src/controllers/DashboardSetupController"
 
+#include "src/widgets/SelectProcessingModeWidget.h"
+
 class AdvMainController : public QObject
 {
     Q_OBJECT
@@ -27,6 +29,7 @@ public:
     DashboardSetupController* dashboardSetupController();
     PreviewController* previewController();
 
+    void dashboardSetupShown(const SelectProcessingModeWidget::ProcessingMode mode);
 private:
 
     PostProcessingSetupController* m_postProcessingSetupController;

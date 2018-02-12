@@ -5,7 +5,9 @@ Description	: Controller class of the graphics view
 --------------------------------------------------------------------
 Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 ***************************************************************************/
-#include "AdvViewController.h"
+#include "src/controllers/AdvViewController.h"
+
+#include <QDebug>
 
 AdvViewController::AdvViewController(QObject *parent) : QObject(parent)
 {
@@ -18,6 +20,7 @@ void AdvViewController::initDashboard(int dashboardType)
 
 void AdvViewController::initSensors(const QVector<QJsonObject> &sensordata, const int animationInterval)
 {
+    qDebug() << "iss";
     emit initSensorsSignal(sensordata, animationInterval);
 }
 

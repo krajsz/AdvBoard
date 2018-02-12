@@ -55,6 +55,7 @@ public:
     QVector<QString> validationErrors() const;
 
     SensorDataInfoDialogController* sensorDataInfoDialogController();
+
     AdvViewController* viewController();
     SensorDataReader* sensorDataReader();
     VideoInfoDialogController* videoInfoDialogController();
@@ -62,7 +63,6 @@ public:
 signals:
     void dashboardValid(bool valid = true);
     void sensorDataInvalid(const QString& errorString);
-
 
 signals:
     void sensorDataIsValid(bool valid);

@@ -2,15 +2,13 @@
 
 PostProcessingSetupController::PostProcessingSetupController(QObject *parent): QObject(parent),
     m_sensorDataSourceValidator(new SensorDataSourceValidator),
+    m_sensorDataReader(new SensorDataReader),
     m_sensorDataLoaded(false),
     m_videoSourceLoaded(false),
     m_keepAspectRatio(true),
     m_sameAsSource(true)
 {
-    /*connect(m_sensorDataReader, &SensorDataReader::dashboardValid, this, &AdvMainController::dashboardValid);
-    connect(m_sensorDataReader, &SensorDataReader::initDashBoard, m_viewController, &AdvViewController::initDashboard);
-    connect(m_sensorDataReader, &SensorDataReader::initSensors, m_viewController, &AdvViewController::initSensors);
-    connect(m_sensorDataReader, &SensorDataReader::dataRead, m_viewController, &AdvViewController::dataRead);*/
+    connect(m_sensorDataReader, &SensorDataReader::sensorDataIsValid, this, &PostProcessingSetupController::sensorDataIsValid);
 }
 
 PostProcessingSetupController::~PostProcessingSetupController()

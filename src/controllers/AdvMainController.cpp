@@ -6,6 +6,7 @@ Description	: Main controller class
 Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 ***************************************************************************/
 #include "AdvMainController.h"
+#include "src/widgets/SelectProcessingModeWidget.h"
 
 AdvMainController::AdvMainController(QObject* parent) : QObject(parent),
     m_previewController(nullptr),
@@ -13,6 +14,22 @@ AdvMainController::AdvMainController(QObject* parent) : QObject(parent),
     m_postProcessingSetupController(nullptr),
     m_liveProcessingSetupController(nullptr)
 {
+}
+
+void AdvMainController::dashboardSetupShown(const SelectProcessingModeWidget::ProcessingMode mode)
+{
+    if (mode == SelectProcessingModeWidget::ProcessingMode::PostProcessing)
+    {
+        dashboardSetupController()->setSensorDataReader(m_postProcessingSetupController->sensorDataReader());
+    }
+    else if (mode == SelectProcessingModeWidget::ProcessingMode::LiveProcessing)
+    {
+
+    }
+    else
+    {
+        //wot
+    }
 }
 
 PostProcessingSetupController* AdvMainController::postProcessingSetupController()

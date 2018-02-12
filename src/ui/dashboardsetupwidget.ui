@@ -94,7 +94,7 @@
     </layout>
    </item>
    <item row="0" column="0" rowspan="4">
-    <widget class="QGraphicsView" name="dashboardSetupGraphicsView"/>
+    <widget class="AdvVideoView" name="dashboardSetupGraphicsView"/>
    </item>
    <item row="1" column="1">
     <spacer name="verticalSpacer_2">
@@ -111,6 +111,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>AdvVideoView</class>
+   <extends>QGraphicsView</extends>
+   <header>src\view\AdvVideoView.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

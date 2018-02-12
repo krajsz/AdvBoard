@@ -85,16 +85,6 @@ void AdvBoardMain::keyPressEvent(QKeyEvent *event)
 void AdvBoardMain::setController(AdvMainController *controller)
 {
     m_controller = controller;
-    /*m_view = ui->videoView;
-    m_view->show();
-
-    m_view->setController(m_controller->viewController());
-
-    connect(m_controller, &AdvMainController::dashboardValid, this, &AdvBoardMain::dashboardValidation);
-    connect(m_controller, &AdvMainController::sensorDataInvalid, this, &AdvBoardMain::sensorDataInvalid);
-    connect(ui->startProcessingButton, &QPushButton::clicked, m_controller->viewController(), &AdvViewController::play);
-    connect(ui->startProcessingButton, &QPushButton::clicked, m_controller->sensorDataReader(), &SensorDataReader::startReading);
-*/
 }
 
 void AdvBoardMain::nextWidget()
@@ -131,8 +121,22 @@ void AdvBoardMain::nextWidget()
         if (m_dashboardSetupWidget == nullptr)
         {
             m_dashboardSetupWidget = new DashboardSetupWidget;
+            m_dashboardSetupWidget->setController(m_controller->dashboardSetupController());
             m_stackedWidget->addWidget(m_dashboardSetupWidget);
         }
+
+
+        if (m_stackedWidget->currentWidget() == m_liveProcessingWidget)
+        {
+            m_controller->dashboardSetupShown(SelectProcessingModeWidget::ProcessingMode::LiveProcessing);
+        }
+
+        if (m_stackedWidget->currentWidget() == m_postProcessingWidget)
+        {
+            m_controller->dashboardSetupShown(SelectProcessingModeWidget::ProcessingMode::PostProcessing);
+        }
+
+
         ui->nextButton->setText(tr("Start processing"));
         ui->nextButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
 

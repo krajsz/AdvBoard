@@ -117,6 +117,7 @@ void AbstractDashboard::layoutSensors()
 
 void AbstractDashboard::initSensors(const QVector<QJsonObject> &sensorInfoData, const int animationInterval)
 {
+    qDebug() << "initsensorss";
     for (int i = 0; i < sensorInfoData.size(); ++i)
     {
         const QJsonObject& sensorData = sensorInfoData.at(i);

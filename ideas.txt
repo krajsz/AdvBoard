@@ -25,6 +25,7 @@ Dashboard setup
 	- Select sensors (will have some default ones for each dashboard type)
 	- Sensor settings dialog
 	- Layout sensors (move around, resize..)
+	- Drag & drop ?
 
 Steps:
 	1. Live or post processing

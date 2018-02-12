@@ -1,6 +1,7 @@
 #ifndef DASHBOARDSETUPCONTROLLER
 #define DASHBOARDSETUPCONTROLLER
 
+#include "src/controllers/AdvViewController.h"
 #include <QObject>
 
 class DashboardSetupController : public QObject
@@ -8,10 +9,15 @@ class DashboardSetupController : public QObject
      Q_OBJECT
 public:
     explicit DashboardSetupController(QObject *parent = nullptr);
-
+    void setSensorDataReader(SensorDataReader* sensorDataReader);
+    AdvViewController* viewController();
 signals:
-
+    void selectDashboardType(int dashboardType);
 public slots:
+
+private:
+    AdvViewController* m_viewController;
+    SensorDataReader* m_sensorDataReader;
 };
 
 #endif // DASHBOARDSETUPCONTROLLER

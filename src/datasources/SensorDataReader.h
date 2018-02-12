@@ -24,16 +24,22 @@ class SensorDataReader : public QObject
     Q_OBJECT
 public:
     explicit SensorDataReader(QObject *parent = nullptr);
-
+    ~SensorDataReader();
     virtual void setFile(const QString& path);
     virtual void read(bool init = false);
     int dataSnapshotCount() const;
+    int dashboardType() const;
+    int interval() const;
+    QVector<QJsonObject> sensorData() const;
+
 signals:
     void dataRead(const QVector<QJsonValue>& data);
     void initSensors(const QVector<QJsonObject>& sensordata, const int animationDuration);
     void initDashBoard(int dashboardType);
     void dataInvalid(const QString& errorString);
     void dashboardValid(bool valid = true);
+
+    void sensorDataIsValid(bool valid);
 public slots:
     virtual void startReading();
 protected:
@@ -51,9 +57,9 @@ private slots:
     virtual void readSnapshotSlot();
 private:
     QString m_path;
+    QVector<QJsonObject> m_sensorData;
 
-
-
+    int m_dashboardType;
     int m_dataSnapshotCount;
     int m_dataIndex;
 };
