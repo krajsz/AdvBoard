@@ -1,0 +1,8 @@
+ui_*
+*.o
+moc_*
+qrc_*
+Makefile
+*.user*
+AdvBoard
+*qmake*

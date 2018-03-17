@@ -5,7 +5,7 @@ Description	: Postprocessing setup widget
 --------------------------------------------------------------------
 Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 ***************************************************************************/
-#include "src\widgets\PostProcessingSetupWidget.h"
+#include "src/widgets/PostProcessingSetupWidget.h"
 #include "src/widgets/VideoLoadingDialog.h"
 #include "src/view/AdvSensorItem.h"
 #include "ui_postprocessingsetupwidget.h"
@@ -195,7 +195,7 @@ void PostProcessingSetupWidget::loadSensorData()
 }
 void PostProcessingSetupWidget::loadVideoSource()
 {
-    const QUrl path = QFileDialog::getOpenFileName(0, tr("Open your video"), QDir::homePath());
+    const QUrl path = QUrl::fromLocalFile(QFileDialog::getOpenFileName(0, tr("Open your video"), QDir::homePath()));
 
     m_controller->loadVideoSource(path);
 }

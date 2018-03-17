@@ -5,7 +5,7 @@ Description	: Widget for selecting the processing type
 --------------------------------------------------------------------
 Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 ***************************************************************************/
-#include "src\widgets\SelectProcessingModeWidget.h"
+#include "src/widgets/SelectProcessingModeWidget.h"
 #include "ui_selectprocessingmodewidget.h"
 
 

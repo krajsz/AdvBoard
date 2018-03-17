@@ -32,6 +32,7 @@ void VideoSource::setVideo(const QUrl &url)
 {
     m_path = url;
     m_player->setMedia(url);
+    qDebug() << url;
     m_player->setVideoOutput(this);
     setPos(0, 0);
 }

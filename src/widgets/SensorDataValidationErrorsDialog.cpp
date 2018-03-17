@@ -1,4 +1,4 @@
-#include "src\widgets\SensorDataValidationErrorsDialog.h"
+#include "src/widgets/SensorDataValidationErrorsDialog.h"
 #include "ui_sensordatavalidationerrorsdialog.h"
 
 SensorDataValidationErrorsDialog::SensorDataValidationErrorsDialog(QWidget *parent) :
