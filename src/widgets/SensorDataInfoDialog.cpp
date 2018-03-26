@@ -18,11 +18,6 @@ SensorDataInfoDialog::SensorDataInfoDialog(QWidget *parent) :
     ui->setupUi(this);
 }
 
-void SensorDataInfoDialog::setController(SensorDataInfoDialogController* controller)
-{
-    m_controller = controller;
-}
-
 SensorDataInfoDialog::~SensorDataInfoDialog()
 {
     delete ui;

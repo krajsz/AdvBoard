@@ -1,3 +1,7 @@
+Reduce signals
+
+Refactor code: set view for controller
+
 Validate data
 	- data validator
 		- singleton ?

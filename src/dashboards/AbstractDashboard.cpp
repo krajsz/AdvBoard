@@ -9,7 +9,7 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 
 #include <QGraphicsObject>
 #include <QPropertyAnimation>
-
+#include <QJsonArray>
 #include <QDebug>
 
 #define DASHBOARD_SENSORITEMS_PADDING 15

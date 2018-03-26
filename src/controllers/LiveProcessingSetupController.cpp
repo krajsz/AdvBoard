@@ -9,3 +9,13 @@ void LiveProcessingSetupController::setPreview(const LiveProcessingSetupControll
 {
     m_preview = preview;
 }
+
+void LiveProcessingSetupController::setView(LiveProcessingSetupWidget * const view)
+{
+    m_view = view;
+}
+
+LiveProcessingSetupWidget* const LiveProcessingSetupController::view() const
+{
+    return m_view;
+}

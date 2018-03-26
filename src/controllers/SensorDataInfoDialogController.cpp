@@ -11,3 +11,13 @@ SensorDataInfoDialogController::SensorDataInfoDialogController(QObject *parent) 
 {
 
 }
+
+void SensorDataInfoDialogController::setView(SensorDataInfoDialog * const view)
+{
+    m_view = view;
+}
+
+SensorDataInfoDialog * const SensorDataInfoDialogController::view() const
+{
+    return m_view;
+}

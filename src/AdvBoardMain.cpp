@@ -49,8 +49,6 @@ AdvBoardMain::AdvBoardMain(QWidget *parent) :
 
 AdvBoardMain::~AdvBoardMain()
 {
-    delete m_controller;
-
     delete m_selectProcessingModeWidget;
     if (m_dashboardSetupWidget)
         delete m_dashboardSetupWidget;
@@ -82,10 +80,6 @@ void AdvBoardMain::keyPressEvent(QKeyEvent *event)
         }
     }
 }
-void AdvBoardMain::setController(AdvMainController *controller)
-{
-    m_controller = controller;
-}
 
 void AdvBoardMain::nextWidget()
 {
@@ -100,6 +94,8 @@ void AdvBoardMain::nextWidget()
 
                 m_stackedWidget->addWidget(m_liveProcessingWidget);
             }
+            emit nextButtonLiveProcessing();
+
             m_stackedWidget->setCurrentWidget(m_liveProcessingWidget);
         }
         else if (processingMode == SelectProcessingModeWidget::ProcessingMode::PostProcessing)
@@ -108,9 +104,12 @@ void AdvBoardMain::nextWidget()
             {
                 m_postProcessingWidget = new PostProcessingSetupWidget;
                 connect(m_postProcessingWidget, &PostProcessingSetupWidget::ready, this, &AdvBoardMain::dataReady);
-                m_postProcessingWidget->setController(m_controller->postProcessingSetupController());
+                //m_postProcessingWidget->setController(m_controller->postProcessingSetupController());
                 m_stackedWidget->addWidget(m_postProcessingWidget);
             }
+
+            emit nextButtonPostProcessing();
+
             m_stackedWidget->setCurrentWidget(m_postProcessingWidget);
         }
 
@@ -123,21 +122,19 @@ void AdvBoardMain::nextWidget()
         if (m_dashboardSetupWidget == nullptr)
         {
             m_dashboardSetupWidget = new DashboardSetupWidget;
-            m_dashboardSetupWidget->setController(m_controller->dashboardSetupController());
             m_stackedWidget->addWidget(m_dashboardSetupWidget);
         }
 
 
         if (m_stackedWidget->currentWidget() == m_liveProcessingWidget)
         {
-            m_controller->dashboardSetupShown(SelectProcessingModeWidget::ProcessingMode::LiveProcessing);
+            emit nextButtonDashboardSetup(SelectProcessingModeWidget::ProcessingMode::LiveProcessing);
         }
 
         if (m_stackedWidget->currentWidget() == m_postProcessingWidget)
         {
-            m_controller->dashboardSetupShown(SelectProcessingModeWidget::ProcessingMode::PostProcessing);
+            emit nextButtonDashboardSetup(SelectProcessingModeWidget::ProcessingMode::PostProcessing);
         }
-
 
         ui->nextButton->setText(tr("Start processing"));
         ui->nextButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
@@ -156,6 +153,8 @@ void AdvBoardMain::nextWidget()
         ui->nextButton->setIcon(style()->standardIcon(QStyle::SP_MediaStop));
 
         m_stackedWidget->setCurrentWidget(m_previewWidget);
+
+        emit nextButtonPreviewWidget();
     }
 }
 

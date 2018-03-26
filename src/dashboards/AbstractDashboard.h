@@ -8,7 +8,6 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 #ifndef ABSTRACTDASHBOARD_H
 #define ABSTRACTDASHBOARD_H
 
-#include "src/datasources/SensorDataReader.h"
 #include "src/view/AdvSensorItem.h"
 
 #include <QVector>

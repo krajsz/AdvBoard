@@ -22,6 +22,16 @@ void PostProcessingSetupController::sensorDataIsValidSlot(bool valid)
     emit sensorDataIsValid(valid);
 }
 
+void PostProcessingSetupController::setView(PostProcessingSetupWidget * const view)
+{
+    m_view = view;
+}
+
+PostProcessingSetupWidget* const PostProcessingSetupController::view() const
+{
+    return m_view;
+}
+
 void PostProcessingSetupController::setResolutionWidth(const int width)
 {
     m_resolution.setWidth(width);

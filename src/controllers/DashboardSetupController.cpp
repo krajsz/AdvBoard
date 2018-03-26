@@ -1,4 +1,8 @@
-#include "DashboardSetupController"
+#include "src/controllers/DashboardSetupController.h"
+#include "src/controllers/AdvViewController.h"
+#include "src/widgets/DashboardSetupWidget.h"
+
+#include "src/datasources/SensorDataReader.h"
 
 DashboardSetupController::DashboardSetupController(QObject *parent) : QObject(parent),
     m_viewController(new AdvViewController)
@@ -8,6 +12,16 @@ DashboardSetupController::DashboardSetupController(QObject *parent) : QObject(pa
     connect(ui->startProcessingButton, &QPushButton::clicked, m_controller->viewController(), &AdvViewController::play);
     connect(ui->startProcessingButton, &QPushButton::clicked, m_controller->sensorDataReader(), &SensorDataReader::startReading);
 */
+}
+
+void DashboardSetupController::setView(DashboardSetupWidget * const view)
+{
+    m_view = view;
+}
+
+DashboardSetupWidget * const DashboardSetupController::view() const
+{
+    return m_view;
 }
 
 AdvViewController* DashboardSetupController::viewController()

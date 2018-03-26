@@ -9,6 +9,8 @@
 #include "src/datasources/validators/SensorDataSourceValidator.h"
 #include "src/datasources/SensorDataReader.h"
 #include "src/view/AdvVideoView.h"
+#include "src/widgets/PostProcessingSetupWidget.h"
+
 #include "src/controllers/SensorDataInfoDialogController.h"
 #include "src/controllers/AdvViewController.h"
 #include "src/controllers/VideoInfoDialogController.h"
@@ -19,6 +21,8 @@ class PostProcessingSetupController : public QObject
 public:
     explicit PostProcessingSetupController(QObject* parent = nullptr);
     ~PostProcessingSetupController();
+    void setView(PostProcessingSetupWidget* const view);
+    PostProcessingSetupWidget* const view() const;
     enum Preview {
         Normal = 0,
         Fullscreen
@@ -77,7 +81,7 @@ private:
     SensorDataInfoDialogController* m_sensorDataInfoDialogController;
 
     SensorDataSourceValidator* m_sensorDataSourceValidator;
-
+    PostProcessingSetupWidget* m_view;
     QSize m_resolution;
 
     bool m_keepAspectRatio;

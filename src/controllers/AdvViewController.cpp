@@ -6,6 +6,7 @@ Description	: Controller class of the graphics view
 Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 ***************************************************************************/
 #include "src/controllers/AdvViewController.h"
+#include "src/view/AdvVideoView.h"
 
 #include <QDebug>
 
@@ -28,4 +29,14 @@ void AdvViewController::dataRead(const QVector<QJsonValue> &data)
 {
     emit dataReadSignal(data);
     emit update();
+}
+
+void AdvViewController::setView(AdvVideoView * const view)
+{
+    m_view = view;
+}
+
+AdvVideoView* const AdvViewController::view() const
+{
+    return m_view;
 }

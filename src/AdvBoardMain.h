@@ -1,8 +1,6 @@
 #ifndef ADVBOARDMAIN_H
 #define ADVBOARDMAIN_H
 
-#include "src/controllers/AdvMainController.h"
-
 #include "src/widgets/DashboardSetupWidget.h"
 #include "src/widgets/LiveProcessingSetupWidget.h"
 #include "src/widgets/PostProcessingSetupWidget.h"
@@ -25,8 +23,6 @@ class AdvBoardMain : public QMainWindow
 public:
     explicit AdvBoardMain(QWidget *parent = 0);
     ~AdvBoardMain();
-    void setController(AdvMainController* controller);
-
 protected:
     void keyPressEvent(QKeyEvent *event);
 
@@ -40,9 +36,13 @@ private slots:
     void about();
 
     void dataReady(bool ready);
+signals:
+    void nextButtonPreviewWidget();
+    void nextButtonLiveProcessing();
+    void nextButtonDashboardSetup(SelectProcessingModeWidget::ProcessingMode mode);
+    void nextButtonPostProcessing();
 private:
     Ui::AdvBoardMain *ui;
-    AdvMainController* m_controller;
 
     DashboardSetupWidget* m_dashboardSetupWidget;
     LiveProcessingSetupWidget* m_liveProcessingWidget;

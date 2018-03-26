@@ -35,12 +35,12 @@ PostProcessingSetupWidget::PostProcessingSetupWidget(QWidget *parent) :
     ui->showValidationErrorsButton->hide();
 }
 
-void PostProcessingSetupWidget::setController(PostProcessingSetupController *controller)
+/*void PostProcessingSetupWidget::setController(PostProcessingSetupController *controller)
 {
     m_controller = controller;
     connect(m_controller, &PostProcessingSetupController::videoLoadedSignal, this, &PostProcessingSetupWidget::videoLoaded);
     connect(m_controller, &PostProcessingSetupController::sensorDataIsValid, this, &PostProcessingSetupWidget::sensorDataIsValid);
-}
+}*/
 
 PostProcessingSetupWidget::~PostProcessingSetupWidget()
 {
@@ -68,16 +68,17 @@ void PostProcessingSetupWidget::sensorDataInfoDialogButtonClicked()
         m_sensorDataInfoDialog = new SensorDataInfoDialog();
     }
 
-    m_sensorDataInfoDialog->setSensors(m_controller->sensorDataReader()->sensorData());
+    emit sensorDataInfoDialogButtonClickedSignal();
+   // m_sensorDataInfoDialog->setSensors(m_controller->sensorDataReader()->sensorData());
     m_sensorDataInfoDialog->show();
 }
 
-void PostProcessingSetupWidget::videoLoaded()
+void PostProcessingSetupWidget::videoLoaded(bool bready)
 {
-    emit ready(m_controller->ready());
+    emit ready(bready);
 }
 
-void PostProcessingSetupWidget::sensorDataIsValid(bool valid)
+void PostProcessingSetupWidget::sensorDataIsValid(bool valid, bool bready)
 {
     if (valid)
     {
@@ -89,7 +90,7 @@ void PostProcessingSetupWidget::sensorDataIsValid(bool valid)
         ui->sensorDataValidLabel->setText("Invalid sensor data");
     }
 
-    emit ready(m_controller->ready());
+    emit ready(bready);
 }
 
 void PostProcessingSetupWidget::keepAspectRatioChecked(bool checked)
@@ -144,17 +145,18 @@ void PostProcessingSetupWidget::resizePercentageSpinboxValueChanged(int value)
 
 void PostProcessingSetupWidget::resolutionWidthChanged(int value)
 {
-    m_controller->setResolutionWidth(value);
+    emit resolutionWidthChangedSignal(value);
     ui->predefinedResolutionsComboBox->setCurrentIndex(0);
 }
 void PostProcessingSetupWidget::resolutionHeightChanged(int value)
 {
-    m_controller->setResolutionHeight(value);
+    emit resolutionHeightChangedSignal(value);
     ui->predefinedResolutionsComboBox->setCurrentIndex(0);
 }
 void PostProcessingSetupWidget::resolutionPredefinedChanged(int index)
 {
-    const PostProcessingSetupController::PredefinedSizes size = static_cast<PostProcessingSetupController::PredefinedSizes>(index);
+    emit resolutionPredefinedChangedSignal(index);
+   /* const PostProcessingSetupController::PredefinedSizes size = static_cast<PostProcessingSetupController::PredefinedSizes>(index);
     switch (size) {
     case PostProcessingSetupController::PredefinedSizes::FHD:
         ui->xResolutionSpinBox->setValue(1920);
@@ -170,7 +172,7 @@ void PostProcessingSetupWidget::resolutionPredefinedChanged(int index)
         break;
     default:
         break;
-    }
+    }*/
 }
 
 void PostProcessingSetupWidget::videoFormatChanged(int index)
@@ -191,13 +193,15 @@ void PostProcessingSetupWidget::previewTypeChecked(bool checked)
 
 void PostProcessingSetupWidget::loadSensorData()
 {
-    m_controller->loadSensorData(":/json/data/testnew.json");
+    emit loadSensorDataSignal(QLatin1String(":/json/data/testnew.json"));
+   // m_controller->loadSensorData(":/json/data/testnew.json");
 }
 void PostProcessingSetupWidget::loadVideoSource()
 {
     const QUrl path = QUrl::fromLocalFile(QFileDialog::getOpenFileName(0, tr("Open your video"), QDir::homePath()));
 
-    m_controller->loadVideoSource(path);
+    emit loadVideoSourceSignal(path);
+    //m_controller->loadVideoSource(path);
 }
 
 void PostProcessingSetupWidget::showVideoInfo()

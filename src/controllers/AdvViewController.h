@@ -12,11 +12,14 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 #include <QObject>
 #include <QJsonValue>
 
+class AdvVideoView;
 class AdvViewController : public QObject
 {
     Q_OBJECT
 public:
     explicit AdvViewController(QObject *parent = nullptr);
+    void setView(AdvVideoView* const view);
+    AdvVideoView * const view() const;
 
 signals:
     void setVideo(const QUrl& url);
@@ -31,6 +34,7 @@ public slots:
     void initSensors(const QVector<QJsonObject>& sensordata, const int animationInterval);
     void initDashboard(int dashboardType);
 private:
+    AdvVideoView* m_view;
 
 };
 

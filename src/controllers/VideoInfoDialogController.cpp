@@ -4,3 +4,13 @@ VideoInfoDialogController::VideoInfoDialogController(QObject *parent) : QObject(
 {
 
 }
+
+void VideoInfoDialogController::setView(VideoLoadingDialog * const view)
+{
+    m_view = view;
+}
+
+VideoLoadingDialog * const VideoInfoDialogController::view() const
+{
+    return m_view;
+}

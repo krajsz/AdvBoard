@@ -6,6 +6,7 @@ Description	: Live processing setup widget
 Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 ***************************************************************************/
 #include "src/widgets/LiveProcessingSetupWidget.h"
+#include "src/datasources/LiveSensorDataReader.h"
 #include "ui_liveprocessingsetupwidget.h"
 
 LiveProcessingSetupWidget::LiveProcessingSetupWidget(QWidget *parent) :
@@ -18,11 +19,6 @@ LiveProcessingSetupWidget::LiveProcessingSetupWidget(QWidget *parent) :
 LiveProcessingSetupWidget::~LiveProcessingSetupWidget()
 {
     delete ui;
-}
-
-void LiveProcessingSetupWidget::setController(LiveProcessingSetupController *controller)
-{
-    m_controller = controller;
 }
 
 void LiveProcessingSetupWidget::sourceTypeChanged(int index)
@@ -77,14 +73,7 @@ void LiveProcessingSetupWidget::previewEnabledChanged(bool enabled)
 }
 void LiveProcessingSetupWidget::previewNormalChanged(bool checked)
 {
-    if (checked)
-    {
-        m_controller->setPreview(LiveProcessingSetupController::Preview::Normal);
-    }
-    else
-    {
-        m_controller->setPreview(LiveProcessingSetupController::Preview::Fullscreen);
-    }
+    emit setPreview(checked);
 }
 void LiveProcessingSetupWidget::intervalChanged(const int value)
 {

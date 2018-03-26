@@ -1,6 +1,5 @@
 #include "src/view/AdvVideoView.h"
 #include "src/datasources/VideoSource.h"
-#include "src/controllers/AdvViewController.h"
 
 #include <QDebug>
 AdvVideoView::AdvVideoView(QWidget *parent) : QGraphicsView(parent),
@@ -9,7 +8,7 @@ AdvVideoView::AdvVideoView(QWidget *parent) : QGraphicsView(parent),
     connect(m_advScene, &AdvVideoScene::sceneSetupDone, this, &AdvVideoView::setScenee);
 }
 
-void AdvVideoView::setController(AdvViewController* controller)
+/*void AdvVideoView::setController(AdvViewController* controller)
 {
     m_controller = controller;
     connect(m_controller, &AdvViewController::setVideo, m_advScene->video(), &VideoSource::setVideo);
@@ -17,7 +16,7 @@ void AdvVideoView::setController(AdvViewController* controller)
     connect(m_controller, &AdvViewController::initDashboardSignal, m_advScene, &AdvVideoScene::initDashboard);
     connect(m_controller, &AdvViewController::dataReadSignal, m_advScene, &AdvVideoScene::updateSensorsSignal);
     connect(m_controller, &AdvViewController::initSensorsSignal, m_advScene, &AdvVideoScene::initSensorSignal);
-}
+}*/
 
 AdvVideoScene* AdvVideoView::videoScene()
 {

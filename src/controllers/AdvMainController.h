@@ -13,16 +13,19 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 #include "src/controllers/PostProcessingSetupController.h"
 #include "src/controllers/LiveProcessingSetupController.h"
 #include "src/controllers/PreviewController.h"
-#include "src/controllers/DashboardSetupController"
-
+#include "src/controllers/DashboardSetupController.h"
 #include "src/widgets/SelectProcessingModeWidget.h"
 
+#include "src/AdvBoardMain.h"
 class AdvMainController : public QObject
 {
     Q_OBJECT
 public:
     explicit AdvMainController(QObject* parent = nullptr);
     ~AdvMainController();
+
+    void setView(AdvBoardMain* const view);
+    AdvBoardMain * const view() const;
 
     PostProcessingSetupController* postProcessingSetupController();
     LiveProcessingSetupController* liveProcessingSetupController();
@@ -31,11 +34,12 @@ public:
 
     void dashboardSetupShown(const SelectProcessingModeWidget::ProcessingMode mode);
 private:
-
     PostProcessingSetupController* m_postProcessingSetupController;
     LiveProcessingSetupController* m_liveProcessingSetupController;
     DashboardSetupController* m_dashboardSetupController;
     PreviewController* m_previewController;
+
+    AdvBoardMain* m_view;
 };
 
 #endif // ADVMAINCONTROLLER_H

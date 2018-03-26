@@ -8,7 +8,6 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 #ifndef POSTPROCESSINGSETUPWIDGET_H
 #define POSTPROCESSINGSETUPWIDGET_H
 #include "src/widgets/SensorDataInfoDialog.h"
-#include "src/controllers/PostProcessingSetupController.h"
 #include "src/view/AdvVideoView.h"
 
 #include <QWidget>
@@ -24,21 +23,26 @@ class PostProcessingSetupWidget : public QWidget
 public:
     explicit PostProcessingSetupWidget(QWidget *parent = 0);
     ~PostProcessingSetupWidget();
-
-    void setController(PostProcessingSetupController* controller);
     void process();
 
 signals:
     void viewCompleted(AdvVideoView* view);
     void ready(bool ready) const;
+    void sensorDataInfoDialogButtonClickedSignal();
+
+    void resolutionWidthChangedSignal(int value);
+    void resolutionHeightChangedSignal(int value);
+    void resolutionPredefinedChangedSignal(int index);
+    void loadSensorDataSignal(const QLatin1String& fileName);
+    void loadVideoSourceSignal(const QUrl& url);
+
 private:
     Ui::PostProcessingSetupWidget *ui;
     SensorDataInfoDialog* m_sensorDataInfoDialog;
-    PostProcessingSetupController* m_controller;
 private slots:
 
-    void sensorDataIsValid(bool valid);
-    void videoLoaded();
+    void sensorDataIsValid(bool valid, bool bready);
+    void videoLoaded(bool ready);
 
     void sensorDataInfoDialogButtonClicked();
 

@@ -2,7 +2,6 @@
 #define ADVVIDEOVIEW_H
 
 #include "src/view/AdvVideoScene.h"
-#include "src/controllers/AdvViewController.h"
 
 #include <QGraphicsView>
 
@@ -11,7 +10,6 @@ class AdvVideoView final : public QGraphicsView
     Q_OBJECT
 public:
     explicit AdvVideoView(QWidget *parent = nullptr);
-    void setController(AdvViewController* controller);
     AdvVideoScene* videoScene();
 
 signals:
@@ -21,7 +19,6 @@ private slots:
     void setScenee();
 private:
     AdvVideoScene* m_advScene;
-    AdvViewController* m_controller;
 };
 
 #endif // ADVVIDEOVIEW_H

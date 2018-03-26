@@ -6,6 +6,8 @@ Description	: Dashboard setup widget
 Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 ***************************************************************************/
 #include "src/widgets/DashboardSetupWidget.h"
+#include "src/view/AdvVideoView.h"
+
 #include "ui_dashboardsetupwidget.h"
 
 DashboardSetupWidget::DashboardSetupWidget(QWidget *parent) :
@@ -23,13 +25,13 @@ DashboardSetupWidget::~DashboardSetupWidget()
     delete ui;
 }
 
-void DashboardSetupWidget::setController(DashboardSetupController *controller)
+/*void DashboardSetupWidget::setController(DashboardSetupController *controller)
 {
     m_controller = controller;
-    m_view->setController(m_controller->viewController());
+    //m_view->setController(m_controller->viewController());
 
-    connect(m_controller, &DashboardSetupController::selectDashboardType, this, &DashboardSetupWidget::setDashboardType);
-}
+   // connect(m_controller, &DashboardSetupController::selectDashboardType, this, &DashboardSetupWidget::setDashboardType);
+}*/
 
 void DashboardSetupWidget::setDashboardType(int dashboardType)
 {

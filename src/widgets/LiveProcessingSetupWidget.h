@@ -8,8 +8,6 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 #ifndef LIVEPROCESSINGSETUPWIDGET_H
 #define LIVEPROCESSINGSETUPWIDGET_H
 
-#include "src/controllers/LiveProcessingSetupController.h"
-
 #include <QWidget>
 
 namespace Ui {
@@ -24,7 +22,6 @@ public:
     explicit LiveProcessingSetupWidget(QWidget *parent = 0);
     ~LiveProcessingSetupWidget();
 
-    void setController(LiveProcessingSetupController* controller);
 private slots:
     void sourceTypeChanged(int index);
     void previewEnabledChanged(bool enabled);
@@ -37,9 +34,10 @@ private slots:
 
     void openLiveFile();
 
+signals:
+    void setPreview(bool checked);
 private:
     Ui::LiveProcessingSetupWidget *ui;
-    LiveProcessingSetupController* m_controller;
 };
 
 #endif // LIVEPROCESSINGSETUPWIDGET_H

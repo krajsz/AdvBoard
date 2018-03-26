@@ -45,7 +45,6 @@ SOURCES += \
     src/view/AdvSensorItem.cpp \
     src/view/AdvVideoScene.cpp \
     src/VideoRecorder.cpp \
-    src/controllers/SettingDialogController.cpp \
     src/widgets/VideoLoadingDialog.cpp \
     src/sensors/HumiditySensor.cpp \
     src/sensors/SpeedSensor.cpp \
@@ -93,7 +92,6 @@ HEADERS += \
     src/view/AdvSensorItem.h \
     src/view/AdvVideoScene.h \
     src/VideoRecorder.h \
-    src/controllers/SettingDialogController.h \
     src/widgets/VideoLoadingDialog.h \
     src/sensors/HumiditySensor.h \
     src/sensors/SpeedSensor.h \
@@ -116,7 +114,7 @@ HEADERS += \
     src/datasources/validators/DashboardTypeValidator.h \
     src/datasources/validators/SensorTypeValidator.h \
     src/widgets/SensorDataValidationErrorsDialog.h \
-    src/controllers/DashboardSetupController \
+    src/controllers/DashboardSetupController.h \
     src/controllers/PostProcessingSetupController.h \
     src/controllers/LiveProcessingSetupController.h \
     src/controllers/PreviewController.h
