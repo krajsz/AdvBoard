@@ -34,7 +34,7 @@ public:
         H264
     };
 
-    enum PredefinedSizes {
+    enum PredefinedSize {
         Custom = 0,
         FHD,
         HD,
@@ -62,13 +62,14 @@ public:
     AdvViewController* viewController();
     SensorDataReader* sensorDataReader();
     VideoInfoDialogController* videoInfoDialogController();
+public slots:
+    void setPredefinedSize(int size);
 
 signals:
     void dashboardValid(bool valid = true);
     void sensorDataInvalid(const QString& errorString);
-    void videoLoadedSignal();
-signals:
-    void sensorDataIsValid(bool valid);
+    void videoLoadedSignal(bool ready);
+    void sensorDataIsValid(bool valid, bool ready);
 private slots:
     void videoLoaded();
     void sensorDataIsValidSlot(bool valid);
@@ -93,6 +94,9 @@ private:
 
     SaveFormat m_saveFormat;
     Preview m_preview;
+    PredefinedSize m_predefinedSize;
+
+    void connectView();
 };
 
 #endif // POSTPROCESSINGSETUPCONTROLLER_H

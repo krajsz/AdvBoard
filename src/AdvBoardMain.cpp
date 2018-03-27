@@ -47,6 +47,51 @@ AdvBoardMain::AdvBoardMain(QWidget *parent) :
     connect(ui->backButton, &QPushButton::clicked, this, &AdvBoardMain::previousWidget);
 }
 
+LiveProcessingSetupWidget* AdvBoardMain::liveProcessingSetupWidget()
+{
+    if (m_liveProcessingWidget == nullptr)
+    {
+        m_liveProcessingWidget = new LiveProcessingSetupWidget;
+        m_stackedWidget->addWidget(m_liveProcessingWidget);
+    }
+
+    return m_liveProcessingWidget;
+}
+
+PostProcessingSetupWidget* AdvBoardMain::postProcessingSetupWidget()
+{
+    if (m_postProcessingWidget == nullptr)
+    {
+        m_postProcessingWidget = new PostProcessingSetupWidget;
+        connect(m_postProcessingWidget, &PostProcessingSetupWidget::ready, this, &AdvBoardMain::dataReady);
+        m_stackedWidget->addWidget(m_postProcessingWidget);
+    }
+
+    return m_postProcessingWidget;
+}
+
+DashboardSetupWidget* AdvBoardMain::dashBoardSetupWidget()
+{
+    if (m_dashboardSetupWidget == nullptr)
+    {
+        m_dashboardSetupWidget = new DashboardSetupWidget;
+        m_stackedWidget->addWidget(m_dashboardSetupWidget);
+    }
+
+    return m_dashboardSetupWidget;
+}
+
+PreviewWidget* AdvBoardMain::previewWidget()
+{
+    if (m_previewWidget == nullptr)
+    {
+        m_previewWidget = new PreviewWidget;
+        m_stackedWidget->addWidget(m_previewWidget);
+    }
+
+    return m_previewWidget;
+}
+
 AdvBoardMain::~AdvBoardMain()
 {
     delete m_selectProcessingModeWidget;
@@ -91,7 +136,6 @@ void AdvBoardMain::nextWidget()
             if (m_liveProcessingWidget == nullptr)
             {
                 m_liveProcessingWidget = new LiveProcessingSetupWidget;
-
                 m_stackedWidget->addWidget(m_liveProcessingWidget);
             }
             emit nextButtonLiveProcessing();
@@ -104,7 +148,6 @@ void AdvBoardMain::nextWidget()
             {
                 m_postProcessingWidget = new PostProcessingSetupWidget;
                 connect(m_postProcessingWidget, &PostProcessingSetupWidget::ready, this, &AdvBoardMain::dataReady);
-                //m_postProcessingWidget->setController(m_controller->postProcessingSetupController());
                 m_stackedWidget->addWidget(m_postProcessingWidget);
             }
 

@@ -32,7 +32,11 @@ public:
     DashboardSetupController* dashboardSetupController();
     PreviewController* previewController();
 
+private slots:
     void dashboardSetupShown(const SelectProcessingModeWidget::ProcessingMode mode);
+    void liveProcessingSetupShown();
+    void postProcessingSetupShown();
+    void previewShown();
 private:
     PostProcessingSetupController* m_postProcessingSetupController;
     LiveProcessingSetupController* m_liveProcessingSetupController;
@@ -40,6 +44,8 @@ private:
     PreviewController* m_previewController;
 
     AdvBoardMain* m_view;
+
+    void connectView();
 };
 
 #endif // ADVMAINCONTROLLER_H

@@ -23,6 +23,12 @@ class AdvBoardMain : public QMainWindow
 public:
     explicit AdvBoardMain(QWidget *parent = 0);
     ~AdvBoardMain();
+
+    LiveProcessingSetupWidget* liveProcessingSetupWidget();
+    PostProcessingSetupWidget* postProcessingSetupWidget();
+    PreviewWidget* previewWidget();
+    DashboardSetupWidget* dashBoardSetupWidget();
+
 protected:
     void keyPressEvent(QKeyEvent *event);
 

@@ -19,12 +19,14 @@ PostProcessingSetupController::~PostProcessingSetupController()
 void PostProcessingSetupController::sensorDataIsValidSlot(bool valid)
 {
     m_sensorDataLoaded = valid;
-    emit sensorDataIsValid(valid);
+    emit sensorDataIsValid(valid, m_sensorDataLoaded && m_videoSourceLoaded);
 }
 
 void PostProcessingSetupController::setView(PostProcessingSetupWidget * const view)
 {
     m_view = view;
+
+    connectView();
 }
 
 PostProcessingSetupWidget* const PostProcessingSetupController::view() const
@@ -45,6 +47,25 @@ void PostProcessingSetupController::setResolutionHeight(const int height)
 void PostProcessingSetupController::setResizePercent(const int percent)
 {
     m_resizePercent = percent;
+}
+
+void PostProcessingSetupController::setPredefinedSize(int size)
+{
+    const PostProcessingSetupController::PredefinedSize ssize = static_cast<PostProcessingSetupController::PredefinedSize>(size);
+    m_predefinedSize = ssize;
+    switch (size) {
+    case PostProcessingSetupController::PredefinedSize::FHD:
+        m_view->setResolution({1920, 1080});
+        break;
+    case PostProcessingSetupController::PredefinedSize::HD:
+        m_view->setResolution({1280, 720});
+        break;
+    case PostProcessingSetupController::PredefinedSize::VGA:
+        m_view->setResolution({640, 480});
+        break;
+    default:
+        break;
+    }
 }
 
 void PostProcessingSetupController::setSaveFormat(const PostProcessingSetupController::SaveFormat format)
@@ -73,7 +94,21 @@ void PostProcessingSetupController::videoLoaded()
 
     qDebug() << "loadedvid";
 
-    emit videoLoadedSignal();
+    emit videoLoadedSignal(m_videoSourceLoaded && m_sensorDataLoaded);
+}
+
+void PostProcessingSetupController::connectView()
+{
+    // connect(m_view, &PostProcessingSetupWidget::sensorDataInfoDialogButtonClickedSignal, &PostProcessingSetupController::);
+    connect(m_view, &PostProcessingSetupWidget::resolutionHeightChangedSignal, this, &PostProcessingSetupController::setResolutionHeight);
+    connect(m_view, &PostProcessingSetupWidget::resolutionWidthChangedSignal, this, &PostProcessingSetupController::setResolutionWidth);
+    connect(m_view, &PostProcessingSetupWidget::resolutionPredefinedChangedSignal, this, &PostProcessingSetupController::setPredefinedSize);
+
+    connect(m_view, &PostProcessingSetupWidget::loadSensorDataSignal, this, &PostProcessingSetupController::loadSensorData);
+    connect(m_view, &PostProcessingSetupWidget::loadVideoSourceSignal, this, &PostProcessingSetupController::loadVideoSource);
+
+    connect(this, &PostProcessingSetupController::videoLoadedSignal, m_view, &PostProcessingSetupWidget::videoLoaded);
+    connect(this, &PostProcessingSetupController::sensorDataIsValid, m_view, &PostProcessingSetupWidget::sensorDataIsValid);
 }
 
 void PostProcessingSetupController::loadSensorData(const QString& fileName)

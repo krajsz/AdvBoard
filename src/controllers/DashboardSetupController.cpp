@@ -33,14 +33,13 @@ void DashboardSetupController::setSensorDataReader(SensorDataReader *sensorDataR
 {
     m_sensorDataReader = sensorDataReader;
 
-    connect(m_sensorDataReader, &SensorDataReader::initDashBoard, m_viewController, &AdvViewController::initDashboard);
-    connect(m_sensorDataReader, &SensorDataReader::initSensors, m_viewController, &AdvViewController::initSensors);
     connect(m_sensorDataReader, &SensorDataReader::dataRead, m_viewController, &AdvViewController::dataRead);
 
-    emit sensorDataReader->initDashBoard(m_sensorDataReader->dashboardType());
+    m_viewController->initDashboard(m_sensorDataReader->dashboardType());
+    m_viewController->initSensors(m_sensorDataReader->sensorData(), m_sensorDataReader->interval());
 
-    emit selectDashboardType(m_sensorDataReader->dashboardType());
-
-    emit sensorDataReader->initSensors(m_sensorDataReader->sensorData(), m_sensorDataReader->interval());
+    m_view->setDashboardType(m_sensorDataReader->dashboardType());
+    //emit sensorDataReader->initDashBoard(m_sensorDataReader->dashboardType());
+    //emit sensorDataReader->initSensors(m_sensorDataReader->sensorData(), m_sensorDataReader->interval());
 }
 

@@ -20,6 +20,8 @@ AdvMainController::AdvMainController(QObject* parent) : QObject(parent),
 void AdvMainController::setView(AdvBoardMain * const view)
 {
     m_view = view;
+
+    connectView();
 }
 
 AdvBoardMain* const AdvMainController::view() const
@@ -27,10 +29,19 @@ AdvBoardMain* const AdvMainController::view() const
     return m_view;
 }
 
+void AdvMainController::connectView()
+{
+    connect(m_view, &AdvBoardMain::nextButtonDashboardSetup, this, &AdvMainController::dashboardSetupShown);
+    connect(m_view, &AdvBoardMain::nextButtonLiveProcessing, this, &AdvMainController::liveProcessingSetupShown);
+    connect(m_view, &AdvBoardMain::nextButtonPostProcessing, this, &AdvMainController::postProcessingSetupShown);
+    connect(m_view, &AdvBoardMain::nextButtonPreviewWidget, this, &AdvMainController::previewShown);
+}
+
 void AdvMainController::dashboardSetupShown(const SelectProcessingModeWidget::ProcessingMode mode)
 {
     if (mode == SelectProcessingModeWidget::ProcessingMode::PostProcessing)
     {
+        dashboardSetupController()->setView(m_view->dashBoardSetupWidget());
         dashboardSetupController()->setSensorDataReader(m_postProcessingSetupController->sensorDataReader());
     }
     else if (mode == SelectProcessingModeWidget::ProcessingMode::LiveProcessing)
@@ -41,6 +52,21 @@ void AdvMainController::dashboardSetupShown(const SelectProcessingModeWidget::Pr
     {
         //wot
     }
+}
+
+void AdvMainController::liveProcessingSetupShown()
+{
+    liveProcessingSetupController()->setView(m_view->liveProcessingSetupWidget());
+}
+
+void AdvMainController::postProcessingSetupShown()
+{
+    postProcessingSetupController()->setView(m_view->postProcessingSetupWidget());
+}
+
+void AdvMainController::previewShown()
+{
+    previewController()->setView(m_view->previewWidget());
 }
 
 PostProcessingSetupController* AdvMainController::postProcessingSetupController()

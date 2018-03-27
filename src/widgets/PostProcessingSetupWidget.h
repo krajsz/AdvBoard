@@ -25,6 +25,11 @@ public:
     ~PostProcessingSetupWidget();
     void process();
 
+    void setResolution(const QSize& resolution);
+
+public slots:
+    void sensorDataIsValid(bool valid, bool bready);
+    void videoLoaded(bool ready);
 signals:
     void viewCompleted(AdvVideoView* view);
     void ready(bool ready) const;
@@ -40,9 +45,6 @@ private:
     Ui::PostProcessingSetupWidget *ui;
     SensorDataInfoDialog* m_sensorDataInfoDialog;
 private slots:
-
-    void sensorDataIsValid(bool valid, bool bready);
-    void videoLoaded(bool ready);
 
     void sensorDataInfoDialogButtonClicked();
 

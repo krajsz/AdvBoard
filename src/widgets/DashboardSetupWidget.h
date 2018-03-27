@@ -26,7 +26,7 @@ private:
     Ui::DashboardSetupWidget *ui;
     AdvVideoView* m_view;
 
-private slots:
+public slots:
     void setDashboardType(int dashboardType);
 };
 

@@ -35,12 +35,11 @@ PostProcessingSetupWidget::PostProcessingSetupWidget(QWidget *parent) :
     ui->showValidationErrorsButton->hide();
 }
 
-/*void PostProcessingSetupWidget::setController(PostProcessingSetupController *controller)
+void PostProcessingSetupWidget::setResolution(const QSize &resolution)
 {
-    m_controller = controller;
-    connect(m_controller, &PostProcessingSetupController::videoLoadedSignal, this, &PostProcessingSetupWidget::videoLoaded);
-    connect(m_controller, &PostProcessingSetupController::sensorDataIsValid, this, &PostProcessingSetupWidget::sensorDataIsValid);
-}*/
+    ui->xResolutionSpinBox->setValue(resolution.width());
+    ui->yResolutionSpinBox->setValue(resolution.height());
+}
 
 PostProcessingSetupWidget::~PostProcessingSetupWidget()
 {
@@ -156,23 +155,6 @@ void PostProcessingSetupWidget::resolutionHeightChanged(int value)
 void PostProcessingSetupWidget::resolutionPredefinedChanged(int index)
 {
     emit resolutionPredefinedChangedSignal(index);
-   /* const PostProcessingSetupController::PredefinedSizes size = static_cast<PostProcessingSetupController::PredefinedSizes>(index);
-    switch (size) {
-    case PostProcessingSetupController::PredefinedSizes::FHD:
-        ui->xResolutionSpinBox->setValue(1920);
-        ui->yResolutionSpinBox->setValue(1080);
-        break;
-    case PostProcessingSetupController::PredefinedSizes::HD:
-        ui->xResolutionSpinBox->setValue(1280);
-        ui->yResolutionSpinBox->setValue(720);
-        break;
-    case PostProcessingSetupController::PredefinedSizes::VGA:
-        ui->xResolutionSpinBox->setValue(640);
-        ui->yResolutionSpinBox->setValue(480);
-        break;
-    default:
-        break;
-    }*/
 }
 
 void PostProcessingSetupWidget::videoFormatChanged(int index)
@@ -194,14 +176,12 @@ void PostProcessingSetupWidget::previewTypeChecked(bool checked)
 void PostProcessingSetupWidget::loadSensorData()
 {
     emit loadSensorDataSignal(QLatin1String(":/json/data/testnew.json"));
-   // m_controller->loadSensorData(":/json/data/testnew.json");
 }
 void PostProcessingSetupWidget::loadVideoSource()
 {
     const QUrl path = QUrl::fromLocalFile(QFileDialog::getOpenFileName(0, tr("Open your video"), QDir::homePath()));
 
     emit loadVideoSourceSignal(path);
-    //m_controller->loadVideoSource(path);
 }
 
 void PostProcessingSetupWidget::showVideoInfo()
