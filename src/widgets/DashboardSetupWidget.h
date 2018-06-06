@@ -21,6 +21,7 @@ class DashboardSetupWidget : public QWidget
 public:
     explicit DashboardSetupWidget(QWidget *parent = 0);
     ~DashboardSetupWidget();
+	AdvVideoView* advView() const;
 
 private:
     Ui::DashboardSetupWidget *ui;

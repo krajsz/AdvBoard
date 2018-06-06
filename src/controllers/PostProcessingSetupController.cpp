@@ -94,6 +94,7 @@ void PostProcessingSetupController::videoLoaded()
 
     qDebug() << "loadedvid";
 
+	qDebug() << m_videoSourceLoaded << " " << m_sensorDataLoaded;
     emit videoLoadedSignal(m_videoSourceLoaded && m_sensorDataLoaded);
 }
 

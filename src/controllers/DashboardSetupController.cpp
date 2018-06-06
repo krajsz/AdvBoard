@@ -17,6 +17,7 @@ DashboardSetupController::DashboardSetupController(QObject *parent) : QObject(pa
 void DashboardSetupController::setView(DashboardSetupWidget * const view)
 {
     m_view = view;
+	m_viewController->setView(m_view->advView());
 }
 
 DashboardSetupWidget * const DashboardSetupController::view() const

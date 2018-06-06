@@ -10,8 +10,7 @@ class AdvVideoView final : public QGraphicsView
     Q_OBJECT
 public:
     explicit AdvVideoView(QWidget *parent = nullptr);
-    AdvVideoScene* videoScene();
-
+	AdvVideoScene* videoScene() const;
 signals:
 
 public slots:

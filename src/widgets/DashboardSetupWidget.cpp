@@ -25,6 +25,11 @@ DashboardSetupWidget::~DashboardSetupWidget()
     delete ui;
 }
 
+AdvVideoView* DashboardSetupWidget::advView() const
+{
+	return m_view;
+}
+
 void DashboardSetupWidget::setDashboardType(int dashboardType)
 {
     ui->dashboardTypeComboBox->setCurrentIndex(dashboardType - 1);

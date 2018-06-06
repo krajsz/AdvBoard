@@ -18,7 +18,7 @@ AdvVideoView::AdvVideoView(QWidget *parent) : QGraphicsView(parent),
     connect(m_controller, &AdvViewController::initSensorsSignal, m_advScene, &AdvVideoScene::initSensorSignal);
 }*/
 
-AdvVideoScene* AdvVideoView::videoScene()
+AdvVideoScene* AdvVideoView::videoScene() const
 {
     return m_advScene;
 }
