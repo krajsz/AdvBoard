@@ -18,29 +18,36 @@ void AdvViewController::initDashboard(int dashboardType)
 {
 	qDebug() << "ids";
 
-    emit initDashboardSignal(dashboardType);
+	emit initDashboardSignal(dashboardType);
 }
 
 void AdvViewController::initSensors(const QVector<QJsonObject> &sensordata, const int animationInterval)
 {
-    qDebug() << "iss";
-    emit initSensorsSignal(sensordata, animationInterval);
+	qDebug() << "iss";
+	emit initSensorsSignal(sensordata, animationInterval);
 }
 
 void AdvViewController::dataRead(const QVector<QJsonValue> &data)
 {
-    emit dataReadSignal(data);
-    emit update();
+	emit dataReadSignal(data);
+	emit update();
+}
+
+void AdvViewController::play()
+{
+	if (m_view)
+	{
+		m_view->videoScene()->video()->play();
+	}
 }
 
 void AdvViewController::setView(AdvVideoView * const view)
 {
 	qDebug() << "should happen before initsensors signal";
 
-    m_view = view;
+	m_view = view;
 
 	connect(this, &AdvViewController::setVideo, m_view->videoScene()->video(), &VideoSource::setVideo);
-	connect(this, &AdvViewController::play, m_view->videoScene()->video(), &VideoSource::play);
 	connect(this, &AdvViewController::initDashboardSignal, m_view->videoScene(), &AdvVideoScene::initDashboard);
 	connect(this, &AdvViewController::dataReadSignal, m_view->videoScene(), &AdvVideoScene::updateSensorsSignal);
 	connect(this, &AdvViewController::initSensorsSignal, m_view->videoScene(), &AdvVideoScene::initSensorSignal);
@@ -48,5 +55,5 @@ void AdvViewController::setView(AdvVideoView * const view)
 
 AdvVideoView* const AdvViewController::view() const
 {
-    return m_view;
+	return m_view;
 }

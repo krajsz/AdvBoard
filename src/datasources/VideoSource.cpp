@@ -25,14 +25,24 @@ void VideoSource::play()
 {
     if (m_player->isVideoAvailable() && m_player->mediaStatus() == QMediaPlayer::LoadedMedia
             && m_player->state() == QMediaPlayer::StoppedState)
-        m_player->play();
+	{
+		m_player->play();
+		qDebug() << "playing";
+	}
+	else
+	{
+
+		qDebug() << "not playing";
+		qDebug() << m_player->isVideoAvailable() << " " << m_player->state() << " " << m_player->mediaStatus() << " " << m_player->error() << " "  <<  m_player->media().isNull();
+
+	}
 }
 
 void VideoSource::setVideo(const QUrl &url)
 {
     m_path = url;
     m_player->setMedia(url);
-    qDebug() << url;
+	qDebug() << "video: " << url;
     m_player->setVideoOutput(this);
     setPos(0, 0);
 }

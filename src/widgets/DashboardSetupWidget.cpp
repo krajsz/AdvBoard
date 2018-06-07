@@ -9,6 +9,7 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 #include "src/view/AdvVideoView.h"
 
 #include "ui_dashboardsetupwidget.h"
+#include <QDebug>
 
 DashboardSetupWidget::DashboardSetupWidget(QWidget *parent) :
     QWidget(parent),
@@ -23,6 +24,13 @@ DashboardSetupWidget::DashboardSetupWidget(QWidget *parent) :
 DashboardSetupWidget::~DashboardSetupWidget()
 {
     delete ui;
+}
+
+void DashboardSetupWidget::resetPointers()
+{
+	m_view = nullptr;
+	ui->dashboardSetupGraphicsView = nullptr;
+	qDebug() << "resetPtr";
 }
 
 AdvVideoView* DashboardSetupWidget::advView() const

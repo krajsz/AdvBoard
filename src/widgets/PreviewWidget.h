@@ -9,6 +9,7 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 #define PREVIEWWIDGET_H
 
 #include <QWidget>
+#include "src/view/AdvVideoScene.h"
 
 namespace Ui {
 class PreviewWidget;
@@ -16,14 +17,14 @@ class PreviewWidget;
 
 class PreviewWidget : public QWidget
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit PreviewWidget(QWidget *parent = 0);
-    ~PreviewWidget();
-
+	explicit PreviewWidget(QWidget *parent = 0);
+	~PreviewWidget();
+	void setScene(AdvVideoScene* const scene);
 private:
-    Ui::PreviewWidget *ui;
+	Ui::PreviewWidget *ui;
 };
 
 #endif // PREVIEWWIDGET_H

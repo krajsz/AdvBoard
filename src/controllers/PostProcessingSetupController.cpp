@@ -121,6 +121,7 @@ void PostProcessingSetupController::loadSensorData(const QString& fileName)
 void PostProcessingSetupController::loadVideoSource(const QUrl& fileUrl)
 {
     m_videoSource = new VideoSource;
+	qDebug() << "loading video";
     m_videoSource->setVideo(fileUrl);
 
     connect(m_videoSource, &VideoSource::videoLoaded, this, &PostProcessingSetupController::videoLoaded);

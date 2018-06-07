@@ -20,6 +20,7 @@ public:
 signals:
     void selectDashboardType(int dashboardType);
 public slots:
+	void startProcessing();
 
 private:
     AdvViewController* m_viewController;

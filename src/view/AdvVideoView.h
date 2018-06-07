@@ -14,8 +14,9 @@ public:
 signals:
 
 public slots:
+	void setScenee();
+
 private slots:
-    void setScenee();
 private:
     AdvVideoScene* m_advScene;
 };

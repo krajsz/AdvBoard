@@ -9,9 +9,11 @@ class PreviewController : public QObject
 public:
     explicit PreviewController(QObject *parent = nullptr);
     void setView(PreviewWidget* const view);
+	void setAdvScene(AdvVideoScene* const scene);
     PreviewWidget* const view() const;
 private:
     PreviewWidget* m_view;
+
 };
 
 #endif // PREVIEWCONTROLLER_H

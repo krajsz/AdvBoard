@@ -15,26 +15,26 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 class AdvVideoView;
 class AdvViewController : public QObject
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    explicit AdvViewController(QObject *parent = nullptr);
-    void setView(AdvVideoView* const view);
-    AdvVideoView * const view() const;
+	explicit AdvViewController(QObject *parent = nullptr);
+	void setView(AdvVideoView* const view);
+	AdvVideoView * const view() const;
+	void play();
 
 signals:
-    void setVideo(const QUrl& url);
-    void play();
+	void setVideo(const QUrl& url);
 
-    void update();
-    void dataReadSignal(const QVector<QJsonValue>& data);
-    void initSensorsSignal(const QVector<QJsonObject>& sensordata, const int animationInterval);
-    void initDashboardSignal(int dashboardType);
+	void update();
+	void dataReadSignal(const QVector<QJsonValue>& data);
+	void initSensorsSignal(const QVector<QJsonObject>& sensordata, const int animationInterval);
+	void initDashboardSignal(int dashboardType);
 public slots:
-    void dataRead(const QVector<QJsonValue> &data);
-    void initSensors(const QVector<QJsonObject>& sensordata, const int animationInterval);
-    void initDashboard(int dashboardType);
+	void dataRead(const QVector<QJsonValue> &data);
+	void initSensors(const QVector<QJsonObject>& sensordata, const int animationInterval);
+	void initDashboard(int dashboardType);
 private:
-    AdvVideoView* m_view;
+	AdvVideoView* m_view;
 
 };
 

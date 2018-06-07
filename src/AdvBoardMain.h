@@ -18,45 +18,49 @@ class AdvBoardMain;
 
 class AdvBoardMain : public QMainWindow
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit AdvBoardMain(QWidget *parent = 0);
-    ~AdvBoardMain();
+	explicit AdvBoardMain(QWidget *parent = 0);
+	~AdvBoardMain();
 
-    LiveProcessingSetupWidget* liveProcessingSetupWidget();
-    PostProcessingSetupWidget* postProcessingSetupWidget();
-    PreviewWidget* previewWidget();
-    DashboardSetupWidget* dashBoardSetupWidget();
+	LiveProcessingSetupWidget* liveProcessingSetupWidget();
+	PostProcessingSetupWidget* postProcessingSetupWidget();
+	PreviewWidget* previewWidget();
+	DashboardSetupWidget* dashBoardSetupWidget();
 
 protected:
-    void keyPressEvent(QKeyEvent *event);
+	void keyPressEvent(QKeyEvent *event);
 
 private slots:
 
-    void nextWidget();
-    void previousWidget();
+	void nextWidget();
+	void previousWidget();
 
-    void closeApp();
+	void closeApp();
 
-    void about();
+	void about();
 
-    void dataReady(bool ready);
+	void emitStartProcessing();
+
+	void dataReady(bool ready);
 signals:
-    void nextButtonPreviewWidget();
-    void nextButtonLiveProcessing();
-    void nextButtonDashboardSetup(SelectProcessingModeWidget::ProcessingMode mode);
-    void nextButtonPostProcessing();
+	void nextButtonPreviewWidget();
+	void nextButtonLiveProcessing();
+	void nextButtonDashboardSetup(SelectProcessingModeWidget::ProcessingMode mode);
+	void nextButtonPostProcessing();
+	void startProcessing();
+
 private:
-    Ui::AdvBoardMain *ui;
+	Ui::AdvBoardMain *ui;
 
-    DashboardSetupWidget* m_dashboardSetupWidget;
-    LiveProcessingSetupWidget* m_liveProcessingWidget;
-    PostProcessingSetupWidget* m_postProcessingWidget;
-    PreviewWidget* m_previewWidget;
-    SelectProcessingModeWidget* m_selectProcessingModeWidget;
+	DashboardSetupWidget* m_dashboardSetupWidget;
+	LiveProcessingSetupWidget* m_liveProcessingWidget;
+	PostProcessingSetupWidget* m_postProcessingWidget;
+	PreviewWidget* m_previewWidget;
+	SelectProcessingModeWidget* m_selectProcessingModeWidget;
 
-    QStackedWidget* m_stackedWidget;
+	QStackedWidget* m_stackedWidget;
 };
 
 #endif // ADVBOARDMAIN_H

@@ -22,7 +22,9 @@ public:
     explicit DashboardSetupWidget(QWidget *parent = 0);
     ~DashboardSetupWidget();
 	AdvVideoView* advView() const;
-
+	void resetPointers();
+signals:
+	void startProcessing();
 private:
     Ui::DashboardSetupWidget *ui;
     AdvVideoView* m_view;
