@@ -1,4 +1,6 @@
 #include "src/datasources/VideoSource.h"
+
+/***************************************************************************/
 #include <QUrl>
 #include <QMediaPlayer>
 #include <QDebug>
@@ -33,8 +35,8 @@ void VideoSource::play()
 	{
 
 		qDebug() << "not playing";
-		qDebug() << m_player->isVideoAvailable() << " " << m_player->state() << " " << m_player->mediaStatus() << " " << m_player->error() << " "  <<  m_player->media().isNull();
-
+		qDebug() << m_player->isVideoAvailable() << " " << m_player->state()
+				 << " " << m_player->mediaStatus() << " " << m_player->error() << " "  <<  m_player->media().isNull();
 	}
 }
 

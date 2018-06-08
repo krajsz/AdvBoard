@@ -5,8 +5,10 @@ Description	: Main controller class
 --------------------------------------------------------------------
 Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 ***************************************************************************/
-#include "AdvMainController.h"
+#include "src/controllers/AdvMainController.h"
 #include "src/widgets/SelectProcessingModeWidget.h"
+
+/***************************************************************************/
 #include <QWidget>
 
 AdvMainController::AdvMainController(QObject* parent) : QObject(parent),

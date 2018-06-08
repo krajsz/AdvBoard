@@ -9,6 +9,7 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 #include "src/view/AdvVideoView.h"
 
 #include "ui_dashboardsetupwidget.h"
+/***************************************************************************/
 #include <QDebug>
 
 DashboardSetupWidget::DashboardSetupWidget(QWidget *parent) :

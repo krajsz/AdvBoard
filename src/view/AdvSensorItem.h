@@ -4,7 +4,7 @@
 #include <QGraphicsObject>
 #include "src/sensors/AbstractSensor.h"
 
-class AdvSensorItem final : public QObject, public QGraphicsItem
+class AdvSensorItem final : public QGraphicsObject
 {
     Q_OBJECT
 public:
@@ -17,7 +17,10 @@ public:
 signals:
     void updateSensor(const QVariant& newVal);
 protected:
-    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) final override;
+	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) final override;
+	void mousePressEvent(QGraphicsSceneMouseEvent *event) final override;
+	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) final override;
+	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) final override;
 public slots:
 
 private:

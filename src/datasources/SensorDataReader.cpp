@@ -6,7 +6,13 @@ Description	: Class for reading sensor data
 Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 ***************************************************************************/
 #include "src/datasources/SensorDataReader.h"
+#include "src/sensors/AccelerationSensor.h"
+#include "src/sensors/GPSpositionSensor.h"
+#include "src/sensors/HumiditySensor.h"
+#include "src/sensors/SpeedSensor.h"
+#include "src/sensors/TemperatureSensor.h"
 
+/***************************************************************************/
 #include <QTimer>
 #include <QVector>
 #include <QFileSystemWatcher>
@@ -172,3 +178,86 @@ void SensorDataReader::setFile(const QString &path)
     m_path = path;
     m_file = new QFile(m_path);
 }
+
+AbstractSensor* SensorDataReader::sensorFromData(const QJsonObject &sensorData)
+{
+	const int type = sensorData["type"].toInt();
+	const int id = sensorData["id"].toInt();
+
+	const QJsonValue& min = sensorData["min"];
+	QVariant minVal;
+	const AbstractSensor::SensorType ttype = static_cast<AbstractSensor::SensorType>(type);
+	if (!min.isUndefined())
+	{
+		if (ttype == AbstractSensor::SensorType::GPSpositionSensor)
+		{
+			QPointF minpos;
+			minpos.setX(min["lat"].toDouble());
+			minpos.setY(min["lon"].toDouble());
+
+			minVal = minpos;
+		}
+		else if (AbstractSensor::SensorType::AccelerationSensor)
+		{
+			QPointF minAcc;
+			minAcc.setX(min["x"].toDouble());
+			minAcc.setY(min["y"].toDouble());
+
+			minVal = minAcc;
+		}
+		else
+		{
+			minVal = min.toVariant();
+		}
+	}
+
+	const QJsonValue& max = sensorData["max"];
+	QVariant maxVal;
+	if (!max.isUndefined())
+	{
+		if (ttype == AbstractSensor::SensorType::GPSpositionSensor)
+		{
+			QPointF maxpos;
+			maxpos.setX(max["lat"].toDouble());
+			maxpos.setY(max["lon"].toDouble());
+
+			maxVal = maxpos;
+		}
+		else if (AbstractSensor::SensorType::AccelerationSensor)
+		{
+			QPointF maxAcc;
+			maxAcc.setX(max["x"].toDouble());
+			maxAcc.setY(max["y"].toDouble());
+
+			maxVal = maxAcc;
+		}
+		else
+		{
+			maxVal = max.toVariant();
+		}
+	}
+
+	AbstractSensor* sensor = nullptr;
+	switch (type) {
+	case AbstractSensor::SensorType::TemperatureSensor:
+		sensor = new TemperatureSensor(id, minVal.toDouble(), maxVal.toDouble());
+		break;
+	case AbstractSensor::SensorType::AccelerationSensor:
+		sensor = new AccelerationSensor(id, maxVal.toDouble(), maxVal.toDouble());
+		break;
+	case AbstractSensor::SensorType::GPSpositionSensor:
+		sensor = new GPSpositionSensor(id);
+		break;
+	case AbstractSensor::SensorType::HumiditySensor:
+		sensor = new HumiditySensor(id, maxVal.toDouble(), maxVal.toDouble());
+		break;
+	case AbstractSensor::SensorType::SpeedSensor:
+		sensor = new SpeedSensor(id, maxVal.toInt());
+		break;
+	default:
+		break;
+	}
+
+	return sensor;
+}
+

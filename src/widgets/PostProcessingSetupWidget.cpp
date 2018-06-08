@@ -17,7 +17,8 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 
 PostProcessingSetupWidget::PostProcessingSetupWidget(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::PostProcessingSetupWidget)
+	ui(new Ui::PostProcessingSetupWidget),
+	m_sensorDataInfoDialog(nullptr)
 {
     ui->setupUi(this);
 
@@ -33,6 +34,15 @@ PostProcessingSetupWidget::PostProcessingSetupWidget(QWidget *parent) :
     connect(ui->loadVideoSourceButton, &QPushButton::clicked, this, &PostProcessingSetupWidget::loadVideoSource);
 
     ui->showValidationErrorsButton->hide();
+}
+
+SensorDataInfoDialog* PostProcessingSetupWidget::sensorDataInfoDialog()
+{
+	if (m_sensorDataInfoDialog == nullptr)
+	{
+		m_sensorDataInfoDialog = new SensorDataInfoDialog;
+	}
+	return m_sensorDataInfoDialog;
 }
 
 void PostProcessingSetupWidget::setResolution(const QSize &resolution)
@@ -62,14 +72,7 @@ void PostProcessingSetupWidget::previewEnabledChecked(bool checked)
 
 void PostProcessingSetupWidget::sensorDataInfoDialogButtonClicked()
 {
-    if (m_sensorDataInfoDialog == nullptr)
-    {
-        m_sensorDataInfoDialog = new SensorDataInfoDialog();
-    }
-
     emit sensorDataInfoDialogButtonClickedSignal();
-   // m_sensorDataInfoDialog->setSensors(m_controller->sensorDataReader()->sensorData());
-    m_sensorDataInfoDialog->show();
 }
 
 void PostProcessingSetupWidget::videoLoaded(bool bready)

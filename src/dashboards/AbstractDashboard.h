@@ -24,13 +24,17 @@ public:
         BikerDashboard,
         HikerDashboard
     };
+	explicit AbstractDashboard(const DashboardType dashboardType = DashboardType::Abstract, QGraphicsObject* parent = nullptr);
 
     QVector<AdvSensorItem*> sensorItems() const;
     AbstractSensor* sensorWithId(const int id) const;
-    explicit AbstractDashboard(const DashboardType dashboardType = DashboardType::Abstract, QGraphicsObject* parent = nullptr);
     DashboardType dashboardType() const;
     int numberOfSensors() const;
     QRectF boundingRect() const;
+
+	void setAllowDraggin(bool allow);
+	bool allowDragging() const;
+
 signals:
     void sensorsInitialised();
     void sensorsUpdated();
@@ -42,9 +46,14 @@ public slots:
 protected:
     DashboardType m_type;
     QVector<AdvSensorItem*> m_advSensorItems;
+	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+	void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 private:
     void updateSensorWithID(const int id, const QJsonValue& value);
 
+	bool m_allowDragging;
+	bool m_dragging;
 };
 
 #endif // ABSTRACTDASHBOARD_H

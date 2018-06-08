@@ -18,6 +18,7 @@ public:
     explicit SensorDataInfoDialogController(QObject *parent = nullptr);
     void setView(SensorDataInfoDialog* const view);
     SensorDataInfoDialog* const view() const;
+	void setSensors(const QVector<QJsonObject> &sensors);
 signals:
 
 public slots:

@@ -1,6 +1,6 @@
 #include "src/view/AdvVideoView.h"
 #include "src/datasources/VideoSource.h"
-
+/***************************************************************************/
 #include <QDebug>
 AdvVideoView::AdvVideoView(QWidget *parent) : QGraphicsView(parent),
     m_advScene(new AdvVideoScene)

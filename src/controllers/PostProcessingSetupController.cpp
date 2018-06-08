@@ -1,4 +1,5 @@
-#include "PostProcessingSetupController.h"
+#include "src/controllers/PostProcessingSetupController.h"
+#include "src/view/AdvSensorItem.h"
 
 PostProcessingSetupController::PostProcessingSetupController(QObject *parent): QObject(parent),
     m_sensorDataSourceValidator(new SensorDataSourceValidator),
@@ -6,7 +7,8 @@ PostProcessingSetupController::PostProcessingSetupController(QObject *parent): Q
     m_sensorDataLoaded(false),
     m_videoSourceLoaded(false),
     m_keepAspectRatio(true),
-    m_sameAsSource(true)
+	m_sameAsSource(true),
+	m_sensorDataInfoDialogController(nullptr)
 {
     connect(m_sensorDataReader, &SensorDataReader::sensorDataIsValid, this, &PostProcessingSetupController::sensorDataIsValidSlot);
 }
@@ -14,6 +16,12 @@ PostProcessingSetupController::PostProcessingSetupController(QObject *parent): Q
 PostProcessingSetupController::~PostProcessingSetupController()
 {
     delete m_sensorDataSourceValidator;
+}
+
+void PostProcessingSetupController::sensorDataInfoDialog()
+{
+	sensorDataInfoDialogController()->setView(m_view->sensorDataInfoDialog());
+	sensorDataInfoDialogController()->setSensors(m_sensorDataReader->sensorData());
 }
 
 void PostProcessingSetupController::sensorDataIsValidSlot(bool valid)
@@ -25,7 +33,6 @@ void PostProcessingSetupController::sensorDataIsValidSlot(bool valid)
 void PostProcessingSetupController::setView(PostProcessingSetupWidget * const view)
 {
     m_view = view;
-
     connectView();
 }
 
@@ -100,7 +107,7 @@ void PostProcessingSetupController::videoLoaded()
 
 void PostProcessingSetupController::connectView()
 {
-    // connect(m_view, &PostProcessingSetupWidget::sensorDataInfoDialogButtonClickedSignal, &PostProcessingSetupController::);
+	connect(m_view, &PostProcessingSetupWidget::sensorDataInfoDialogButtonClickedSignal, this, &PostProcessingSetupController::sensorDataInfoDialog);
     connect(m_view, &PostProcessingSetupWidget::resolutionHeightChangedSignal, this, &PostProcessingSetupController::setResolutionHeight);
     connect(m_view, &PostProcessingSetupWidget::resolutionWidthChangedSignal, this, &PostProcessingSetupController::setResolutionWidth);
     connect(m_view, &PostProcessingSetupWidget::resolutionPredefinedChangedSignal, this, &PostProcessingSetupController::setPredefinedSize);

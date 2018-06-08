@@ -26,6 +26,7 @@ public:
     void process();
 
     void setResolution(const QSize& resolution);
+	SensorDataInfoDialog* sensorDataInfoDialog();
 
 public slots:
     void sensorDataIsValid(bool valid, bool bready);

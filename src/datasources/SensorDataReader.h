@@ -32,6 +32,8 @@ public:
     int interval() const;
     QVector<QJsonObject> sensorData() const;
 
+	static AbstractSensor* sensorFromData(const QJsonObject& sensorData);
+
 signals:
     void dataRead(const QVector<QJsonValue>& data);
     void initSensors(const QVector<QJsonObject>& sensordata, const int animationDuration);

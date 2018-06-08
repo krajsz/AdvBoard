@@ -23,7 +23,7 @@ class SensorDataInfoDialog : public QDialog
 public:
     explicit SensorDataInfoDialog(QWidget *parent = 0);
     ~SensorDataInfoDialog();
-    void setSensors(const QVector<QJsonObject> &sensors);
+	void setSensors(const QVector<QJsonObject> &sensorData);
 private:
     Ui::SensorDataInfoDialog *ui;
 };

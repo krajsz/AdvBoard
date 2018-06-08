@@ -16,60 +16,60 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 
 class AbstractSensor : public QObject
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    enum SensorType {
-        Abstract = 0,
-        TemperatureSensor,
-        AccelerationSensor,
-        HumiditySensor,
-        GPSpositionSensor,
-        SpeedSensor
-    };
+	enum SensorType {
+		Abstract = 0,
+		TemperatureSensor,
+		AccelerationSensor,
+		HumiditySensor,
+		GPSpositionSensor,
+		SpeedSensor
+	};
 
-    enum DrawingPosition
-    {
-        Separate = 0,
-        Overlap
-    };
+	enum DrawingPosition
+	{
+		Separate = 0,
+		Overlap
+	};
 
-    virtual ~AbstractSensor();
-    QVariantAnimation* animation();
-    explicit AbstractSensor(const int id, const QVariant& minValue, const QVariant& maxValue, const QVariant& val = QVariant(), SensorType type = Abstract, QObject *parent = nullptr);
-    SensorType type() const;
-    bool operator==(const AbstractSensor &other) const;
+	virtual ~AbstractSensor();
+	QVariantAnimation* animation();
+	explicit AbstractSensor(const int id, const QVariant& minValue, const QVariant& maxValue, const QVariant& val = QVariant(), SensorType type = Abstract, QObject *parent = nullptr);
+	SensorType type() const;
+	bool operator==(const AbstractSensor &other) const;
 
-    QVariant value() const;
-    QVariant minValue() const;
-    QVariant maxValue() const;
-    void setValue(const QVariant& newValue);
+	QVariant value() const;
+	QVariant minValue() const;
+	QVariant maxValue() const;
+	void setValue(const QVariant& newValue);
 
-    int id() const;
+	int id() const;
 
-    void setDrawingPosition(const DrawingPosition position);
-    DrawingPosition drawingPosition() const;
+	void setDrawingPosition(const DrawingPosition position);
+	DrawingPosition drawingPosition() const;
 
 signals:
-    void sensorUpdated();
+	void sensorUpdated();
 
 public slots:
-    void update(const QVariant& newvalue);
+	void update(const QVariant& newvalue);
 
 private:
-    SensorType m_type;
-    QJsonObject m_sensorData;
-    QVariant m_value;
+	SensorType m_type;
+	QJsonObject m_sensorData;
+	QVariant m_value;
 
-    QPointF m_test;
+	QPointF m_test;
 
-    DrawingPosition m_drawingPosition;
+	DrawingPosition m_drawingPosition;
 
-    const QVariant m_minValue;
-    const QVariant m_maxValue;
+	const QVariant m_minValue;
+	const QVariant m_maxValue;
 
-    QVariantAnimation* m_animation;
-    const int m_id;
+	QVariantAnimation* m_animation;
+	const int m_id;
 };
 
 #endif // ABSTRACTSENSOR_H

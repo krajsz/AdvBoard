@@ -10,6 +10,8 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 #include "src/sensors/AccelerationSensor.h"
 
 #include <QTreeWidgetItem>
+#include <QVector>
+
 #include <QDebug>
 SensorDataInfoDialog::SensorDataInfoDialog(QWidget *parent) :
     QDialog(parent),
@@ -23,10 +25,18 @@ SensorDataInfoDialog::~SensorDataInfoDialog()
     delete ui;
 }
 
-void SensorDataInfoDialog::setSensors(const QVector<QJsonObject> &sensors)
+void SensorDataInfoDialog::setSensors(const QVector<QJsonObject>&sensorData)
 {
     ui->sensorDataTreeView->clear();
-    /*for (AbstractSensor* sensor : sensors)
+	QVector<AbstractSensor*> sensors;
+
+	for (const QJsonObject& data : sensorData)
+	{
+		sensors.push_back(SensorDataReader::sensorFromData(data));
+	}
+
+	qDebug() <<"sensors size: " << sensors.size();
+	for (AbstractSensor* sensor : sensors)
     {
         QTreeWidgetItem* sensorTreeItem = new QTreeWidgetItem;
         QTreeWidgetItem* sensorDataNameTreeItem;;
@@ -271,5 +281,6 @@ void SensorDataInfoDialog::setSensors(const QVector<QJsonObject> &sensors)
         if (sensorTreeItem)
             ui->sensorDataTreeView->addTopLevelItem(sensorTreeItem);
 
-    }*/
+	}
+	show();
 }

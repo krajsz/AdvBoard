@@ -73,6 +73,7 @@ signals:
 private slots:
     void videoLoaded();
     void sensorDataIsValidSlot(bool valid);
+	void sensorDataInfoDialog();
 private:
     AdvViewController* m_viewController;
 
@@ -83,6 +84,8 @@ private:
 
     SensorDataSourceValidator* m_sensorDataSourceValidator;
     PostProcessingSetupWidget* m_view;
+
+
     QSize m_resolution;
 
     bool m_keepAspectRatio;

@@ -36,7 +36,6 @@ AdvBoardMain::AdvBoardMain(QWidget *parent) :
 	connect(ui->loadSensorDataButton, &QPushButton::clicked, this, &AdvBoardMain::openSensorData);
 	connect(ui->loadVideoSourceButton, &QPushButton::clicked, this, &AdvBoardMain::openVideoSource);
 	connect(ui->openVideoAction, &QAction::triggered, this, &AdvBoardMain::openVideoSource);
-	connect(ui->showDataInfoDialog, &QPushButton::clicked, this, &AdvBoardMain::sensorDataInfoDialogButtonClicked);
 	connect(ui->optionsAction, &QAction::triggered, this, &AdvBoardMain::optionsActionTriggered);
 */
 	connect(ui->nextButton, &QPushButton::clicked, this, &AdvBoardMain::emitStartProcessing);
