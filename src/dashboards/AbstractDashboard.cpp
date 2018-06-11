@@ -209,7 +209,7 @@ void AbstractDashboard::initSensors(const QVector<QJsonObject> &sensorInfoData, 
 
 				minVal = minpos;
 			}
-			else if (AbstractSensor::SensorType::AccelerationSensor)
+			else if (ttype == AbstractSensor::SensorType::AccelerationSensor)
 			{
 				QPointF minAcc;
 				minAcc.setX(min["x"].toDouble());
@@ -235,7 +235,7 @@ void AbstractDashboard::initSensors(const QVector<QJsonObject> &sensorInfoData, 
 
 				maxVal = maxpos;
 			}
-			else if (AbstractSensor::SensorType::AccelerationSensor)
+			else if (ttype == AbstractSensor::SensorType::AccelerationSensor)
 			{
 				QPointF maxAcc;
 				maxAcc.setX(max["x"].toDouble());

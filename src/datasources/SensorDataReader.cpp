@@ -184,9 +184,15 @@ AbstractSensor* SensorDataReader::sensorFromData(const QJsonObject &sensorData)
 	const int type = sensorData["type"].toInt();
 	const int id = sensorData["id"].toInt();
 
-	const QJsonValue& min = sensorData["min"];
+
+	qDebug() << sensorData;
+
+	const QJsonValue& min = sensorData.value("min");
+	qDebug() << "min:: " << min;
 	QVariant minVal;
 	const AbstractSensor::SensorType ttype = static_cast<AbstractSensor::SensorType>(type);
+
+	qDebug() <<"ttype "  <<ttype;
 	if (!min.isUndefined())
 	{
 		if (ttype == AbstractSensor::SensorType::GPSpositionSensor)
@@ -194,21 +200,29 @@ AbstractSensor* SensorDataReader::sensorFromData(const QJsonObject &sensorData)
 			QPointF minpos;
 			minpos.setX(min["lat"].toDouble());
 			minpos.setY(min["lon"].toDouble());
+			qDebug() <<"GPS "  <<ttype;
 
 			minVal = minpos;
 		}
-		else if (AbstractSensor::SensorType::AccelerationSensor)
+		else if (ttype == AbstractSensor::SensorType::AccelerationSensor)
 		{
 			QPointF minAcc;
 			minAcc.setX(min["x"].toDouble());
 			minAcc.setY(min["y"].toDouble());
+
+			qDebug() <<"ACCEL "  <<ttype;
 
 			minVal = minAcc;
 		}
 		else
 		{
 			minVal = min.toVariant();
+			qDebug() << "minval: " << minVal;
 		}
+	}
+	else
+	{
+		qDebug() << "min undefined";
 	}
 
 	const QJsonValue& max = sensorData["max"];
@@ -223,7 +237,7 @@ AbstractSensor* SensorDataReader::sensorFromData(const QJsonObject &sensorData)
 
 			maxVal = maxpos;
 		}
-		else if (AbstractSensor::SensorType::AccelerationSensor)
+		else if (ttype == AbstractSensor::SensorType::AccelerationSensor)
 		{
 			QPointF maxAcc;
 			maxAcc.setX(max["x"].toDouble());
@@ -237,6 +251,8 @@ AbstractSensor* SensorDataReader::sensorFromData(const QJsonObject &sensorData)
 		}
 	}
 
+	qDebug() << minVal << " max: " << maxVal;
+
 	AbstractSensor* sensor = nullptr;
 	switch (type) {
 	case AbstractSensor::SensorType::TemperatureSensor:
@@ -249,7 +265,7 @@ AbstractSensor* SensorDataReader::sensorFromData(const QJsonObject &sensorData)
 		sensor = new GPSpositionSensor(id);
 		break;
 	case AbstractSensor::SensorType::HumiditySensor:
-		sensor = new HumiditySensor(id, maxVal.toDouble(), maxVal.toDouble());
+		sensor = new HumiditySensor(id, minVal.toDouble(), maxVal.toDouble());
 		break;
 	case AbstractSensor::SensorType::SpeedSensor:
 		sensor = new SpeedSensor(id, maxVal.toInt());
