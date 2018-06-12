@@ -9,6 +9,7 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 #define POSTPROCESSINGSETUPWIDGET_H
 #include "src/widgets/SensorDataInfoDialog.h"
 #include "src/view/AdvVideoView.h"
+#include "src/VideoRecorder.h"
 
 #include <QWidget>
 
@@ -27,6 +28,7 @@ public:
 
     void setResolution(const QSize& resolution);
 	SensorDataInfoDialog* sensorDataInfoDialog();
+	VideoRecorder::VideoWriterConstructData videoWriterConstructData() const;
 
 public slots:
     void sensorDataIsValid(bool valid, bool bready);

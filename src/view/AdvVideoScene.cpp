@@ -11,6 +11,8 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 #include "src/dashboards/HikerDashboard.h"
 #include "src/dashboards/BikerDashboard.h"
 
+#include <QPainter>
+
 AdvVideoScene::AdvVideoScene(QGraphicsScene *parent) : QGraphicsScene(parent),
     m_video(new VideoSource),
     m_dashBoard(nullptr)
@@ -56,6 +58,17 @@ void AdvVideoScene::initDashboard(int type)
     connect(this, &AdvVideoScene::sceneSetupDone, m_dashBoard, &AbstractDashboard::layoutSensors);
 }
 
+QImage AdvVideoScene::grabSceneToImage(const QSize &size)
+{
+	QImage img(sceneRect().size().toSize(), QImage::Format_ARGB32);  // Create the image with the exact size of the shrunk scene
+	img.fill(Qt::transparent);
+	QPainter painter(&img);
+
+	painter.setRenderHint(QPainter::Antialiasing);
+	render(&painter);
+
+	return img.scaled(size);
+}
 void AdvVideoScene::resize(const QSize &size)
 {
     m_video->resize(size);

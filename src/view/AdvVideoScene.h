@@ -19,7 +19,7 @@ public:
     AbstractDashboard* dashboard();
 
     void resize(const QSize& size);
-
+	QImage grabSceneToImage(const QSize& size);
 signals:
     void updateSensorsSignal(const QVector<QJsonValue>& data);
     void initSensorSignal(const QVector<QJsonObject> &sensordata, const int interval);

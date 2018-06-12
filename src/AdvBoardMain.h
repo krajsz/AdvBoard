@@ -7,6 +7,7 @@
 #include "src/widgets/PreviewWidget.h"
 #include "src/widgets/SensorDataValidationErrorsDialog.h"
 #include "src/widgets/SelectProcessingModeWidget.h"
+#include "src/VideoRecorder.h"
 
 #include <QMainWindow>
 #include <QStackedWidget>

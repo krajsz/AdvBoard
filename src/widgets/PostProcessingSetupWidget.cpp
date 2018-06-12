@@ -36,6 +36,18 @@ PostProcessingSetupWidget::PostProcessingSetupWidget(QWidget *parent) :
     ui->showValidationErrorsButton->hide();
 }
 
+VideoRecorder::VideoWriterConstructData PostProcessingSetupWidget::videoWriterConstructData() const
+{
+	VideoRecorder::VideoWriterConstructData data;
+
+	data.fileName = ui->fileNameLineEdit->text();
+	data.fps = ui->fpsComboBox->currentText().toDouble();
+	data.size = QSize(ui->xResolutionSpinBox->value(), ui->yResolutionSpinBox->value());
+	data.fourcc = cv::VideoWriter::fourcc('H','2','6','4');
+	return data;
+}
+
+
 SensorDataInfoDialog* PostProcessingSetupWidget::sensorDataInfoDialog()
 {
 	if (m_sensorDataInfoDialog == nullptr)
@@ -184,6 +196,7 @@ void PostProcessingSetupWidget::loadVideoSource()
 {
     const QUrl path = QUrl::fromLocalFile(QFileDialog::getOpenFileName(0, tr("Open your video"), QDir::homePath()));
 
+	ui->fileNameLineEdit->setText(path.path());
     emit loadVideoSourceSignal(path);
 }
 

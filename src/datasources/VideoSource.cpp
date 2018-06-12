@@ -54,6 +54,14 @@ void VideoSource::positionChanged(qint64 position)
    // qDebug() << "pos" << position;
 }
 
+void VideoSource::videoAvailableChanged(bool available)
+{
+	if (available)
+	{
+		qDebug() << "video available";
+	}
+}
+
 void VideoSource::mediaStatusChanged(QMediaPlayer::MediaStatus status)
 {
     if (status == QMediaPlayer::LoadedMedia)

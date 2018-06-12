@@ -69,6 +69,7 @@ void AdvMainController::postProcessingSetupShown()
 void AdvMainController::previewShown()
 {
 	previewController()->setView(m_view->previewWidget());
+	previewController()->setAdvScene(dashboardSetupController()->viewController()->view()->videoScene(), postProcessingSetupController()->videoWriterConstructData());
 }
 
 PostProcessingSetupController* AdvMainController::postProcessingSetupController()

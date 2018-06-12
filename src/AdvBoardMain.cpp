@@ -87,8 +87,6 @@ PreviewWidget* AdvBoardMain::previewWidget()
 	if (m_previewWidget == nullptr)
 	{
 		m_previewWidget = new PreviewWidget;
-		m_previewWidget->setScene(m_dashboardSetupWidget->advView()->videoScene());
-
 		m_stackedWidget->addWidget(m_previewWidget);
 	}
 

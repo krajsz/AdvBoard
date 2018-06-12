@@ -30,6 +30,8 @@ public slots:
     void setVideo(const QUrl& url);
     void positionChanged(qint64 position);
     void mediaStatusChanged(QMediaPlayer::MediaStatus status);
+	void videoAvailableChanged(bool available);
+
 private:
     QUrl m_path;
     QMediaPlayer* m_player;

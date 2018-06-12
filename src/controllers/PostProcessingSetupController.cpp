@@ -115,6 +115,11 @@ void PostProcessingSetupController::videoLoaded()
     emit videoLoadedSignal(m_videoSourceLoaded && m_sensorDataLoaded);
 }
 
+VideoRecorder::VideoWriterConstructData PostProcessingSetupController::videoWriterConstructData() const
+{
+	return m_view->videoWriterConstructData();;
+}
+
 void PostProcessingSetupController::connectView()
 {
 	connect(m_view, &PostProcessingSetupWidget::sensorDataInfoDialogButtonClickedSignal, this, &PostProcessingSetupController::sensorDataInfoDialog);

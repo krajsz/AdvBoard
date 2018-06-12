@@ -263,7 +263,7 @@
       <item row="4" column="0">
        <layout class="QHBoxLayout" name="resolutionHLayout" stretch="0,2,0,2">
         <item>
-         <widget class="QLabel" name="resolutionTextLable">
+         <widget class="QLabel" name="resolutionTextLabel">
           <property name="text">
            <string>Resolution:</string>
           </property>

@@ -1,15 +1,18 @@
 #include "src/VideoRecorder.h"
-#include <QSize>
+
 #include <QImage>
+#include <QDebug>
 
 VideoRecorder::VideoRecorder(QObject *parent) : QObject(parent)
 {
 }
 
-bool VideoRecorder::open(const QString &fileName, int fourcc, double fps, const QSize &frameSize)
+bool VideoRecorder::open(const VideoWriterConstructData &data)
 {
-	cv::Size size {frameSize.width(), frameSize.height()};
-	return m_videoWriter.open(fileName.toStdString(), fourcc, fps, size);
+	cv::Size size (data.size.width(), data.size.height());
+
+	qDebug() << data.fileName << " " << size.width << " " << size.height << " " << data.fourcc << " " << data.fps;
+	return m_videoWriter.open(data.fileName.toStdString(), -1, data.fps, size);
 }
 
 void VideoRecorder::stop()
@@ -21,9 +24,14 @@ void VideoRecorder::writeFrame(const QImage &src)
 {
 	if (m_videoWriter.isOpened())
 	{
+		qDebug() << "saving frame";
 		cv::Mat fframe{src.height(), src.width(), CV_8UC3, (uchar*)src.bits(), src.bytesPerLine()};
 		cv::Mat result;
 		cv::cvtColor(fframe, result, CV_RGB2BGR);
 		m_videoWriter << fframe;
+	}
+	else
+	{
+		qDebug() << "writer not opened";
 	}
 }

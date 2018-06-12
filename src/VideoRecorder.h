@@ -2,6 +2,7 @@
 #define VIDEORECORDER_H
 
 #include <QObject>
+#include <QSize>
 
 #include <opencv2/videoio/videoio.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -10,9 +11,29 @@ class VideoRecorder : public QObject
 {
     Q_OBJECT
 public:
+	struct VideoWriterConstructData {
+		VideoWriterConstructData() : fileName(QLatin1String()), fourcc(-1), fps(0), size(QSize(-1, -1))
+		{
+		}
+		QString fileName;
+		int fourcc;
+		double fps;
+		QSize size;
+
+		VideoWriterConstructData& operator =(const VideoWriterConstructData& other)
+		{
+			fileName = other.fileName;
+			fourcc = other.fourcc;
+			fps = other.fps;
+			size = other.size;
+
+			return *this;
+		}
+	};
+
     explicit VideoRecorder(QObject *parent = nullptr);
 
-	bool open(const QString& fileName,  int fourcc, double fps, const QSize& frameSize);
+	bool open(const VideoWriterConstructData& data);
 
 signals:
 

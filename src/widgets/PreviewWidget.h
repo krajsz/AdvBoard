@@ -22,9 +22,11 @@ class PreviewWidget : public QWidget
 public:
 	explicit PreviewWidget(QWidget *parent = 0);
 	~PreviewWidget();
+	AdvVideoScene* advVideoScene() const;
 	void setScene(AdvVideoScene* const scene);
 private:
 	Ui::PreviewWidget *ui;
+	AdvVideoScene* m_scene;
 };
 
 #endif // PREVIEWWIDGET_H

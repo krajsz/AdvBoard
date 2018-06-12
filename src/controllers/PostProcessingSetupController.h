@@ -10,7 +10,7 @@
 #include "src/datasources/SensorDataReader.h"
 #include "src/view/AdvVideoView.h"
 #include "src/widgets/PostProcessingSetupWidget.h"
-
+#include "src/VideoRecorder.h"
 #include "src/controllers/SensorDataInfoDialogController.h"
 #include "src/controllers/AdvViewController.h"
 #include "src/controllers/VideoInfoDialogController.h"
@@ -65,6 +65,9 @@ public:
     AdvViewController* viewController();
     SensorDataReader* sensorDataReader();
     VideoInfoDialogController* videoInfoDialogController();
+
+	VideoRecorder::VideoWriterConstructData videoWriterConstructData() const;
+
 public slots:
     void setPredefinedSize(int size);
 
@@ -87,7 +90,6 @@ private:
 
     SensorDataSourceValidator* m_sensorDataSourceValidator;
     PostProcessingSetupWidget* m_view;
-
 
     QSize m_resolution;
 

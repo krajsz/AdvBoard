@@ -20,12 +20,17 @@ PreviewWidget::~PreviewWidget()
     delete ui;
 }
 
+AdvVideoScene* PreviewWidget::advVideoScene() const
+{
+	return m_scene;
+}
+
 void PreviewWidget::setScene(AdvVideoScene * const scene)
 {
+	m_scene = scene;
 	ui->previewGraphicsView->setScene(scene);
 	ui->previewGraphicsView->update();
 	ui->previewGraphicsView->viewport()->update();
 
 	ui->previewGraphicsView->show();
-
 }
