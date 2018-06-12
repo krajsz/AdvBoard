@@ -30,6 +30,7 @@ Dashboard setup
 	- Sensor settings dialog
 	- Layout sensors (move around, resize..)
 	- Drag & drop ?
+	- Preview of sensor movement
 
 Steps:
 	1. Live or post processing

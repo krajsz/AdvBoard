@@ -19,6 +19,8 @@ AbstractDashboard::AbstractDashboard(const DashboardType dashboardType, QGraphic
 	m_type(dashboardType),
 	m_allowDragging(true)
 {
+	setFlag(QGraphicsItem::ItemIsMovable);
+	setFlag(QGraphicsItem::ItemIsSelectable);
 }
 
 AbstractDashboard::DashboardType AbstractDashboard::dashboardType() const
@@ -81,7 +83,15 @@ QRectF AbstractDashboard::boundingRect() const
 
 void AbstractDashboard::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-	
+	if (m_allowDragging)
+	{
+		if (m_dragging)
+		{
+			qDebug() << "now dragging";
+		}
+	}
+
+	QGraphicsObject::mouseMoveEvent(event);
 }
 
 void AbstractDashboard::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -110,7 +120,7 @@ void AbstractDashboard::mousePressEvent(QGraphicsSceneMouseEvent *event)
 			}
 			else
 			{
-				event->ignore();
+				//event->ignore();
 			}
 		}
 	}

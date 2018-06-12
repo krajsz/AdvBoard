@@ -51,6 +51,9 @@ public:
 
     void setPreview(Preview preview);
 
+	void setFileToSaveName(const QString& name);
+	QString fileToSaveName() const;
+
     void setResizePercent(const int percent);
 
     void loadSensorData(const QString& fileName);
@@ -95,6 +98,7 @@ private:
 
     int m_resizePercent;
 
+	QString m_fileToSaveName;
     SaveFormat m_saveFormat;
     Preview m_preview;
     PredefinedSize m_predefinedSize;

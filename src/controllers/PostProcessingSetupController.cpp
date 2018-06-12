@@ -90,6 +90,16 @@ void PostProcessingSetupController::setPreview(PostProcessingSetupController::Pr
     m_preview = preview;
 }
 
+void PostProcessingSetupController::setFileToSaveName(const QString &name)
+{
+	m_fileToSaveName = name;
+}
+
+QString PostProcessingSetupController::fileToSaveName() const
+{
+	return m_fileToSaveName;
+}
+
 bool PostProcessingSetupController::ready() const
 {
     return m_sensorDataLoaded && m_videoSourceLoaded;

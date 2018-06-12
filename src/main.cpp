@@ -1,5 +1,6 @@
 #include "src/AdvBoardMain.h"
 #include "src/controllers/AdvMainController.h"
+
 #include <QApplication>
 
 int main(int argc, char *argv[])
@@ -9,8 +10,7 @@ int main(int argc, char *argv[])
 
     AdvMainController* controller = new AdvMainController;
 
-    //if..
-
+	//if..
     advBoard = new AdvBoardMain;
     controller->setView(advBoard);
     advBoard->show();

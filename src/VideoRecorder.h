@@ -2,7 +2,9 @@
 #define VIDEORECORDER_H
 
 #include <QObject>
-#include <QMediaRecorder>
+
+#include <opencv2/videoio/videoio.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
 
 class VideoRecorder : public QObject
 {
@@ -10,9 +12,17 @@ class VideoRecorder : public QObject
 public:
     explicit VideoRecorder(QObject *parent = nullptr);
 
+	bool open(const QString& fileName,  int fourcc, double fps, const QSize& frameSize);
+
 signals:
 
 public slots:
+	void writeFrame(const QImage& frame);
+
+	void stop();
+private:
+	cv::VideoWriter m_videoWriter;
+
 };
 
 #endif // VIDEORECORDER_H

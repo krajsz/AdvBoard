@@ -19,6 +19,9 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 
 AdvSensorItem::AdvSensorItem(AbstractSensor::SensorType type, const int id, QGraphicsItem *parent, const QVariant &maxValue, const QVariant &minValue) : QGraphicsObject(parent)
 {
+
+	setFlag(QGraphicsItem::ItemIsMovable);
+	setFlag(QGraphicsItem::ItemIsSelectable);
 	switch (type) {
 	case AbstractSensor::SensorType::TemperatureSensor:
 		m_sensor = new TemperatureSensor(id, minValue.toDouble(), maxValue.toDouble());

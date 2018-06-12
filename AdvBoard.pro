@@ -131,6 +131,13 @@ FORMS += \
     src/ui/previewwidget.ui \
     src/ui/sensordatavalidationerrorsdialog.ui
 
+INCLUDEPATH += $$(OPENCV_SDK_DIR)/install/include
+
+LIBS += -L$$(OPENCV_SDK_DIR)/lib \
+        -lopencv_core341         \
+        -lopencv_imgcodecs341    \
+        -lopencv_imgproc341      \
+        -lopencv_videoio341
 RESOURCES +=\
     src/resources.qrc
 

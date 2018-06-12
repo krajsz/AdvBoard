@@ -5,6 +5,8 @@
 AdvVideoView::AdvVideoView(QWidget *parent) : QGraphicsView(parent),
     m_advScene(new AdvVideoScene)
 {
+	setInteractive(true);
+	setDragMode(QGraphicsView::NoDrag);
     connect(m_advScene, &AdvVideoScene::sceneSetupDone, this, &AdvVideoView::setScenee);
 }
 
