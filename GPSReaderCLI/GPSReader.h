@@ -14,10 +14,10 @@ class GPSReader : public QObject
 public:
 	explicit GPSReader(QObject *parent = nullptr);
 
+	virtual ~GPSReader();
 public slots:
 	void setSerialPort(const QString& port);
 private slots:
-signals:
 	void newPosition(const QGeoPositionInfo& info);
 private:
 	QSerialPort* m_device;
