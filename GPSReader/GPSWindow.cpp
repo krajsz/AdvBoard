@@ -13,7 +13,7 @@ GPSWindow::GPSWindow(QWidget *parent) :
 	ui->setupUi(this);
 
 	connect(ui->serialPortComboBox, &QComboBox::currentTextChanged, m_gpsReader, &GPSReader::setSerialPort);
-	QList<QSerialPortInfo> lports = QSerialPortInfo::availablePorts();
+	const QList<QSerialPortInfo> lports = QSerialPortInfo::availablePorts();
 
 	QStringList ports;
 	for(const QSerialPortInfo& info : lports)
