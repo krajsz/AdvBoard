@@ -21,6 +21,9 @@ GPSReader::GPSReader(QObject *parent) : QObject(parent),
 
 void GPSReader::newPosition(const QGeoPositionInfo &info)
 {
+	qDebug() << info;
+
+
 	qDebug() << "Alt: " << info.coordinate().altitude();
 	qDebug() << "Lat: " << info.coordinate().latitude();
 	qDebug() << "Lon: " << info.coordinate().longitude();
