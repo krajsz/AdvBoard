@@ -11,7 +11,7 @@ GPSReader::GPSReader(QObject *parent) : QObject(parent),
 	m_device(nullptr),
 	m_testGPSDataFile(new QFile(":/data/gpsData.txt"))
 {
-	m_dataSource = new QNmeaPositionInfoSource(QNmeaPositionInfoSource::UpdateMode::SimulationMode);
+	m_dataSource = new QNmeaPositionInfoSource(QNmeaPositionInfoSource::UpdateMode::RealTimeMode);
 	m_dataSource->setUpdateInterval(2000);
 
 	connect(m_dataSource, &QNmeaPositionInfoSource::positionUpdated, this, &GPSReader::newPosition);
