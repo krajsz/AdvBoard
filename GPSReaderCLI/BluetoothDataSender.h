@@ -20,11 +20,12 @@ private:
 	QBluetoothServer* m_bluetoothServer;
 	QBluetoothDeviceDiscoveryAgent * m_bluetoothDiscoveryAgent;
 	QBluetoothLocalDevice* m_localDevice;
+
 public slots:
 
 private slots:
 	void deviceDiscovered(const QBluetoothDeviceInfo& btdevice);
-
+	void newConnection();
 };
 
 #endif // BLUETOOTHDATASENDER_H
