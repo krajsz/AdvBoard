@@ -1,4 +1,5 @@
 #include "GPSReader.h"
+#include "BluetoothDataSender.h"
 
 #include <QFile>
 #include <QtSerialPort/QSerialPort>
@@ -9,7 +10,8 @@
 
 GPSReader::GPSReader(QObject *parent) : QObject(parent),
 	m_device(nullptr),
-	m_testGPSDataFile(new QFile(":/data/gpsData.txt"))
+	m_testGPSDataFile(new QFile(":/data/gpsData.txt")),
+	m_btDataSender(new BluetoothDataSender)
 {
 	m_dataSource = new QNmeaPositionInfoSource(QNmeaPositionInfoSource::UpdateMode::RealTimeMode);
 	m_dataSource->setUpdateInterval(2000);
@@ -36,6 +38,8 @@ void GPSReader::newPosition(const QGeoPositionInfo &info)
 	{
 		qDebug() <<"SpeedV: " << info.attribute(QGeoPositionInfo::Attribute::VerticalSpeed) << "m/s";
 	}
+
+
 }
 
 GPSReader::~GPSReader()

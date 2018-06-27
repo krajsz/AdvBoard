@@ -7,6 +7,7 @@ class QFile;
 class QSerialPort;
 class QNmeaPositionInfoSource;
 class QGeoPositionInfo;
+class BluetoothDataSender;
 
 class GPSReader : public QObject
 {
@@ -23,6 +24,7 @@ private:
 	QSerialPort* m_device;
 	QFile* m_testGPSDataFile;
 	QNmeaPositionInfoSource* m_dataSource;
+	BluetoothDataSender* m_btDataSender;
 public slots:
 };
 

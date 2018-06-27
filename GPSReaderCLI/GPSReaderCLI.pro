@@ -1,5 +1,5 @@
 QT -= gui
-QT += positioning serialport core
+QT += positioning serialport core bluetooth
 CONFIG += c++11 console
 CONFIG -= app_bundle
 
@@ -16,6 +16,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        GPSReader.cpp
+        GPSReader.cpp \
+    BluetoothDataSender.cpp
 HEADERS += \
-    GPSReader.h
+    GPSReader.h \
+    BluetoothDataSender.h
