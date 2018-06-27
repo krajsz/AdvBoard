@@ -7,7 +7,10 @@ class QBluetoothServer;
 class QBluetoothServiceDiscoveryAgent;
 class QBluetoothLocalDevice;
 class QBluetoothDeviceInfo;
+class QBluetoothServiceInfo;
 class QBluetoothDeviceDiscoveryAgent;
+
+#include <QtBluetooth/QBluetoothServiceInfo>
 
 class BluetoothDataSender : public QObject
 {
@@ -21,6 +24,7 @@ private:
 	QBluetoothDeviceDiscoveryAgent * m_bluetoothDiscoveryAgent;
 	QBluetoothLocalDevice* m_localDevice;
 
+	QBluetoothServiceInfo m_serviceInfo;
 public slots:
 
 private slots:

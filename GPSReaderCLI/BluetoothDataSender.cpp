@@ -5,9 +5,11 @@
 #include <QtBluetooth/QBluetoothServiceDiscoveryAgent>
 #include <QtBluetooth/QBluetoothDeviceDiscoveryAgent>
 #include <QtBluetooth/QBluetoothSocket>
+#include <QtBluetooth/QBluetoothUuid>
 
 #include <QtBluetooth/QBluetoothDeviceInfo>
 #include <QDebug>
+static const QLatin1String serviceUuid("e8e10f95-1a70-4b27-9ccf-02010264e9c8");
 
 BluetoothDataSender::BluetoothDataSender(QObject *parent) :QObject(parent),
 	m_localDevice(new QBluetoothLocalDevice),
@@ -27,6 +29,41 @@ BluetoothDataSender::BluetoothDataSender(QObject *parent) :QObject(parent),
 	{
 		qDebug() << "Cannot bind server to " << m_localDevice->address().toString();
 	}
+
+	QBluetoothServiceInfo::Sequence classId;
+
+	classId << QVariant::fromValue(QBluetoothUuid(QBluetoothUuid::SerialPort));
+	m_serviceInfo.setAttribute(QBluetoothServiceInfo::BluetoothProfileDescriptorList,
+							 classId);
+
+	classId.prepend(QVariant::fromValue(QBluetoothUuid(serviceUuid)));
+
+	m_serviceInfo.setAttribute(QBluetoothServiceInfo::ServiceClassIds, classId);
+
+	m_serviceInfo.setAttribute(QBluetoothServiceInfo::ServiceName, tr("GPSReader"));
+	m_serviceInfo.setAttribute(QBluetoothServiceInfo::ServiceDescription,
+							 tr("GPS bluetooth server"));
+	m_serviceInfo.setAttribute(QBluetoothServiceInfo::ServiceProvider, tr("qt-project.org"));
+
+	m_serviceInfo.setServiceUuid(QBluetoothUuid(serviceUuid));
+
+	QBluetoothServiceInfo::Sequence publicBrowse;
+	publicBrowse << QVariant::fromValue(QBluetoothUuid(QBluetoothUuid::PublicBrowseGroup));
+	m_serviceInfo.setAttribute(QBluetoothServiceInfo::BrowseGroupList,
+							 publicBrowse);
+
+	QBluetoothServiceInfo::Sequence protocolDescriptorList;
+	QBluetoothServiceInfo::Sequence protocol;
+	protocol << QVariant::fromValue(QBluetoothUuid(QBluetoothUuid::L2cap));
+	protocolDescriptorList.append(QVariant::fromValue(protocol));
+	protocol.clear();
+	protocol << QVariant::fromValue(QBluetoothUuid(QBluetoothUuid::Rfcomm))
+			 << QVariant::fromValue(quint8(m_bluetoothServer->serverPort()));
+	protocolDescriptorList.append(QVariant::fromValue(protocol));
+	m_serviceInfo.setAttribute(QBluetoothServiceInfo::ProtocolDescriptorList,
+							 protocolDescriptorList);
+
+	m_serviceInfo.registerService(m_localDevice->address());
 
 	qDebug() << "Local device name: " << m_localDevice->name() << " address: " << m_localDevice->address();
 }
