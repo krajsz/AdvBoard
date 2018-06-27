@@ -23,6 +23,7 @@ BluetoothDataSender::BluetoothDataSender(QObject *parent) :QObject(parent),
 	connect(m_bluetoothServer, &QBluetoothServer::newConnection, this, &BluetoothDataSender::newConnection);
 
 	m_localDevice->powerOn();
+	m_localDevice->setHostMode(QBluetoothLocalDevice::HostDiscoverable);
 	m_bluetoothDiscoveryAgent->start();
 
 	if (!m_bluetoothServer->listen(m_localDevice->address()))
