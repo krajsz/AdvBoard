@@ -1,25 +1,26 @@
 #include "MainWindow.h"
 #include "ui_mainwindow.h"
 
-#include "BluetoothDataReader.h"
+#include "BluetoothHandler.h"
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
 	ui(new Ui::MainWindow),
-	m_btDataReader(new BluetoothDataReader)
+	m_bluetoothHandler(new BluetoothHandler)
 {
 	ui->setupUi(this);
 
-	connect(m_btDataReader, &BluetoothDataReader::newDevice, this, &MainWindow::newBluetoothDevice);
+	connect(m_bluetoothHandler, &BluetoothHandler::debugString, this, &MainWindow::newDebugString);
+	connect(m_bluetoothHandler, &BluetoothHandler::messageReceived, this, &MainWindow::messageReceived);
 }
 
-void MainWindow::newBluetoothDevice(const QString &name)
+void MainWindow::newDebugString(const QString &str)
 {
-	ui->btDevicesComboBox->addItem(name);
+	ui->debugLineEdit->insertPlainText(str + "\n");
 }
 
-void MainWindow::discoveryError(const QString& error)
+void MainWindow::messageReceived(const QString &from, const QString &message)
 {
-	ui->errorLabel->setText("Error: " + error);
+	newDebugString(from + ": " + message);
 }
 
 MainWindow::~MainWindow()

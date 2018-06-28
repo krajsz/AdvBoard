@@ -17,7 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         GPSReader.cpp \
-    BluetoothDataSender.cpp
+    GPSReaderBluetoothServer.cpp
 HEADERS += \
     GPSReader.h \
-    BluetoothDataSender.h
+    GPSReaderBluetoothServer.h

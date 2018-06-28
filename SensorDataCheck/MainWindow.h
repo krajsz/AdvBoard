@@ -7,8 +7,7 @@ namespace Ui {
 class MainWindow;
 }
 
-class BluetoothDataReader;
-
+class BluetoothHandler;
 #include <QtBluetooth/QBluetoothDeviceDiscoveryAgent>
 
 class MainWindow : public QMainWindow
@@ -19,10 +18,10 @@ public:
 	explicit MainWindow(QWidget *parent = 0);
 	~MainWindow();
 private slots:
-	void newBluetoothDevice(const QString& name);
-	void discoveryError(const QString& error);
+	void newDebugString(const QString& str);
+	void messageReceived(const QString& from, const QString& message);
 private:
-	BluetoothDataReader* m_btDataReader;
+	BluetoothHandler* m_bluetoothHandler;
 	Ui::MainWindow *ui;
 };
 

@@ -8,6 +8,7 @@ class QSerialPort;
 class QNmeaPositionInfoSource;
 class QGeoPositionInfo;
 class BluetoothDataSender;
+class GPSReaderBluetoothServer;
 
 class GPSReader : public QObject
 {
@@ -20,11 +21,16 @@ public slots:
 	void setSerialPort(const QString& port);
 private slots:
 	void newPosition(const QGeoPositionInfo& info);
+
+	void debugString(const QString& str);
+	void clientConnected(const QString& name);
 private:
 	QSerialPort* m_device;
 	QFile* m_testGPSDataFile;
 	QNmeaPositionInfoSource* m_dataSource;
-	BluetoothDataSender* m_btDataSender;
+
+	GPSReaderBluetoothServer* m_btServer;
+
 public slots:
 };
 

@@ -26,11 +26,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         MainWindow.cpp \
-    BluetoothDataReader.cpp
+    GPSBluetoothClient.cpp \
+    BluetoothHandler.cpp
 
 HEADERS += \
         MainWindow.h \
-    BluetoothDataReader.h
+    GPSBluetoothClient.h \
+    BluetoothHandler.h
 
 FORMS += \
         mainwindow.ui
