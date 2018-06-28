@@ -5,6 +5,8 @@
 #include <QtBluetooth/QBluetoothSocket>
 #include <QtBluetooth/QBluetoothLocalDevice>
 
+#include <QDebug>
+
 static const QLatin1String serviceUuid("e8e10f95-1a70-4b27-9ccf-02010264e9c8");
 
 GPSReaderBluetoothServer::GPSReaderBluetoothServer(QObject *parent)
@@ -29,6 +31,9 @@ void GPSReaderBluetoothServer::startServer(const QBluetoothAddress& localAdapter
 	if (!result) {
 		qWarning() << "Cannot bind chat server to" << localAdapter.toString();
 		return;
+	} else
+	{
+		qDebug() << "Server listening on: " << localAdapter.toString();
 	}
 
 	//serviceInfo.setAttribute(QBluetoothServiceInfo::ServiceRecordHandle, (uint)0x00010010);
@@ -77,6 +82,8 @@ void GPSReaderBluetoothServer::stopServer()
 
 	delete m_btServer;
 	m_btServer = 0;
+
+	qDebug() << "stop server";
 }
 
 void GPSReaderBluetoothServer::sendMessage(const QString &message)
@@ -85,13 +92,17 @@ void GPSReaderBluetoothServer::sendMessage(const QString &message)
 
 	foreach (QBluetoothSocket *socket, m_clientSockets)
 		socket->write(text);
+
+	qDebug() << "sending message";
 }
 
-void GPSReaderBluetoothServer::ClientConnectedSlot()
+void GPSReaderBluetoothServer::clientConnectedSlot()
 {
 	QBluetoothSocket *socket = m_btServer->nextPendingConnection();
 	if (!socket)
 		return;
+
+	qDebug() << "clientConnected";
 
 	connect(socket, &QBluetoothSocket::readyRead, this, &GPSReaderBluetoothServer::readSocket);
 	connect(socket, &QBluetoothSocket::disconnected, this, &GPSReaderBluetoothServer::clientDisconnectedSlot);

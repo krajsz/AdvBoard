@@ -30,7 +30,7 @@ signals:
 	void clientDisconnected(const QString &name);
 
 private slots:
-	void ClientConnectedSlot();
+	void clientConnectedSlot();
 	void clientDisconnectedSlot();
 	void readSocket();
 
