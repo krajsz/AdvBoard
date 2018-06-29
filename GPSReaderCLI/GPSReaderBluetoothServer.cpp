@@ -74,7 +74,7 @@ void GPSReaderBluetoothServer::startServer(const QBluetoothAddress& localAdapter
 	m_serviceInfo.setAttribute(QBluetoothServiceInfo::ProtocolDescriptorList,
 							 protocolDescriptorList);
 
-	m_serviceInfo.registerService(localAdapter);
+	qDebug() << "register service: " << m_serviceInfo.registerService(localAdapter);
 }
 
 void GPSReaderBluetoothServer::stopServer()

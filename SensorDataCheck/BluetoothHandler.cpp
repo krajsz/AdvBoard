@@ -68,7 +68,7 @@ void BluetoothHandler::newDeviceDiscovered(const QBluetoothDeviceInfo &device)
 			  [=](QBluetoothServiceDiscoveryAgent::Error error){ Q_UNUSED(error);
 			emit debugString( m_serviceDiscoveryAgent->errorString()); });
 
-		m_serviceDiscoveryAgent->setRemoteAddress(device.address());
+		//m_serviceDiscoveryAgent->setRemoteAddress(device.address());
 		m_serviceDiscoveryAgent->start(QBluetoothServiceDiscoveryAgent::FullDiscovery);
 		emit debugString("serviceDiscovery started");
 	}
@@ -77,11 +77,11 @@ void BluetoothHandler::newDeviceDiscovered(const QBluetoothDeviceInfo &device)
 void BluetoothHandler::newServiceDiscovered(const QBluetoothServiceInfo& service)
 {
 	emit debugString("!!!newServiceDiscovered, device name raspberrypi");
-	if (m_serviceDiscoveryAgent->isActive())
-		m_serviceDiscoveryAgent->stop();
 
 	if (service.serviceUuid() == QBluetoothUuid(serviceUuid))
 	{
+		if (m_serviceDiscoveryAgent->isActive())
+			m_serviceDiscoveryAgent->stop();
 		emit debugString("newServiceDiscovered, raspberry, uuid matches");
 
 		m_client->startClient(service);
@@ -91,7 +91,7 @@ void BluetoothHandler::newServiceDiscovered(const QBluetoothServiceInfo& service
 	}
 	else
 	{
-		emit debugString("serviceDiscovery uuid doesn't match");
+		emit debugString("serviceDiscovery uuid doesn't match: "+ service.serviceName() + " uuid" + service.serviceUuid().toString());
 	}
 }
 
