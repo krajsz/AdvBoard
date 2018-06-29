@@ -50,13 +50,6 @@
      </widget>
     </item>
     <item>
-     <widget class="QLabel" name="pairingLabel">
-      <property name="text">
-       <string>Pairing:</string>
-      </property>
-     </widget>
-    </item>
-    <item>
      <widget class="QPlainTextEdit" name="debugLineEdit"/>
     </item>
     <item>
