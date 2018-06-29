@@ -16,8 +16,6 @@ BluetoothHandler::BluetoothHandler(QObject *parent) : QObject(parent),
 	m_serviceDiscoveryAgent(new QBluetoothServiceDiscoveryAgent(QBluetoothLocalDevice().address())),
 	m_client(new GPSBluetoothClient)
 {
-	if (m_serviceDiscoveryAgent->isActive())
-		m_serviceDiscoveryAgent->stop();
 /*#ifdef Q_OS_ANDROID
 	if (QtAndroid::androidSdkVersion() >= 23)
 		m_serviceDiscoveryAgent->setUuidFilter(QBluetoothUuid(reverseUuid));
@@ -27,7 +25,7 @@ BluetoothHandler::BluetoothHandler(QObject *parent) : QObject(parent),
 	m_serviceDiscoveryAgent->setUuidFilter(QBluetoothUuid(serviceUuid));
 #endif*/
 
-	m_serviceDiscoveryAgent->setUuidFilter(QBluetoothUuid(serviceUuid));
+	//m_serviceDiscoveryAgent->setUuidFilter(QBluetoothUuid(serviceUuid));
 
 	connect(m_serviceDiscoveryAgent, &QBluetoothServiceDiscoveryAgent::serviceDiscovered, this, &BluetoothHandler::newServiceDiscovered);
 
@@ -48,10 +46,18 @@ void BluetoothHandler::newServiceDiscovered(const QBluetoothServiceInfo& service
 		if (m_serviceDiscoveryAgent->isActive())
 			m_serviceDiscoveryAgent->stop();
 
+		if (service.serviceUuid() == serviceUuid)
+		{
+			emit debugString("newServiceDiscovered, raspberry, uuid matches");
+		}
 		m_client->startClient(service);
 
 		connect(m_client, &GPSBluetoothClient::messageReceived, this,&BluetoothHandler::messageReceived);
 		connect(m_client, &GPSBluetoothClient::clientConnected, this, &BluetoothHandler::debugString);
+	}
+	else
+	{
+		emit debugString("newServiceDiscovered, device name" + service.device().name());
 	}
 }
 
