@@ -1,12 +1,11 @@
 #ifndef GPSBLUETOOTHCLIENT_H
 #define GPSBLUETOOTHCLIENT_H
 
-#include <QtBluetooth/QBluetoothServiceInfo>
-
 #include <QtCore/QObject>
 
 
 class QBluetoothSocket;
+class QBluetoothServiceInfo;
 
 class GPSBluetoothClient : public QObject
 {

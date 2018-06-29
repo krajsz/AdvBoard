@@ -1,6 +1,7 @@
 
 #include "GPSBluetoothClient.h"
 
+#include <QtBluetooth/QBluetoothServiceInfo>
 #include <QtBluetooth/QBluetoothSocket>
 
 GPSBluetoothClient::GPSBluetoothClient(QObject *parent)

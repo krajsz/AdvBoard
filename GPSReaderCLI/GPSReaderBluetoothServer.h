@@ -9,6 +9,7 @@
 
 class QBluetoothServer;
 class QBluetoothSocket;
+class QBluetoothLocalDevice;
 
 class GPSReaderBluetoothServer : public QObject
 {
@@ -39,6 +40,7 @@ private:
 	QBluetoothServiceInfo m_serviceInfo;
 	QList<QBluetoothSocket *> m_clientSockets;
 	QBluetoothSocket * m_clientSocket;
+	QBluetoothLocalDevice* m_localDevice;
 };
 
 

@@ -9,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
 	ui->setupUi(this);
 
+	newDebugString("wtfFFFF");
 	connect(m_bluetoothHandler, &BluetoothHandler::debugString, this, &MainWindow::newDebugString);
 	connect(m_bluetoothHandler, &BluetoothHandler::messageReceived, this, &MainWindow::messageReceived);
 }

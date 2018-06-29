@@ -10,9 +10,11 @@
 static const QLatin1String serviceUuid("e8e10f95-1a70-4b27-9ccf-02010264e9c8");
 
 GPSReaderBluetoothServer::GPSReaderBluetoothServer(QObject *parent)
-:   QObject(parent), m_btServer(nullptr)
+:   QObject(parent), m_btServer(nullptr),
+  m_localDevice(new QBluetoothLocalDevice)
 {
-	startServer(QBluetoothLocalDevice().address());
+	m_localDevice->powerOn();
+	startServer(m_localDevice->address());
 }
 
 GPSReaderBluetoothServer::~GPSReaderBluetoothServer()
