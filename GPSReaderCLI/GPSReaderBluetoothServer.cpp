@@ -14,6 +14,7 @@ GPSReaderBluetoothServer::GPSReaderBluetoothServer(QObject *parent)
   m_localDevice(new QBluetoothLocalDevice)
 {
 	m_localDevice->powerOn();
+	m_localDevice->setHostMode(QBluetoothLocalDevice::HostDiscoverable);
 	startServer(m_localDevice->address());
 }
 
