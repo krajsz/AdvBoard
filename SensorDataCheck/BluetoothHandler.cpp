@@ -46,7 +46,7 @@ void BluetoothHandler::newServiceDiscovered(const QBluetoothServiceInfo& service
 		if (m_serviceDiscoveryAgent->isActive())
 			m_serviceDiscoveryAgent->stop();
 
-		if (service.serviceUuid() == serviceUuid)
+		if (service.serviceUuid() == QBluetoothUuid(serviceUuid))
 		{
 			emit debugString("newServiceDiscovered, raspberry, uuid matches");
 		}
