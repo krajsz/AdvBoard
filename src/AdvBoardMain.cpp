@@ -12,6 +12,7 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 #include <QFileDialog>
 #include <QDir>
 #include <QString>
+#include <QStyle>
 
 AdvBoardMain::AdvBoardMain(QWidget *parent) :
     QMainWindow(parent),
