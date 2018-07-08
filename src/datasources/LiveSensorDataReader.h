@@ -22,7 +22,7 @@ class LiveSensorDataReader final: public SensorDataReader
     Q_OBJECT
 public:
     explicit LiveSensorDataReader(QObject* parent = Q_NULLPTR);
-    ~LiveSensorDataReader() final;
+	virtual ~LiveSensorDataReader() final;
     void read(bool init = false ) override final;
 
     void setPort(const int port);
@@ -53,7 +53,6 @@ private:
     QString m_host;
     int m_port;
     void readTcpData();
-
 };
 
 #endif // LIVESENSORDATAREADER_H

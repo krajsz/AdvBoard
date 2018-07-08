@@ -70,7 +70,8 @@ SOURCES += \
     src/controllers/DashboardSetupController.cpp \
     src/controllers/PostProcessingSetupController.cpp \
     src/controllers/LiveProcessingSetupController.cpp \
-    src/controllers/PreviewController.cpp
+    src/controllers/PreviewController.cpp \
+    src/ScriptsHandler.cpp
 
 HEADERS += \
         src\AdvBoardMain.h \
@@ -117,7 +118,9 @@ HEADERS += \
     src/controllers/DashboardSetupController.h \
     src/controllers/PostProcessingSetupController.h \
     src/controllers/LiveProcessingSetupController.h \
-    src/controllers/PreviewController.h
+    src/controllers/PreviewController.h \
+    src/ScriptsHandler.h \
+    src/sensors/Sensors.h
 
 FORMS += \
         src/ui\advboardmain.ui \
@@ -142,4 +145,5 @@ RESOURCES +=\
     src/resources.qrc
 
 DISTFILES += \
-    src/scripts/tcpData.py
+    src/scripts/tcpData.py \
+    src/scripts/sensorBoardHandler.py

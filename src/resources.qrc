@@ -15,4 +15,7 @@
     <qresource prefix="/settings">
         <file>data/settings.json</file>
     </qresource>
+    <qresource prefix="/scripts">
+        <file>scripts/sensorBoardHandler.py</file>
+    </qresource>
 </RCC>
