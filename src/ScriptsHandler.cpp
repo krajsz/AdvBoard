@@ -10,16 +10,23 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 #include "src/sensors/AbstractSensor.h"
 
 #include <QProcess>
-
+#include <QProcessEnvironment>
+#include <QTemporaryFile>
 #include <QDebug>
 
 ScriptsHandler* ScriptsHandler::scriptsHandler;
 
 ScriptsHandler::ScriptsHandler(QObject *parent) : QObject(parent),
-  m_script(new QProcess(this))
+  m_script(new QProcess(this)),
+  m_tempScriptFile(nullptr)
 {
 }
 
+ScriptsHandler::~ScriptsHandler()
+{
+	delete m_tempScriptFile;
+	delete m_script;
+}
 ScriptsHandler* ScriptsHandler::instance()
 {
 	if (scriptsHandler == nullptr)
@@ -37,26 +44,37 @@ void ScriptsHandler::scriptStarted()
 
 void ScriptsHandler::startScript(const QVector<AbstractSensor *> &sensors)
 {
-	QStringList args = QStringList() << SENSOR_BOARD_HANDLER_SCRIPT_PATH;
-	qDebug() << "Script args: ";
-
-	for (const auto* const sensor: sensors)
+	QFile resFile(SENSOR_BOARD_HANDLER_SCRIPT_PATH);
+	m_tempScriptFile = new QTemporaryFile;
+	if (resFile.open(QFile::ReadOnly))
 	{
-		const QString arg = QString::number(sensor->id()) + "_" + QString::number(sensor->type());
-		args << arg;
+		m_tempScriptFile = QTemporaryFile::createNativeFile(resFile);
+		if (m_tempScriptFile->open())
+		{
+			QStringList args = QStringList() << m_tempScriptFile->fileName();
 
-		qDebug() << arg;
+			for (const auto* const sensor: sensors)
+			{
+				const QString arg = QString::number(sensor->id()) + "_" + QString::number(sensor->type());
+				args << arg;
+			}
+			for (const QString& arg : args)
+				qDebug() << arg;
+			QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+
+			m_script->setProcessEnvironment(env);
+			m_script->setReadChannel(QProcess::ProcessChannel::StandardOutput);
+			m_script->start("python", args);
+
+			connect(m_script, &QProcess::started, this, &ScriptsHandler::scriptStarted);
+			connect(m_script, &QProcess::stateChanged, this, &ScriptsHandler::stateChanged);
+
+			connect(m_script, &QProcess::errorOccurred, this, &ScriptsHandler::scriptStartingError);
+			connect(m_script, &QProcess::readyReadStandardOutput, this, &ScriptsHandler::handleInput);
+
+			qDebug() << "Script started";
+		}
 	}
-	m_script->setReadChannel(QProcess::ProcessChannel::StandardOutput);
-	qDebug() << "StartDetached: " << m_script->startDetached("python", args);
-
-	connect(m_script, &QProcess::started, this, &ScriptsHandler::scriptStarted);
-	connect(m_script, &QProcess::stateChanged, this, &ScriptsHandler::stateChanged);
-
-	connect(m_script, &QProcess::errorOccurred, this, &ScriptsHandler::scriptStartingError);
-	connect(m_script, &QProcess::readyReadStandardOutput, this, &ScriptsHandler::handleInput);
-
-	qDebug() << "Script started";
 }
 
 void ScriptsHandler::scriptStartingError(QProcess::ProcessError error)
@@ -66,6 +84,9 @@ void ScriptsHandler::scriptStartingError(QProcess::ProcessError error)
 
 void ScriptsHandler::stateChanged(QProcess::ProcessState state)
 {
+	if (state == QProcess::ProcessState::NotRunning)
+		emit scriptStopped();
+
 	qDebug() << "State: " << state;
 }
 

@@ -19,6 +19,8 @@ MotorcycleDashboard::MotorcycleDashboard() : AbstractDashboard(AbstractDashboard
 
 void MotorcycleDashboard::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+	Q_UNUSED(option)
+	Q_UNUSED(widget)
     QLinearGradient lgrad(this->boundingRect().x(), this->boundingRect().y(),
                           this->boundingRect().x() + this->boundingRect().width(),
                           this->boundingRect().y() + this->boundingRect().height());

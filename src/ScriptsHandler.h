@@ -14,18 +14,20 @@ Copyright   : (C) 2018 Fabian Kristof (fkristofszabolcs@gmail.com)
 #include <QProcess>
 
 class AbstractSensor;
-
+class QString;
+class QTemporaryFile;
 class ScriptsHandler : public QObject
 {
 	Q_OBJECT
 public:
 	static ScriptsHandler* instance();
 	void startScript(const QVector<AbstractSensor*>& sensors);
-
+	~ScriptsHandler();
 	void sendDataValid(bool valid);
 signals:
 	void startDataReadingButtonPressed();
 	void checkSensorBoardDataButtonPressed();
+	void scriptStopped();
 public slots:
 
 private slots:
@@ -34,7 +36,7 @@ private slots:
 	void stateChanged(QProcess::ProcessState state);
 	void scriptStartingError(QProcess::ProcessError error);
 private:
-
+	QTemporaryFile* m_tempScriptFile;
 	static ScriptsHandler* scriptsHandler;
 	const QString SENSOR_BOARD_HANDLER_SCRIPT_PATH = ":/scripts/scripts/sensorBoardHandler.py";
 

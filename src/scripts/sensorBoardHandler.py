@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import sys
-import time
+from time import sleep
 
 def main():
     print ('Started')
@@ -20,7 +20,7 @@ def main():
         print('Data')
         sys.stdout.flush()
         ii = ii+1
-        time.sleep(1)
+        sleep(1)
 
 if __name__ == '__main__':
                     main()
