@@ -14,8 +14,8 @@ NEO-6M
 	RX         - PIN 08
 LED     
 	GND        - PIN 06
-	GPIO       - PIN 33
+	GPIO       - PIN 33 / GPIO13
 BUTTON
 	GND	   - PIN 06
 	VCC        - PIN 01
-	GPIO       - PIN 31
+	GPIO       - PIN 31 / GPIO06

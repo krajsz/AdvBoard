@@ -94,11 +94,11 @@ void ScriptsHandler::sendDataValid(bool valid)
 {
 	if (valid)
 	{
-
+		m_script->write(QByteArray("data:OK"));
 	}
 	else
 	{
-
+		m_script->write(QByteArray("data:NOK"));
 	}
 }
 

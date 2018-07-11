@@ -147,3 +147,5 @@ RESOURCES +=\
 DISTFILES += \
     src/scripts/tcpData.py \
     src/scripts/sensorBoardHandler.py
+    src/scripts/gpioTest.py
+
