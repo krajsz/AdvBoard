@@ -1,0 +1,21 @@
+DHT11:
+	GND	   - PIN 39
+	GPIO	   - PIN 37
+	VCC (5)    - PIN 02	
+ADXL345
+	GND        - PIN 06
+	VCC (3.3)  - PIN 01
+	SDA        - PIN 03
+	SCL        - PIN 05
+NEO-6M
+	VCC (3.3)  - PIN 01
+	GND        - PIN 06
+	TX         - PIN 10
+	RX         - PIN 08
+LED     
+	GND        - PIN 06
+	GPIO       - PIN 33
+BUTTON
+	GND	   - PIN 06
+	VCC        - PIN 01
+	GPIO       - PIN 31
