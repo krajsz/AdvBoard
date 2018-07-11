@@ -1,4 +1,4 @@
-#include "src\widgets\SelectProcessingModeWidget.h"
+#include "src/widgets/SelectProcessingModeWidget.h"
 #include "ui_selectprocessingmodewidget.h"
 
 SelectProcessingModeWidget::SelectProcessingModeWidget(QWidget *parent) :

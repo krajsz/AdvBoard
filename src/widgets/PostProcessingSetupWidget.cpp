@@ -1,4 +1,4 @@
-#include "src\widgets\PostProcessingSetupWidget.h"
+#include "src/widgets/PostProcessingSetupWidget.h"
 #include "ui_postprocessingsetupwidget.h"
 
 PostProcessingSetupWidget::PostProcessingSetupWidget(QWidget *parent) :

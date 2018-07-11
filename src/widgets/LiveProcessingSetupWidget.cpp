@@ -1,4 +1,4 @@
-#include "src\widgets\LiveProcessingSetupWidget.h"
+#include "src/widgets/LiveProcessingSetupWidget.h"
 #include "ui_liveprocessingsetupwidget.h"
 
 LiveProcessingSetupWidget::LiveProcessingSetupWidget(QWidget *parent) :

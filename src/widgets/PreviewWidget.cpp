@@ -1,4 +1,4 @@
-#include "src\widgets\PreviewWidget.h"
+#include "src/widgets/PreviewWidget.h"
 #include "ui_previewwidget.h"
 
 PreviewWidget::PreviewWidget(QWidget *parent) :

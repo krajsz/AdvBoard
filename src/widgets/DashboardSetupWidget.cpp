@@ -1,4 +1,4 @@
-#include "src\widgets\DashboardSetupWidget.h"
+#include "src/widgets/DashboardSetupWidget.h"
 #include "ui_dashboardsetupwidget.h"
 
 DashboardSetupWidget::DashboardSetupWidget(QWidget *parent) :

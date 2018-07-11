@@ -1,4 +1,4 @@
-#include "src\widgets\ValidationErrorsDialog.h"
+#include "src/widgets/ValidationErrorsDialog.h"
 #include "ui_validationerrorsdialog.h"
 
 ValidationErrorsDialog::ValidationErrorsDialog(QWidget *parent) :

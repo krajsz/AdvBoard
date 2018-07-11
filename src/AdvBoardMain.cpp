@@ -69,7 +69,7 @@ void AdvBoardMain::openSensorData()
 
 void AdvBoardMain::openVideoSource()
 {
-    const QUrl path = QFileDialog::getOpenFileName(0, tr("Open your video"), QDir::homePath());
+    const QUrl path = QUrl::fromLocalFile(QFileDialog::getOpenFileName(0, tr("Open your video"), QDir::homePath()));
 
     VideoLoadingDialog* dialog = new VideoLoadingDialog;
     connect(m_view->videoScene()->video(), &VideoSource::loadPercent, dialog, &VideoLoadingDialog::setPercent);

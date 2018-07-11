@@ -1,5 +1,5 @@
 #include "SensorDataInfoDialog.h"
-#include "ui_SensorDataInfoDialog.h"
+#include "ui_sensordatainfodialog.h"
 #include "src/sensors/AccelerationSensor.h"
 
 #include <QTreeWidgetItem>
