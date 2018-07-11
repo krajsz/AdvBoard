@@ -5,19 +5,36 @@ import sys
 import json
 
 import threading
-
+import serial
 import RPi.GPIO as GPIO
 import Adafruit_DHT as DHT
 import Adafruit_ADXL345 as Accel
+import pynmea2
+
+from enum import Enum, unique
 
 from time import sleep
 from time import time
 
 #Globals
 
+#gps stuff
+gpsSerial = serial.Serial('/dev/ttyS0', baudrate=9600, timeout=None)
+serialStreamReader = pynmea2.NMEAStreamReader(gpsSerial)
 #pin setups
 ledPin = 33
 btnPin = 31
+
+#sensor types
+@unique
+class SensorType(Enum):
+	Temperature = 1
+	Acceleration = 2
+	Humidity = 3
+	GPSPosition = 4
+	Speed = 5
+	
+customSensorIdProvided = False
 
 #ADXL345 accelerometer instance
 accelerometer = Accel.ADXL345()
@@ -34,14 +51,17 @@ buttonPressDuration = -1
 
 #sensor data
 jsonData = json.dumps('')
-sensorIds = list()
-sensorTypes = list()
-
+sensorData = []
+currentData = []
+selectedSensorsTypeIdDict = dict()
 ledDelay = -1
 
 #conditions for sensor readings
-readTemp = True
-readAccel = True
+readTemperature = True
+readAcceleration = True
+readHumidity = True
+readGpsPosition = True
+readSpeed = True
 
 def ledOn(on):
     if on:
@@ -65,20 +85,58 @@ def recordingLedBlinking():
 #blink the LED when , 0.5sec delay
 def initializingLedBlinking():
 	print ("Initializing blink")
-	blinkLed(0.25)
+        blinkLed(0.2)
 
 #read sensors
 def readSensors():
-	global readTemp
-	global readAccel
-
-	if readTemp:
-		hum, temp = DHT.read_retry(DHT.DHT11, 26)
-		print "Temperature:" + str(temp) + " Humidity: " + str(hum)
-
-	if readAccel:
+	global readTemperature
+	global readAcceleration
+	global readGpsPosition
+	global readSpeed
+	global readHumidity
+	global sensorData
+	global currentData
+	
+	if readTemperature or readHumidity:
+		humidity, temperature = DHT.read_retry(DHT.DHT11, 26)
+		print "Temperature:" + str(temperature) + " Humidity: " + str(humidity)
+		if readTemperature:
+			if temperature:
+				addSensorToData(selectedSensorsTypeIdDict[SensorType.Temperature], int(temperature))
+		if readHumidity:
+			if humidity:
+				addSensorToData(selectedSensorsTypeIdDict[SensorType.Humidity], int(humidity))
+	if readAcceleration:
 		x, y, z = accelerometer.read()
-		print('X={0}, Y={1}, Z={2}'.format(x, y, z))
+		xg = x * 0.003906
+		yg = y * 0.003906
+		zg = z * 0.003906
+		print('X={0}, Y={1}, Z={2}'.format(xg, yg, zg))
+		
+	if readGpsPosition or readSpeed:
+		if gpsSerial.isOpen():
+			isPositionData = False
+			isSpeedData = False
+			while not isPositionData:
+				gpsData = gpsSerial.readline()
+				if gpsData.startswith("$GPGGA"):
+					nmeaParsed = pynmea2.parse(gpsData)
+					
+					print nmeaParsed
+					isPositionData = True		
+			
+			if isPositionData:	
+				pass
+		else:
+			print ("gpsSerialClosed")
+			#while not isPositionData:
+	print json.dumps(currentData, indent=4)
+	sensorData.append(currentData)
+def addSensorToData(sensorId, sensorValue):
+	sensorData = dict()
+	sensorData["id"] = int(sensorId)
+	sensorData["value"] = sensorValue
+	currentData.append(sensorData)
 
 #RPi GPIO setup
 def setup():
@@ -115,6 +173,7 @@ def readStdin():
 def destroy():
     GPIO.output(ledPin, GPIO.LOW)
     GPIO.cleanup()
+    gpsSerial.close()
     
 #callback function for the button
 def buttonPressedCallback(channel):
@@ -132,7 +191,7 @@ def buttonPressedCallback(channel):
 		buttonPressDuration = buttonUpTime - buttonDownTime;
 		print ("Elapsed: " + str(buttonPressDuration))
 	
-	#initialize
+	#initializing
 	if not isInitializingLedBlinking and not isRecordingBlinking:
 		if buttonPressDuration > 1 and buttonPressDuration < 3:
 			isInitializingLedBlinking = True
@@ -149,11 +208,13 @@ def buttonPressedCallback(channel):
 		if buttonPressDuration > 0.2:
 			print ("Stopping recording")
 			isRecordingBlinking = False
-			ledOn(True)
-		
+			ledOn(True)	
 def main():
-    setup()
-    try:
+	setup()
+	for sensorType in SensorType:
+		selectedSensorsTypeIdDict[sensorType] = sensorType.value
+	
+	try:
 		print ('Started')
 		print (sys.argv)
 		i = 0
@@ -162,7 +223,7 @@ def main():
 		global ledDelay
 		while True:
 			print (str(i))
-			if i > 30:
+			if i > 100:
 				readStdin() 
 				print("Reading from stdin")
 				break
@@ -178,9 +239,11 @@ def main():
 
 			if ledDelay < 0:
 				sleep(0.2)
+				
+			gpsSerial.reset_input_buffer()
 	#on ctrl+c
-    except KeyboardInterrupt:
-        destroy()
+	except KeyboardInterrupt:
+		destroy()
 
 if __name__ == '__main__':
-                    main()        
+	main()        
