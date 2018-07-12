@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import sys
+import os
 import json
 
 import threading
@@ -10,8 +11,11 @@ import RPi.GPIO as GPIO
 import Adafruit_DHT as DHT
 import Adafruit_ADXL345 as Accel
 import pynmea2
+import datetime
 
 from enum import Enum, unique
+
+from subprocess import call
 
 from time import sleep
 from time import time
@@ -41,7 +45,7 @@ accelerometer = Accel.ADXL345()
 
 #button/led/reading controlling conditions (mostly)
 dataValidResponse = False
-isRecordingBlinking = False
+isRecordingBlinking = True
 isInitializingLedBlinking = False
 isDataValid = True
 blinkEnabled = True
@@ -55,6 +59,8 @@ sensorData = []
 currentData = []
 selectedSensorsTypeIdDict = dict()
 ledDelay = -1
+dataFile = open(str(datetime.datetime.now()) + ".json","w")
+isFirstDataWrite = True
 
 #conditions for sensor readings
 readTemperature = True
@@ -63,6 +69,10 @@ readHumidity = True
 readGpsPosition = True
 readSpeed = True
 
+def restartPi():
+	destroy()
+	call ("sudo reboot", shell=True)
+	
 def ledOn(on):
     if on:
         GPIO.output(ledPin, GPIO.HIGH)
@@ -85,7 +95,7 @@ def recordingLedBlinking():
 #blink the LED when , 0.5sec delay
 def initializingLedBlinking():
 	print ("Initializing blink")
-        blinkLed(0.2)
+        blinkLed(0.125)
 
 #read sensors
 def readSensors():
@@ -96,6 +106,7 @@ def readSensors():
 	global readHumidity
 	global sensorData
 	global currentData
+	global isFirstDataWrite
 	
 	if readTemperature or readHumidity:
 		humidity, temperature = DHT.read_retry(DHT.DHT11, 26)
@@ -108,30 +119,62 @@ def readSensors():
 				addSensorToData(selectedSensorsTypeIdDict[SensorType.Humidity], int(humidity))
 	if readAcceleration:
 		x, y, z = accelerometer.read()
+		#assuming sensor is set to -2/+2g ( G_range / 2^10 with 10 bits)
 		xg = x * 0.003906
 		yg = y * 0.003906
-		zg = z * 0.003906
-		print('X={0}, Y={1}, Z={2}'.format(xg, yg, zg))
-		
+		if x and y:
+			vals = [xg, yg]
+			addSensorToData(selectedSensorsTypeIdDict[SensorType.Acceleration], vals)
 	if readGpsPosition or readSpeed:
 		if gpsSerial.isOpen():
 			isPositionData = False
 			isSpeedData = False
-			while not isPositionData:
+			gpsSpeedData = 0
+			gpsPosData = dict()
+			while not isPositionData and not isSpeedData:
 				gpsData = gpsSerial.readline()
 				if gpsData.startswith("$GPGGA"):
+
 					nmeaParsed = pynmea2.parse(gpsData)
-					
 					print nmeaParsed
+
+					posData = []
+					if nmeaParsed.lat and nmeaParsed.lon:
+						posData.append(nmeaParsed.lat)
+						posData.append(nmeaParsed.lon)					
+						gpsPosData["pos"] = posData
+					if nmeaParsed.altitude:
+						gpsPosData["alt"] = float(nmeaParsed.altitude)
+
 					isPositionData = True		
-			
-			if isPositionData:	
-				pass
+				if gpsData.startswith("$GPVTG"):
+					print gpsData
+		
+					speedKmh = gpsData.split(",")[7]
+					if speedKmh:
+						print speedKmh
+						gpsSpeedData = float(speedKmh)
+						isSpeedData = True
+
+			if isPositionData and isSpeedData:	
+				addSensorToData(selectedSensorsTypeIdDict[SensorType.GPSPosition], gpsPosData)
+				addSensorToData(selectedSensorsTypeIdDict[SensorType.Speed], gpsSpeedData)
 		else:
 			print ("gpsSerialClosed")
 			#while not isPositionData:
-	print json.dumps(currentData, indent=4)
+	if isInitializingLedBlinking:
+		print json.dumps(currentData, indent=4)
+	if isRecordingBlinking:
+		#write in file
+		print "Writing in file"
+		if isFirstDataWrite:
+			dataFile.write("\"sensorData:\": [")
+			isFirstDataWrite = False
+		dataFile.write(json.dumps(currentData, indent=4))
+		dataFile.write(",")
+		
 	sensorData.append(currentData)
+	currentData = []
 def addSensorToData(sensorId, sensorValue):
 	sensorData = dict()
 	sensorData["id"] = int(sensorId)
@@ -171,9 +214,15 @@ def readStdin():
 
 #cleanup on exit
 def destroy():
-    GPIO.output(ledPin, GPIO.LOW)
-    GPIO.cleanup()
-    gpsSerial.close()
+	global dataFile
+
+	GPIO.output(ledPin, GPIO.LOW)
+	GPIO.cleanup()
+	gpsSerial.close()	
+	dataFile.seek(-1, os.SEEK_END)
+	dataFile.truncate()
+	dataFile.write("]")
+	dataFile.close()
     
 #callback function for the button
 def buttonPressedCallback(channel):
@@ -183,7 +232,8 @@ def buttonPressedCallback(channel):
 	global buttonDownTime 
 	global buttonUpTime
 	global buttonPressDuration
-
+	global dataFile
+	
 	if GPIO.input(btnPin) == 0:
 		buttonDownTime = time()
 	if GPIO.input(btnPin) == 1:
@@ -208,7 +258,11 @@ def buttonPressedCallback(channel):
 		if buttonPressDuration > 0.2:
 			print ("Stopping recording")
 			isRecordingBlinking = False
-			ledOn(True)	
+			ledOn(True)
+			dataFile.write("]")
+		
+	if buttonPressDuration > 6:
+		restartPi()
 def main():
 	setup()
 	for sensorType in SensorType:
@@ -230,15 +284,16 @@ def main():
 			else:
 				i = i+1
 
-			if isInitializingLedBlinking:
-				initializingLedBlinking()
+			#if isInitializingLedBlinking:
+			#	initializingLedBlinking()
 
-			if isRecordingBlinking:
-				recordingLedBlinking()
-				readSensors()
+			#if isRecordingBlinking:
+			
+			recordingLedBlinking()
+			readSensors()
 
-			if ledDelay < 0:
-				sleep(0.2)
+			#if ledDelay < 0:
+			#	sleep(0.2)
 				
 			gpsSerial.reset_input_buffer()
 	#on ctrl+c
