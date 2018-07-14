@@ -16,7 +16,7 @@ class AccelerationSensor : public AbstractSensor
 {
     Q_OBJECT
 public:
-    explicit AccelerationSensor(const int id, const double minAccel = -2, const double maxAccel = 2, const QPointF& acceleration = QPointF(0.01, 0.01), QObject* parent = nullptr);
+	explicit AccelerationSensor(const int id, const QPointF& minAccel = QPointF(), const QPointF& maxAccel = QPointF(), const QPointF& acceleration = QPointF(0.01, 0.01), QObject* parent = nullptr);
 
     double xMinAcceleration() const;
     double yMinAcceleration() const;

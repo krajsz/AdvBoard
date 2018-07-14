@@ -22,7 +22,7 @@ AdvSensorItem::AdvSensorItem(AbstractSensor::SensorType type, const int id, QGra
         m_sensor = new TemperatureSensor(id, minValue.toDouble(), maxValue.toDouble());
         break;
     case AbstractSensor::SensorType::AccelerationSensor:
-        m_sensor = new AccelerationSensor(id, minValue.toDouble(), maxValue.toDouble());
+		m_sensor = new AccelerationSensor(id, minValue.toPointF(), maxValue.toPointF());
         break;
     case AbstractSensor::SensorType::GPSpositionSensor:
         m_sensor = new GPSpositionSensor(id);
@@ -112,11 +112,10 @@ void AdvSensorItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
         QPointF gpoint;
 
         const AccelerationSensor*  accsensor = qobject_cast<const AccelerationSensor*>(m_sensor);
-        QPointF gvalue = accsensor->value().toPointF();
 
+        QPointF gvalue = accsensor->value().toPointF();
         const double xpos = acceleroCenter.x() + (gvalue.x() * (60 / accsensor->xMaxAcceleration()));
         const double ypos = acceleroCenter.y() + (gvalue.y() * (60 / accsensor->yMaxAcceleration()));
-
         gpoint.setX(xpos);
         gpoint.setY(ypos);
 

@@ -104,7 +104,6 @@ void AbstractDashboard::updateSensors(const QVector<QJsonValue>& values)
             const QJsonObject& data = value.toObject();
             const int id = data["id"].toInt();
             const QJsonValue& value = data["value"];
-
             updateSensorWithID(id, value);
         }
     }
@@ -151,7 +150,7 @@ void AbstractDashboard::initSensors(const QVector<QJsonObject> &sensorInfoData, 
 
                 minVal = minpos;
             }
-            else if (AbstractSensor::SensorType::AccelerationSensor)
+			else if (ttype == AbstractSensor::SensorType::AccelerationSensor)
             {
                 QPointF minAcc;
                 minAcc.setX(min["x"].toDouble());
@@ -177,7 +176,7 @@ void AbstractDashboard::initSensors(const QVector<QJsonObject> &sensorInfoData, 
 
                 maxVal = maxpos;
             }
-            else if (AbstractSensor::SensorType::AccelerationSensor)
+			else if (ttype == AbstractSensor::SensorType::AccelerationSensor)
             {
                 QPointF maxAcc;
                 maxAcc.setX(max["x"].toDouble());
@@ -190,7 +189,7 @@ void AbstractDashboard::initSensors(const QVector<QJsonObject> &sensorInfoData, 
                 maxVal = max.toVariant();
             }
         }
-
+		qDebug() << minVal << " maxval: " << maxVal;
         AdvSensorItem* sensor;
         if (minVal.isValid() && maxVal.isValid())
         {

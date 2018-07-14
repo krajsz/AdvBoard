@@ -1,10 +1,12 @@
 <RCC>
-    <qresource prefix="/json" lang="En">
+    <qresource lang="En" prefix="/json">
         <file>data/test.json</file>
         <file>data/testnew.json</file>
         <file>data/sensorValueBoundaries.json</file>
+        <file>data/test_tempHumAccel.json</file>
+        <file>data/testnewNoSpeedo.json</file>
     </qresource>
-    <qresource prefix="/pictures" lang="En">
+    <qresource lang="En" prefix="/pictures">
         <file>data/coldTempSign.png</file>
         <file>data/gpsSensorIcon.png</file>
         <file>data/gsensorIcon.png</file>

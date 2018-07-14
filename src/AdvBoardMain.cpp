@@ -63,8 +63,9 @@ void AdvBoardMain::setController(AdvMainController *controller)
 void AdvBoardMain::openSensorData()
 {
     //QString fileName = QFileDialog::getOpenFileName(0, tr("Open sensor data"), QDir::homePath(), "JSON (*.JSON *.json);");
-
-    m_controller->openSensorData(":/json/data/testnew.json");
+	m_controller->openSensorData(":/json/data/test_tempHumAccel.json");
+	//m_controller->openSensorData(":/json/data/testnew.json");
+	//m_controller->openSensorData(":/json/data/testnewNoSpeedo.json");
 }
 
 void AdvBoardMain::openVideoSource()
