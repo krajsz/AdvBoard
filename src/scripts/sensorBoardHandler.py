@@ -168,7 +168,7 @@ def readSensors():
 		#write in file
 		print "Writing in file"
 		if isFirstDataWrite:
-			dataFile.write("\"sensorData:\": [")
+			dataFile.write("\"sensorData\": [")
 			isFirstDataWrite = False
 		dataFile.write(json.dumps(currentData, indent=4))
 		dataFile.write(",")
