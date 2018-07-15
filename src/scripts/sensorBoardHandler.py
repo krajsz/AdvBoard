@@ -132,9 +132,10 @@ def readSensors():
 			gpsSpeedData = 0
 			gpsPosData = dict()
 			while not isPositionData and not isSpeedData:
+
 				gpsData = gpsSerial.readline()
 				if gpsData.startswith("$GPGGA"):
-
+                                        print "GPGGA: " + gpsData
 					nmeaParsed = pynmea2.parse(gpsData)
 					print nmeaParsed
 
@@ -148,15 +149,16 @@ def readSensors():
 
 					isPositionData = True		
 				if gpsData.startswith("$GPVTG"):
-					print gpsData
+                                        print "GPVTG: " + gpsData
 		
 					speedKmh = gpsData.split(",")[7]
 					if speedKmh:
-						print speedKmh
+                                                print "Speed: " + str(speedKmh)
 						gpsSpeedData = float(speedKmh)
 						isSpeedData = True
 
 			if isPositionData and isSpeedData:	
+                                print "Adding gps data"
 				addSensorToData(selectedSensorsTypeIdDict[SensorType.GPSPosition], gpsPosData)
 				addSensorToData(selectedSensorsTypeIdDict[SensorType.Speed], gpsSpeedData)
 		else:
