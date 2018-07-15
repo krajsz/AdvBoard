@@ -154,6 +154,7 @@ def readSensors():
                                         if alt:
                                             gpsPosData["alt"] = alt
                                         if alt or (lat and lon):
+                                            addSensorToData(selectedSensorsTypeIdDict[SensorType.GPSPosition], gpsPosData)
                                             isPositionData = True
                                 elif gpsData.startswith("$GPGLL"):
                                     print "GPGLL: " + gpsData
@@ -171,6 +172,8 @@ def readSensors():
                                                 posData.append(lat)
                                                 posData.append(lon)
                                                 gpsPosData["pos"] = posData
+                                                addSensorToData(selectedSensorsTypeIdDict[SensorType.GPSPosition], gpsPosData)
+
                                                 isPositionData = True
                                 elif gpsData.startswith("$GPRMC"):
                                     print "GPRMC: " + gpsData
@@ -188,6 +191,8 @@ def readSensors():
                                                 posData.append(lat)
                                                 posData.append(lon)
                                                 gpsPosData["pos"] = posData
+                                                addSensorToData(selectedSensorsTypeIdDict[SensorType.GPSPosition], gpsPosData)
+
                                                 isPositionData = True
 				if gpsData.startswith("$GPVTG"):
                                         print "GPVTG: " + gpsData
@@ -198,12 +203,10 @@ def readSensors():
                                             print "Speed" + str(speedKmh)
                                             if speedKmh:
                                                     print "Speed: " + str(speedKmh)
+                                                    addSensorToData(selectedSensorsTypeIdDict[SensorType.Speed], gpsSpeedData)
+
                                                     gpsSpeedData = float(speedKmh)
                                                     isSpeedData = True
-			if isPositionData and isSpeedData:	
-                                print "Adding gps data"
-				addSensorToData(selectedSensorsTypeIdDict[SensorType.GPSPosition], gpsPosData)
-				addSensorToData(selectedSensorsTypeIdDict[SensorType.Speed], gpsSpeedData)
 		else:
 			print ("gpsSerialClosed")
 			#while not isPositionData:
