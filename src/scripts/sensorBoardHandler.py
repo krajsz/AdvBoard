@@ -138,14 +138,17 @@ def readSensors():
                                 if gpsData.startswith("$GPGLL"):
                                         print "GPGLL: " + gpsData
                                         gpsDataSplit = gpsData.split(",")
-                                        lat = float(gpsDataSplit[1])/ 100.0
-                                        lon = float(gpsDataSplit[3])/ 100.0
+                                        lat = float(gpsDataSplit[2])/ 100.0
+                                        lon = float(gpsDataSplit[4])/ 100.0
 
 					posData = []
                                         if lat and lon:
                                                 posData.append(lat)
                                                 posData.append(lon)
 						gpsPosData["pos"] = posData
+                                        alt = float(gpsDataSplit[9])
+                                        if alt:
+                                            gpsPosData["alt"] = alt
                                         #if nmeaParsed.altitude:
                                         #	gpsPosData["alt"] = float(nmeaParsed.altitude)
 
