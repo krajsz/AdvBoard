@@ -134,6 +134,7 @@ def readSensors():
 			while not isPositionData and not isSpeedData:
 
 				gpsData = gpsSerial.readline()
+                                print "GPSData: " + gpsData
 				if gpsData.startswith("$GPGGA"):
                                         print "GPGGA: " + gpsData
 					nmeaParsed = pynmea2.parse(gpsData)
