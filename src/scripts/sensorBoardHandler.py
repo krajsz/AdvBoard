@@ -137,16 +137,17 @@ def readSensors():
                                 print "GPSData: " + gpsData
                                 if gpsData.startswith("$GPGLL"):
                                         print "GPGLL: " + gpsData
-					nmeaParsed = pynmea2.parse(gpsData)
-					print nmeaParsed
+                                        gpsDataSplit = gpsData.split(",")
+                                        lat = float(gpsDataSplit[1])/ 100.0
+                                        lon = float(gpsDataSplit[3])/ 100.0
 
 					posData = []
-					if nmeaParsed.lat and nmeaParsed.lon:
-						posData.append(nmeaParsed.lat)
-						posData.append(nmeaParsed.lon)					
+                                        if lat and lon:
+                                                posData.append(lat)
+                                                posData.append(lon)
 						gpsPosData["pos"] = posData
-					if nmeaParsed.altitude:
-						gpsPosData["alt"] = float(nmeaParsed.altitude)
+                                        #if nmeaParsed.altitude:
+                                        #	gpsPosData["alt"] = float(nmeaParsed.altitude)
 
 					isPositionData = True		
 				if gpsData.startswith("$GPVTG"):
@@ -298,7 +299,7 @@ def main():
 			#if ledDelay < 0:
 			#	sleep(0.2)
 				
-			gpsSerial.reset_input_buffer()
+                        #gpsSerial.reset_input_buffer()
 	#on ctrl+c
 	except KeyboardInterrupt:
 		destroy()
