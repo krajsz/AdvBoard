@@ -135,8 +135,8 @@ def readSensors():
 
 				gpsData = gpsSerial.readline()
                                 print "GPSData: " + gpsData
-				if gpsData.startswith("$GPGGA"):
-                                        print "GPGGA: " + gpsData
+                                if gpsData.startswith("$GPGLL"):
+                                        print "GPGLL: " + gpsData
 					nmeaParsed = pynmea2.parse(gpsData)
 					print nmeaParsed
 
