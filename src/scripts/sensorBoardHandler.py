@@ -170,7 +170,7 @@ def readSensors():
                                         print "GPVTG: " + gpsData
                                         gpsDataSplit = gpsData.split(",")
                                         print "LEN: " + str(len(gpsDataSplit))
-                                        if len(gpsDataSplit) == 9:
+                                        if len(gpsDataSplit) == 10:
                                             speedKmh = gpsDataSplit[7]
                                             if speedKmh:
                                                     print "Speed: " + str(speedKmh)
