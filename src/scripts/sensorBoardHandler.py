@@ -107,7 +107,6 @@ def readSensors():
 	global sensorData
 	global currentData
 	global isFirstDataWrite
-	
 	if readTemperature or readHumidity:
 		humidity, temperature = DHT.read_retry(DHT.DHT11, 26)
 		print "Temperature:" + str(temperature) + " Humidity: " + str(humidity)
@@ -138,9 +137,14 @@ def readSensors():
                                     print "GPGGA: " + gpsData
                                     gpsDataSplit = gpsData.split(",")
                                     print "LEN: " + str(len(gpsDataSplit))
+
                                     if len(gpsDataSplit) == 14:
                                         lat = float(gpsDataSplit[2])/ 100.0
                                         lon = float(gpsDataSplit[4])/ 100.0
+                                        print "---"
+                                        print lat
+                                        print lon
+                                        print "---"
                                         posData = []
                                         if lat and lon:
                                                 posData.append(lat)
@@ -158,6 +162,10 @@ def readSensors():
                                     if len(gpsDataSplit) == 8:
                                         lat = float(gpsDataSplit[1])/ 100.0
                                         lon = float(gpsDataSplit[3])/ 100.0
+                                        print "---"
+                                        print lat
+                                        print lon
+                                        print "---"
                                         posData = []
                                         if lat and lon:
                                                 posData.append(lat)
@@ -172,6 +180,10 @@ def readSensors():
                                         lat = float(gpsDataSplit[3])/ 100.0
                                         lon = float(gpsDataSplit[5])/ 100.0
                                         posData = []
+                                        print "---"
+                                        print lat
+                                        print lon
+                                        print "---"
                                         if lat and lon:
                                                 posData.append(lat)
                                                 posData.append(lon)
@@ -183,6 +195,7 @@ def readSensors():
                                         print "LEN: " + str(len(gpsDataSplit))
                                         if len(gpsDataSplit) == 10:
                                             speedKmh = gpsDataSplit[7]
+                                            print "Speed" + str(speedKmh)
                                             if speedKmh:
                                                     print "Speed: " + str(speedKmh)
                                                     gpsSpeedData = float(speedKmh)
