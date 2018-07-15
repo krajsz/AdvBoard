@@ -141,7 +141,6 @@ def readSensors():
                                     if len(gpsDataSplit) == 14:
                                         lat = float(gpsDataSplit[2])/ 100.0
                                         lon = float(gpsDataSplit[4])/ 100.0
-
                                         posData = []
                                         if lat and lon:
                                                 posData.append(lat)
@@ -160,7 +159,19 @@ def readSensors():
                                         lat = float(gpsDataSplit[1])/ 100.0
                                         lon = float(gpsDataSplit[3])/ 100.0
                                         posData = []
-
+                                        if lat and lon:
+                                                posData.append(lat)
+                                                posData.append(lon)
+                                                gpsPosData["pos"] = posData
+                                                isPositionData = True
+                                elif gpsData.startswith("$GPRMC"):
+                                    print "GPRMC: " + gpsData
+                                    gpsDataSplit = gpsData.split(",")
+                                    print "LEN: " + str(len(gpsDataSplit))
+                                    if len(gpsDataSplit) == 12:
+                                        lat = float(gpsDataSplit[3])/ 100.0
+                                        lon = float(gpsDataSplit[5])/ 100.0
+                                        posData = []
                                         if lat and lon:
                                                 posData.append(lat)
                                                 posData.append(lon)
