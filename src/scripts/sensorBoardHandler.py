@@ -160,6 +160,7 @@ def readSensors():
                                         lat = float(gpsDataSplit[1])/ 100.0
                                         lon = float(gpsDataSplit[3])/ 100.0
                                         posData = []
+
                                         if lat and lon:
                                                 posData.append(lat)
                                                 posData.append(lon)
@@ -167,9 +168,10 @@ def readSensors():
                                                 isPositionData = True
 				if gpsData.startswith("$GPVTG"):
                                         print "GPVTG: " + gpsData
+                                        gpsDataSplit = gpsData.split(",")
                                         print "LEN: " + str(len(gpsDataSplit))
-                                        if len(gpsData.split(",")) == 9:
-                                            speedKmh = gpsData.split(",")[7]
+                                        if len(gpsDataSplit) == 9:
+                                            speedKmh = gpsDataSplit[7]
                                             if speedKmh:
                                                     print "Speed: " + str(speedKmh)
                                                     gpsSpeedData = float(speedKmh)
