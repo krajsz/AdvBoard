@@ -164,7 +164,7 @@ def readSensors():
                                                 posData.append(lat)
                                                 posData.append(lon)
                                                 gpsPosData["pos"] = posData
-                                            isPositionData = True
+                                                isPositionData = True
 				if gpsData.startswith("$GPVTG"):
                                         print "GPVTG: " + gpsData
                                         print "LEN: " + str(len(gpsDataSplit))
