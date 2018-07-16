@@ -132,81 +132,90 @@ def readSensors():
 			gpsPosData = dict()
 			while not isPositionData and not isSpeedData:
 				gpsData = gpsSerial.readline()
-                                print "GPSData: " + gpsData
-                                if gpsData.startswith("$GPGGA"):
-                                    print "GPGGA: " + gpsData
-                                    gpsDataSplit = gpsData.split(",")
-                                    print "LEN: " + str(len(gpsDataSplit))
+				print "GPSData: " + gpsData
+				lat = -1
+				lon = -1
+				
+				if gpsData.startswith("$GPGGA"):
+					print "GPGGA: " + gpsData
+					gpsDataSplit = gpsData.split(",")
+					print "LEN: " + str(len(gpsDataSplit))
 
-                                    if len(gpsDataSplit) == 14:
-                                        lat = float(gpsDataSplit[2])/ 100.0
-                                        lon = float(gpsDataSplit[4])/ 100.0
-                                        print "---"
-                                        print lat
-                                        print lon
-                                        print "---"
-                                        posData = []
-                                        if lat and lon:
-                                                posData.append(lat)
-                                                posData.append(lon)
-                                                gpsPosData["pos"] = posData
-                                        alt = float(gpsDataSplit[9])
-                                        if alt:
-                                            gpsPosData["alt"] = alt
-                                        if alt or (lat and lon):
-                                            addSensorToData(selectedSensorsTypeIdDict[SensorType.GPSPosition], gpsPosData)
-                                            isPositionData = True
-                                elif gpsData.startswith("$GPGLL"):
-                                    print "GPGLL: " + gpsData
-                                    gpsDataSplit = gpsData.split(",")
-                                    print "LEN: " + str(len(gpsDataSplit))
-                                    if len(gpsDataSplit) == 8:
-                                        lat = float(gpsDataSplit[1])/ 100.0
-                                        lon = float(gpsDataSplit[3])/ 100.0
-                                        print "---"
-                                        print lat
-                                        print lon
-                                        print "---"
-                                        posData = []
-                                        if lat and lon:
-                                                posData.append(lat)
-                                                posData.append(lon)
-                                                gpsPosData["pos"] = posData
-                                                addSensorToData(selectedSensorsTypeIdDict[SensorType.GPSPosition], gpsPosData)
+					if len(gpsDataSplit) == 14:
+						if len(gpsDataSplit[2]) >= 1:
+							lat = float(gpsDataSplit[2])/ 100.0
+						if len(gpsDataSplit[4]) >= 1:
+							lon = float(gpsDataSplit[4])/ 100.0
+						print "---"
+						print lat
+						print lon
+						print "---"
+						posData = []
+						if lat != -1 and lon != -1:
+							posData.append(lat)
+							posData.append(lon)
+							gpsPosData["pos"] = posData
+						alt = float(gpsDataSplit[9])
+						if alt:
+							gpsPosData["alt"] = alt
+						if alt or (lat and lon):
+							addSensorToData(selectedSensorsTypeIdDict[SensorType.GPSPosition], gpsPosData)
+							isPositionData = True
+				elif gpsData.startswith("$GPGLL"):
+					print "GPGLL: " + gpsData
+					gpsDataSplit = gpsData.split(",")
+					print "LEN: " + str(len(gpsDataSplit))
+					if len(gpsDataSplit) == 8:
+						if len(gpsDataSplit[1]) >= 1:
+							lat = float(gpsDataSplit[1])/ 100.0
+						if len(gpsDataSplit[3]) >= 1:
+							lon = float(gpsDataSplit[3])/ 100.0
+						print "---"
+						print lat
+						print lon
+						print "---"
+						posData = []
+						if lat != -1 and lon != -1:
+								posData.append(lat)
+								posData.append(lon)
+								gpsPosData["pos"] = posData
+								addSensorToData(selectedSensorsTypeIdDict[SensorType.GPSPosition], gpsPosData)
 
-                                                isPositionData = True
-                                elif gpsData.startswith("$GPRMC"):
-                                    print "GPRMC: " + gpsData
-                                    gpsDataSplit = gpsData.split(",")
-                                    print "LEN: " + str(len(gpsDataSplit))
-                                    if len(gpsDataSplit) >= 12:
-                                        lat = float(gpsDataSplit[3])/ 100.0
-                                        lon = float(gpsDataSplit[5])/ 100.0
-                                        posData = []
-                                        print "---"
-                                        print lat
-                                        print lon
-                                        print "---"
-                                        if lat and lon:
-                                                posData.append(lat)
-                                                posData.append(lon)
-                                                gpsPosData["pos"] = posData
-                                                addSensorToData(selectedSensorsTypeIdDict[SensorType.GPSPosition], gpsPosData)
-
-                                                isPositionData = True
+								isPositionData = True
+				elif gpsData.startswith("$GPRMC"):
+					print "GPRMC: " + gpsData
+					gpsDataSplit = gpsData.split(",")
+					print "LEN: " + str(len(gpsDataSplit))
+					if len(gpsDataSplit) >= 12:
+						if len(gpsDataSplit[3]) >= 1:
+							lat = float(gpsDataSplit[3])/ 100.0
+						if len(gpsDataSplit[5]) >= 1:
+							lon = float(gpsDataSplit[5])/ 100.0
+						
+						posData = []
+						print "---"
+						print lat
+						print lon
+						print "---"
+						if lat != -1 and lon != -1:
+							posData.append(lat)
+							posData.append(lon)
+							gpsPosData["pos"] = posData
+							addSensorToData(selectedSensorsTypeIdDict[SensorType.GPSPosition], gpsPosData)
+							isPositionData = True
 				if gpsData.startswith("$GPVTG"):
-                                        print "GPVTG: " + gpsData
-                                        gpsDataSplit = gpsData.split(",")
-                                        print "LEN: " + str(len(gpsDataSplit))
-                                        if len(gpsDataSplit) == 10:
-                                            speedKmh = gpsDataSplit[7]
-                                            print "Speed" + str(speedKmh)
-                                            if speedKmh:
-                                                    print "Speed: " + str(speedKmh)
-                                                    addSensorToData(selectedSensorsTypeIdDict[SensorType.Speed], gpsSpeedData)
+					print "GPVTG: " + gpsData
+					gpsDataSplit = gpsData.split(",")
+					print "LEN: " + str(len(gpsDataSplit))
+					if len(gpsDataSplit) == 10:
+						speedKmh = gpsDataSplit[7]
+						print "Speed" + str(speedKmh)
+						if speedKmh:
+							print "Speed: " + str(speedKmh)
+							addSensorToData(selectedSensorsTypeIdDict[SensorType.Speed], gpsSpeedData)
 
-                                                    gpsSpeedData = float(speedKmh)
-                                                    isSpeedData = True
+							gpsSpeedData = float(speedKmh)
+							isSpeedData = True
 		else:
 			print ("gpsSerialClosed")
 			#while not isPositionData:
