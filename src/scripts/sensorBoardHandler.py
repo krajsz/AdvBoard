@@ -4,6 +4,7 @@
 import sys
 import os
 import json
+import signal
 
 import threading
 import serial
@@ -52,14 +53,15 @@ blinkEnabled = True
 buttonDownTime = -1
 buttonUpTime = -1
 buttonPressDuration = -1
-
+GPS_RETRY_COUNT = 5
 #sensor data
 jsonData = json.dumps('')
 sensorData = []
 currentData = []
 selectedSensorsTypeIdDict = dict()
 ledDelay = -1
-dataFile = open(str(datetime.datetime.now()) + ".json","w")
+fileName = "/home/pi/" + str(datetime.datetime.now()) + ".json"
+dataFile = open(fileName,"w+")
 isFirstDataWrite = True
 
 #conditions for sensor readings
@@ -107,6 +109,7 @@ def readSensors():
 	global sensorData
 	global currentData
 	global isFirstDataWrite
+	global GPS_RETRY_COUNT
 	if readTemperature or readHumidity:
 		humidity, temperature = DHT.read_retry(DHT.DHT11, 26)
 		print "Temperature:" + str(temperature) + " Humidity: " + str(humidity)
@@ -130,13 +133,15 @@ def readSensors():
 			isSpeedData = False
 			gpsSpeedData = 0
 			gpsPosData = dict()
-			while not isPositionData and not isSpeedData:
+			retryCount = 0
+			while (not isPositionData and not isSpeedData) and (retryCount < GPS_RETRY_COUNT):
 				gpsData = gpsSerial.readline()
 				print "GPSData: " + gpsData
 				lat = -1
 				lon = -1
-				
+				print "retry: " + str(retryCount)
 				if gpsData.startswith("$GPGGA"):
+					retryCount = retryCount + 1
 					print "GPGGA: " + gpsData
 					gpsDataSplit = gpsData.split(",")
 					print "LEN: " + str(len(gpsDataSplit))
@@ -163,6 +168,7 @@ def readSensors():
 							isPositionData = True
 				elif gpsData.startswith("$GPGLL"):
 					print "GPGLL: " + gpsData
+					retryCount = retryCount + 1
 					gpsDataSplit = gpsData.split(",")
 					print "LEN: " + str(len(gpsDataSplit))
 					if len(gpsDataSplit) == 8:
@@ -183,6 +189,7 @@ def readSensors():
 
 								isPositionData = True
 				elif gpsData.startswith("$GPRMC"):
+					retryCount = retryCount + 1
 					print "GPRMC: " + gpsData
 					gpsDataSplit = gpsData.split(",")
 					print "LEN: " + str(len(gpsDataSplit))
@@ -204,6 +211,7 @@ def readSensors():
 							addSensorToData(selectedSensorsTypeIdDict[SensorType.GPSPosition], gpsPosData)
 							isPositionData = True
 				if gpsData.startswith("$GPVTG"):
+					retryCount = retryCount + 1
 					print "GPVTG: " + gpsData
 					gpsDataSplit = gpsData.split(",")
 					print "LEN: " + str(len(gpsDataSplit))
@@ -225,10 +233,12 @@ def readSensors():
 		#write in file
 		print "Writing in file"
 		if isFirstDataWrite:
-			dataFile.write("\"sensorData\": [")
+			with open(fileName,"a") as dataf:
+				dataf.write("\"sensorData\": [")
 			isFirstDataWrite = False
-		dataFile.write(json.dumps(currentData, indent=4))
-		dataFile.write(",")
+		with open(fileName,"a") as dataf:
+			dataf.write(json.dumps(currentData, indent=4))
+			dataf.write(",")
 		
 	sensorData.append(currentData)
 	currentData = []
@@ -240,11 +250,19 @@ def addSensorToData(sensorId, sensorValue):
 
 #RPi GPIO setup
 def setup():
-    GPIO.setmode(GPIO.BOARD)
-    GPIO.setup(ledPin, GPIO.OUT)
-    GPIO.setup(btnPin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-    GPIO.add_event_detect(btnPin, GPIO.BOTH, callback=buttonPressedCallback)
-    ledOn(True)
+	GPIO.setmode(GPIO.BOARD)
+	GPIO.setup(ledPin, GPIO.OUT)
+	GPIO.setup(btnPin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+	GPIO.add_event_detect(btnPin, GPIO.BOTH, callback=buttonPressedCallback)
+	signal.signal(signal.SIGTERM, destroy)
+	signal.signal(signal.SIGINT, destroy)
+	signal.signal(signal.SIGABRT, destroy)
+	signal.signal(signal.SIGILL, destroy)
+
+	dataFile.close()
+	for sensorType in SensorType:
+		selectedSensorsTypeIdDict[sensorType] = sensorType.value
+	ledOn(True)
 
 #read from stdin
 def readStdin():
@@ -270,16 +288,17 @@ def readStdin():
 				#this shouldn't happen
 
 #cleanup on exit
-def destroy():
+def destroy(arg=None,arg1=None):
 	global dataFile
-
+	
+	print dataFile.name
 	GPIO.output(ledPin, GPIO.LOW)
 	GPIO.cleanup()
-	gpsSerial.close()	
-	dataFile.seek(-1, os.SEEK_END)
-	dataFile.truncate()
-	dataFile.write("]")
-	dataFile.close()
+	gpsSerial.close()
+	with open(fileName, "a") as dataf:	
+		dataf.seek(-1, os.SEEK_END)
+		dataf.truncate()
+		dataf.write("]")
     
 #callback function for the button
 def buttonPressedCallback(channel):
@@ -316,15 +335,14 @@ def buttonPressedCallback(channel):
 			print ("Stopping recording")
 			isRecordingBlinking = False
 			ledOn(True)
-			dataFile.write("]")
+			with open(fileName,"a") as dataf:
+				dataf.write("]")
 		
 	if buttonPressDuration > 6:
 		restartPi()
 def main():
 	setup()
-	for sensorType in SensorType:
-		selectedSensorsTypeIdDict[sensorType] = sensorType.value
-	
+
 	try:
 		print ('Started')
 		print (sys.argv)
@@ -356,6 +374,7 @@ def main():
 	#on ctrl+c
 	except KeyboardInterrupt:
 		destroy()
-
+	finally:
+		destroy()
 if __name__ == '__main__':
 	main()        
