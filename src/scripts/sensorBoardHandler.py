@@ -5,8 +5,6 @@ import sys
 import os
 import json
 import signal
-
-import threading
 import serial
 import RPi.GPIO as GPIO
 import Adafruit_DHT as DHT
@@ -17,18 +15,24 @@ import datetime
 from enum import Enum, unique
 
 from subprocess import call
+from threading import Thread
 
 from time import sleep
 from time import time
 
 #Globals
 
+#consts
+BLINK_ENABLED = True
+
+ledPin = 33
+btnPin = 31
+
+GPS_RETRY_COUNT = 5
 #gps stuff
 gpsSerial = serial.Serial('/dev/ttyS0', baudrate=9600, timeout=None)
 
-#pin setups
-ledPin = 33
-btnPin = 31
+
 
 #sensor types
 @unique
@@ -46,14 +50,12 @@ accelerometer = Accel.ADXL345()
 
 #button/led/reading controlling conditions (mostly)
 dataValidResponse = False
-isRecordingMode = True
+isRecordingMode = False
 isInitializingMode = False
-isDataValid = True
-blinkEnabled = True
+isDataValid = False
 buttonDownTime = -1
 buttonUpTime = -1
 buttonPressDuration = -1
-GPS_RETRY_COUNT = 5
 
 #sensor data
 jsonData = json.dumps('')
@@ -63,9 +65,6 @@ ledDelay = -1
 fileName = "/home/pi/" + str(datetime.datetime.now()) + ".json"
 dataFile = open(fileName,"w+")
 isFirstDataWrite = True
-
-#initializing flags
-sensorsOk = False
 
 #conditions for sensor readings
 readTemperature = True
@@ -85,8 +84,8 @@ def ledOn(on):
         GPIO.output(ledPin, GPIO.LOW)
 
 def blinkLed(delaySec):
-	global blinkEnabled
-	if blinkEnabled:
+	global BLINK_ENABLED
+	if BLINK_ENABLED:
 		ledOn(True)
 		sleep(delaySec)
 		ledOn(False)
@@ -100,7 +99,7 @@ def recordingLedBlinking():
 #blink the LED when , 0.5sec delay
 def initializingLedBlinking():
 	print ("Initializing blink")
-        blinkLed(0.125)
+	blinkLed(0.1)
 
 #read sensors
 def readSensors():
@@ -229,22 +228,22 @@ def readSensors():
 		else:
 			print ("gpsSerialClosed")
 			#while not isPositionData:
-          if isInitializingMode:
-		print json.dumps(currentData, indent=4)
-          if isRecordingMode:
+		if isInitializingMode:
+			print json.dumps(currentData, indent=4)
+		if isRecordingMode:
 		#write in file
-		print "Writing in file"
-		if isFirstDataWrite:
+			print "Writing in file"
+			if isFirstDataWrite:
+				with open(fileName,"a") as dataf:
+					dataf.write("\"sensorData\": [")
+				isFirstDataWrite = False
 			with open(fileName,"a") as dataf:
-				dataf.write("\"sensorData\": [")
-			isFirstDataWrite = False
-		with open(fileName,"a") as dataf:
-			dataf.write(json.dumps(currentData, indent=4))
-			dataf.write(",")
-		
-        data = currentData
-        currentData = []
-        return data
+				dataf.write(json.dumps(currentData, indent=4))
+				dataf.write(",")
+
+		data = currentData
+		currentData = []
+		return data
 def addSensorToData(sensorId, sensorValue):
 	sensorData = dict()
 	sensorData["id"] = int(sensorId)
@@ -270,7 +269,7 @@ def setup():
 #read from stdin
 def readStdin():
 	global isDataValid
-          global isInitializingMode
+	global isInitializingMode
 
 	for data in sys.stdin.readline():
 		print ("Data" + str(data))
@@ -281,7 +280,7 @@ def readStdin():
 			if "data" in dataStr:
 				ok = dataStr.split(":")[1]
 				if ok == "OK":
-                                                  isInitializingMode = False
+					isInitializingMode = False
 					isDataValid = True
 					ledOn(True)
 				elif ok == "NOK":
@@ -305,8 +304,8 @@ def destroy(arg=None,arg1=None):
     
 #callback function for the button
 def buttonPressedCallback(channel):
-          global isInitializingMode
-          global isRecordingMode
+	global isInitializingMode
+	global isRecordingMode
 	global isDataValid
 	global buttonDownTime 
 	global buttonUpTime
@@ -321,22 +320,26 @@ def buttonPressedCallback(channel):
 		print ("Elapsed: " + str(buttonPressDuration))
 	
 	#initializing
-        if not isInitializingMode and not isRecordingBlinking:
-		if buttonPressDuration > 1 and buttonPressDuration < 3:
-                        isInitializingMode = True
+	if not isInitializingMode and not isRecordingMode and not isDataValid:
+		if buttonPressDuration > 1 and buttonPressDuration < 2:
+			isInitializingMode = True
 			print ('Button pressed, initializing')
+
+			checkSensorsThread = Thread(target = checkSensors)
+			checkSensorsThread.start()
+			checkSensorsThread.join()
 	#start reading
-        elif not isRecordingMode:
-		if buttonPressDuration > 3:
+	elif not isRecordingMode and isDataValid:
+		if buttonPressDuration > 2:
 			if isDataValid:
-                                isInitializingMode = False
-                                isRecordingMode = True
+				isInitializingMode = False
+				isRecordingMode = True
 				print ('Button pressed, recording')
 	#stopReading
-        elif isRecordingMode:
+	elif isRecordingMode:
 		if buttonPressDuration > 0.2:
 			print ("Stopping recording")
-                        isRecordingMode = False
+			isRecordingMode = False
 			ledOn(True)
 			with open(fileName,"a") as dataf:
 				dataf.write("]")
@@ -344,27 +347,104 @@ def buttonPressedCallback(channel):
 	if buttonPressDuration > 6:
 		restartPi()
 def checkSensors():
-    isTemperatureHumiditySensorOk = False
-    isAccelerometerOk = False
-    isGPSOk = False
-    global readTemperature
-    global readAcceleration
-    global readHumidity
-    global readGpsPosition
-    global readSpeed
+	isTemperatureOk = False
+	isAccelerometerOk = False
+	isHumidityOk = False
+	isSpeedOk = False
+	isGPSPositionOk = False
+	
+	global readTemperature
+	global readAcceleration
+	global readHumidity
+	global readGpsPosition
+	global readSpeed
+	global isDataValid
+	global customSensorIdProvided
+	global isInitializingMode
+	
+	if not readTemperature:
+		isTemperatureOk = True
+	if not readHumidity:
+		isHumidityOk = True
+	if not readAcceleration:
+		isAccelerometerOk = True
+	if not readGpsPosition:
+		isGPSPositionOk = True
+	if not readSpeed:
+		isSpeedOk = True
 
-    if not readTemperature and not readHumidity:
-        isTemperatureHumiditySensorOk = True
-    if not readAcceleration:
-        isAccelerometerOk = True
-    if not readGpsPosition and not readSpeeds:
-        isGPSOk = True
-    retryCount = 0
-    while (retryCount < GPS_RETRY_COUNT) and (not isTemperatureHumiditySensorOk and not isAccelerometerOk and not isGPSOk):
-        data = readSensors()
-
-
-
+	retryCount = 0
+	#TODO add GPS too
+	while (retryCount < 10) and (not isHumidityOk and not isTemperatureOk and not isAccelerometerOk):
+		data = readSensors()
+		if customSensorIdProvided:
+			if readTemperature:
+				pass
+			if readHumidity:
+				pass
+			if readAcceleration:
+				pass
+			if readGpsPosition:
+				pass
+			if readSensors:
+				pass
+		else:
+			print data
+			for sensorData in data:
+				sensorDataValue = sensorData["value"]
+				if sensorData["id"] == SensorType.Acceleration.value:
+					if len(sensorDataValue) == 2:
+						if sensorDataValue[0] and sensorDataValue[1]:
+							isAccelerometerOk = True
+							print "Accel OK"
+						else:
+							isAccelerometerOk = False
+							print "Accel NOK"
+					else:
+						isAccelerometerOk = False
+						print "Accel NOK"
+				elif sensorData["id"] == SensorType.Temperature.value:
+					if sensorDataValue:
+						if sensorDataValue > -50 and sensorDataValue < 50:
+							isTemperatureOk = True
+							print "Temp OK"
+						else:
+							print "Temp NOK"
+							isTemperatureOk = False
+					else:
+						isTemperatureOk = False
+						print "Temp NOK"
+					print "Temp: " + str(sensorData["value"])
+				elif sensorData["id"] == SensorType.Humidity.value:
+					if sensorDataValue:
+						if sensorDataValue >= 0 and sensorDataValue <= 100:
+							print "Hum OK"
+							isHumidityOk = True
+						else:
+							print "Hum NOK"
+							isHumidityOk = False
+					else:
+						print "Hum NOK"
+						isHumidityOk = False
+					print "Hum: " + str(sensorData["value"])
+				elif sensorData["id"] == SensorType.GPSPosition.value:
+					pass
+				elif sensorData["id"] == SensorType.Speed.value:
+					pass
+				print "Data: " + str(sensorData)
+				#TODO add GPS too
+			if isTemperatureOk and isHumidityOk and isAccelerometerOk:
+				isDataValid = True
+				isInitializingMode = False
+				print "Data valid"
+				ledOn(True)
+				break	
+	#data was invalid, turn off led
+	if retryCount == GPS_RETRY_COUNT and not isDataValid:
+		isInitializingMode = False
+		isDataValid = False
+		print "Led off"
+		ledOn(False)
 def main():
 	setup()
 
@@ -372,8 +452,8 @@ def main():
 		print ('Started')
 		print (sys.argv)
 		i = 0
-		global isInitializingLedBlinking
-		global isRecordingBlinking
+		global isInitializingMode
+		global isRecordingMode
 		global ledDelay
 		while True:
 			print (str(i))
@@ -384,18 +464,17 @@ def main():
 			else:
 				i = i+1
 
-			#if isInitializingLedBlinking:
+			#if isInitializingMode:
+			#	ledDelay = -1
 			#	initializingLedBlinking()
-
-			#if isRecordingBlinking:
-			
+			#if isRecordingMode:
+			#	recordingLedBlinking()
+			#	readSensors()
 			recordingLedBlinking()
 			readSensors()
-
 			#if ledDelay < 0:
-			#	sleep(0.2)
+			#	sleep(0.5)
 				
-                        #gpsSerial.reset_input_buffer()
 	#on ctrl+c
 	except KeyboardInterrupt:
 		destroy()
