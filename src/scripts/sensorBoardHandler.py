@@ -50,9 +50,11 @@ accelerometer = Accel.ADXL345()
 
 #button/led/reading controlling conditions (mostly)
 dataValidResponse = False
-isRecordingMode = False
+#for testing True
+isRecordingMode = True
 isInitializingMode = False
-isDataValid = False
+#for testing True
+isDataValid = True
 buttonDownTime = -1
 buttonUpTime = -1
 buttonPressDuration = -1
