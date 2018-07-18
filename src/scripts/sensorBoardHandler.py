@@ -25,7 +25,7 @@ from time import time
 
 #gps stuff
 gpsSerial = serial.Serial('/dev/ttyS0', baudrate=9600, timeout=None)
-serialStreamReader = pynmea2.NMEAStreamReader(gpsSerial)
+
 #pin setups
 ledPin = 33
 btnPin = 31
@@ -46,23 +46,26 @@ accelerometer = Accel.ADXL345()
 
 #button/led/reading controlling conditions (mostly)
 dataValidResponse = False
-isRecordingBlinking = True
-isInitializingLedBlinking = False
+isRecordingMode = True
+isInitializingMode = False
 isDataValid = True
 blinkEnabled = True
 buttonDownTime = -1
 buttonUpTime = -1
 buttonPressDuration = -1
 GPS_RETRY_COUNT = 5
+
 #sensor data
 jsonData = json.dumps('')
-sensorData = []
 currentData = []
 selectedSensorsTypeIdDict = dict()
 ledDelay = -1
 fileName = "/home/pi/" + str(datetime.datetime.now()) + ".json"
 dataFile = open(fileName,"w+")
 isFirstDataWrite = True
+
+#initializing flags
+sensorsOk = False
 
 #conditions for sensor readings
 readTemperature = True
@@ -106,7 +109,6 @@ def readSensors():
 	global readGpsPosition
 	global readSpeed
 	global readHumidity
-	global sensorData
 	global currentData
 	global isFirstDataWrite
 	global GPS_RETRY_COUNT
@@ -227,9 +229,9 @@ def readSensors():
 		else:
 			print ("gpsSerialClosed")
 			#while not isPositionData:
-	if isInitializingLedBlinking:
+          if isInitializingMode:
 		print json.dumps(currentData, indent=4)
-	if isRecordingBlinking:
+          if isRecordingMode:
 		#write in file
 		print "Writing in file"
 		if isFirstDataWrite:
@@ -240,8 +242,9 @@ def readSensors():
 			dataf.write(json.dumps(currentData, indent=4))
 			dataf.write(",")
 		
-	sensorData.append(currentData)
-	currentData = []
+        data = currentData
+        currentData = []
+        return data
 def addSensorToData(sensorId, sensorValue):
 	sensorData = dict()
 	sensorData["id"] = int(sensorId)
@@ -267,7 +270,7 @@ def setup():
 #read from stdin
 def readStdin():
 	global isDataValid
-	global initializingLedBlinking
+          global isInitializingMode
 
 	for data in sys.stdin.readline():
 		print ("Data" + str(data))
@@ -278,7 +281,7 @@ def readStdin():
 			if "data" in dataStr:
 				ok = dataStr.split(":")[1]
 				if ok == "OK":
-					initializingLedBlinking = False
+                                                  isInitializingMode = False
 					isDataValid = True
 					ledOn(True)
 				elif ok == "NOK":
@@ -302,8 +305,8 @@ def destroy(arg=None,arg1=None):
     
 #callback function for the button
 def buttonPressedCallback(channel):
-	global isInitializingLedBlinking
-	global isRecordingBlinking
+          global isInitializingMode
+          global isRecordingMode
 	global isDataValid
 	global buttonDownTime 
 	global buttonUpTime
@@ -318,28 +321,50 @@ def buttonPressedCallback(channel):
 		print ("Elapsed: " + str(buttonPressDuration))
 	
 	#initializing
-	if not isInitializingLedBlinking and not isRecordingBlinking:
+        if not isInitializingMode and not isRecordingBlinking:
 		if buttonPressDuration > 1 and buttonPressDuration < 3:
-			isInitializingLedBlinking = True
+                        isInitializingMode = True
 			print ('Button pressed, initializing')
 	#start reading
-	elif not isRecordingBlinking:
+        elif not isRecordingMode:
 		if buttonPressDuration > 3:
 			if isDataValid:
-				isInitializingLedBlinking = False
-				isRecordingBlinking = True
+                                isInitializingMode = False
+                                isRecordingMode = True
 				print ('Button pressed, recording')
 	#stopReading
-	elif isRecordingBlinking:
+        elif isRecordingMode:
 		if buttonPressDuration > 0.2:
 			print ("Stopping recording")
-			isRecordingBlinking = False
+                        isRecordingMode = False
 			ledOn(True)
 			with open(fileName,"a") as dataf:
 				dataf.write("]")
 		
 	if buttonPressDuration > 6:
 		restartPi()
+def checkSensors():
+    isTemperatureHumiditySensorOk = False
+    isAccelerometerOk = False
+    isGPSOk = False
+    global readTemperature
+    global readAcceleration
+    global readHumidity
+    global readGpsPosition
+    global readSpeed
+
+    if not readTemperature and not readHumidity:
+        isTemperatureHumiditySensorOk = True
+    if not readAcceleration:
+        isAccelerometerOk = True
+    if not readGpsPosition and not readSpeeds:
+        isGPSOk = True
+    retryCount = 0
+    while (retryCount < GPS_RETRY_COUNT) and (not isTemperatureHumiditySensorOk and not isAccelerometerOk and not isGPSOk):
+        data = readSensors()
+
+
+
 def main():
 	setup()
 
