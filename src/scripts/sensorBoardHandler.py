@@ -106,7 +106,8 @@ ledDelay = -1
 fileName = "/home/pi/" + str(datetime.datetime.now()) + ".json"
 dataFile = open(fileName,"w+")
 isFirstDataWrite = True
-
+fileSaved = dict();
+fileSaved[fileName] = False
 #conditions for sensor readings
 readTemperature = True
 readAcceleration = True
@@ -163,11 +164,11 @@ def readSensors():
 		print "Temperature:" + str(temperature) + " Humidity: " + str(humidity)
 		if readTemperature:
 			if temperature:
-				draw.text((xPos, top + 8), "Temp: "+str(temperature)+"C", font=font, fill=255)
-				addSensorToData(selectedSensorsTypeIdDict[SensorType.Temperature], int(temperature))
+				draw.text((xPos, top + 2), "Temp: "+str(temperature)+"C", font=font, fill=255)
+                addSensorToData(selectedSensorsTypeIdDict[SensorType.Temperature], int(temperature))
 		if readHumidity:
 			if humidity:
-				draw.text((xPos, top + 16), "Hum: "+str(humidity)+"%", font=font, fill=255)
+				draw.text((xPos, top + 12), "Hum: "+str(humidity)+"%", font=font, fill=255)
 				addSensorToData(selectedSensorsTypeIdDict[SensorType.Humidity], int(humidity))
 	if readAcceleration:
 		x, y, z = accelerometer.read()
@@ -176,7 +177,7 @@ def readSensors():
 		yg = y * 0.003906
 		if x and y:
 			vals = [xg, yg]
-			draw.text((xPos, top + 24), "Xg: "+str(xg)[:4]+"  Yg: " + str(yg)[:4], font=font, fill=255)
+			draw.text((xPos, top + 22), "Xg: "+str(xg)[:4]+"  Yg: " + str(yg)[:4], font=font, fill=255)
 
 			addSensorToData(selectedSensorsTypeIdDict[SensorType.Acceleration], vals)
 	if readGpsPosition or readSpeed:
@@ -215,7 +216,10 @@ def readSensors():
 						alt = float(gpsDataSplit[9])
 						if alt:
 							gpsPosData["alt"] = alt
+							draw.text((xPos, top + 52), "Alt: "+str(alt), font=font, fill=255)
 						if alt or (lat and lon):
+							if lat and lon:
+								draw.text((xPos, top + 42), "Lat: "+str(lat)+"  Lon: " + str(lon), font=font, fill=255)
 							addSensorToData(selectedSensorsTypeIdDict[SensorType.GPSPosition], gpsPosData)
 							isPositionData = True
 				elif gpsData.startswith("$GPGLL"):
@@ -237,6 +241,7 @@ def readSensors():
 								posData.append(lat)
 								posData.append(lon)
 								gpsPosData["pos"] = posData
+								draw.text((xPos, top + 42), "Lat: "+str(lat)+"  Lon: " + str(lon), font=font, fill=255)
 								addSensorToData(selectedSensorsTypeIdDict[SensorType.GPSPosition], gpsPosData)
 
 								isPositionData = True
@@ -259,6 +264,7 @@ def readSensors():
 						if lat != -1 and lon != -1:
 							posData.append(lat)
 							posData.append(lon)
+							draw.text((xPos, top + 42), "Lat: "+str(lat)+"  Lon: " + str(lon), font=font, fill=255)
 							gpsPosData["pos"] = posData
 							addSensorToData(selectedSensorsTypeIdDict[SensorType.GPSPosition], gpsPosData)
 							isPositionData = True
@@ -268,19 +274,14 @@ def readSensors():
 					gpsDataSplit = gpsData.split(",")
 					print "LEN: " + str(len(gpsDataSplit))
 					if len(gpsDataSplit) == 10:
-						speedKmh = gpsDataSplit[7]
+						speedKmh = str(gpsDataSplit[7])
 						print "Speed" + str(speedKmh)
-						strSpeed = str(speedKmh)
-						if speedKmh == None:
-							strSpeed = "0"
-						draw.text((xPos, top + 32), "Speed: "+strSpeed+" km/h", font=font, fill=255)
-
 						if speedKmh:
+							draw.text((xPos, top + 32), "Speed: "+ str(speedKmh) +" km/h", font=font, fill=255)
 							print "Speed: " + str(speedKmh)
-							addSensorToData(selectedSensorsTypeIdDict[SensorType.Speed], gpsSpeedData)
-					
-							gpsSpeedData = float(speedKmh)
-
+							if float(speedKmh):
+								gpsSpeedData = float(speedKmh)
+							addSensorToData(selectedSensorsTypeIdDict[SensorType.Speed], gpsSpeedData)		
 							isSpeedData = True
 		else:
 			print ("gpsSerialClosed")
@@ -349,16 +350,30 @@ def readStdin():
 #cleanup on exit
 def destroy(arg=None,arg1=None):
 	global dataFile
-	
-	print dataFile.name
-	GPIO.output(ledPin, GPIO.LOW)
-	GPIO.cleanup()
-	gpsSerial.close()
-	with open(fileName, "a") as dataf:	
-		dataf.seek(-1, os.SEEK_END)
-		dataf.truncate()
-		dataf.write("]")
-    
+
+	isRecordingMode = False
+	isInitializingMode = False
+		
+	print "Filename: " + dataFile.name
+
+	if fileSaved[dataFile.name] == False:
+		fileSaved[dataFile.name] = True
+		#GPIO.setmode(GPIO.BCM)
+		#GPIO.setup(ledPin, GPIO.OUT)
+		#GPIO.output(ledPin, GPIO.LOW)
+		#GPIO.cleanup()
+		print "hol"
+		gpsSerial.close()
+		with open(fileName, "a") as dataf:	
+			print "WTF"
+			dataf.seek(-1, os.SEEK_END)
+			dataf.truncate()
+			dataf.write("]")
+			dataf.close()
+	else:
+		pass
+	exit()
+	    
 #callback function for the button
 def buttonPressedCallback(channel):
 	global isInitializingMode
