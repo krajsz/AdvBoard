@@ -9,8 +9,15 @@ import serial
 import RPi.GPIO as GPIO
 import Adafruit_DHT as DHT
 import Adafruit_ADXL345 as Accel
+import Adafruit_SSD1306 as OLED
+
 import pynmea2
 import datetime
+
+from PIL import Image
+from PIL import ImageDraw
+from PIL import ImageFont
+
 
 from enum import Enum, unique
 
@@ -25,13 +32,16 @@ from time import time
 #consts
 BLINK_ENABLED = True
 
-ledPin = 33
-btnPin = 31
+#OLED stuff
+
+
+RSTPin=19
+ledPin = 13
+btnPin = 6
 
 GPS_RETRY_COUNT = 5
 #gps stuff
 gpsSerial = serial.Serial('/dev/ttyS0', baudrate=9600, timeout=None)
-
 
 
 #sensor types
@@ -48,6 +58,35 @@ customSensorIdProvided = False
 #ADXL345 accelerometer instance
 accelerometer = Accel.ADXL345()
 
+##SSD1306 OLED display stuff
+disp = OLED.SSD1306_128_64(rst=RSTPin)
+
+# Initialize library.
+disp.begin()
+
+# Clear display.
+disp.clear()
+disp.display()
+
+# Create blank image for drawing.
+# Make sure to create image with mode '1' for 1-bit color.
+width = disp.width
+height = disp.height
+image = Image.new('1', (width, height))
+
+# Get drawing object to draw on image.
+draw = ImageDraw.Draw(image)
+
+padding = 2
+top = padding
+bottom = height-padding
+
+xPos = padding
+
+# Load default font.
+font = ImageFont.load_default()
+
+#########
 #button/led/reading controlling conditions (mostly)
 dataValidResponse = False
 #for testing True
@@ -86,7 +125,7 @@ def ledOn(on):
         GPIO.output(ledPin, GPIO.LOW)
 
 def blinkLed(delaySec):
-	global BLINK_ENABLED
+	#global BLINK_ENABLED
 	if BLINK_ENABLED:
 		ledOn(True)
 		sleep(delaySec)
@@ -113,14 +152,22 @@ def readSensors():
 	global currentData
 	global isFirstDataWrite
 	global GPS_RETRY_COUNT
+	
+	global draw
+	global xPos
+	global top
+	global font
+	
 	if readTemperature or readHumidity:
 		humidity, temperature = DHT.read_retry(DHT.DHT11, 26)
 		print "Temperature:" + str(temperature) + " Humidity: " + str(humidity)
 		if readTemperature:
 			if temperature:
+				draw.text((xPos, top + 8), "Temp: "+str(temperature)+"C", font=font, fill=255)
 				addSensorToData(selectedSensorsTypeIdDict[SensorType.Temperature], int(temperature))
 		if readHumidity:
 			if humidity:
+				draw.text((xPos, top + 16), "Hum: "+str(humidity)+"%", font=font, fill=255)
 				addSensorToData(selectedSensorsTypeIdDict[SensorType.Humidity], int(humidity))
 	if readAcceleration:
 		x, y, z = accelerometer.read()
@@ -129,6 +176,8 @@ def readSensors():
 		yg = y * 0.003906
 		if x and y:
 			vals = [xg, yg]
+			draw.text((xPos, top + 24), "Xg: "+str(xg)[:4]+"  Yg: " + str(yg)[:4], font=font, fill=255)
+
 			addSensorToData(selectedSensorsTypeIdDict[SensorType.Acceleration], vals)
 	if readGpsPosition or readSpeed:
 		if gpsSerial.isOpen():
@@ -221,11 +270,17 @@ def readSensors():
 					if len(gpsDataSplit) == 10:
 						speedKmh = gpsDataSplit[7]
 						print "Speed" + str(speedKmh)
+						strSpeed = str(speedKmh)
+						if speedKmh == None:
+							strSpeed = "0"
+						draw.text((xPos, top + 32), "Speed: "+strSpeed+" km/h", font=font, fill=255)
+
 						if speedKmh:
 							print "Speed: " + str(speedKmh)
 							addSensorToData(selectedSensorsTypeIdDict[SensorType.Speed], gpsSpeedData)
-
+					
 							gpsSpeedData = float(speedKmh)
+
 							isSpeedData = True
 		else:
 			print ("gpsSerialClosed")
@@ -254,7 +309,7 @@ def addSensorToData(sensorId, sensorValue):
 
 #RPi GPIO setup
 def setup():
-	GPIO.setmode(GPIO.BOARD)
+	#GPIO.setmode(GPIO.BOARD)
 	GPIO.setup(ledPin, GPIO.OUT)
 	GPIO.setup(btnPin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 	GPIO.add_event_detect(btnPin, GPIO.BOTH, callback=buttonPressedCallback)
@@ -457,7 +512,17 @@ def main():
 		global isInitializingMode
 		global isRecordingMode
 		global ledDelay
+		
+		global disp
+		global draw
+		global xPos
+		global top
+		global font
+		
+		disp.set_contrast(50)
+
 		while True:
+
 			print (str(i))
 			if i > 100:
 				readStdin() 
@@ -472,8 +537,14 @@ def main():
 			#if isRecordingMode:
 			#	recordingLedBlinking()
 			#	readSensors()
+			draw.rectangle((0,0,width,height), outline=0, fill=0)
+			
 			recordingLedBlinking()
 			readSensors()
+
+			disp.image(image)
+
+			disp.display()
 			#if ledDelay < 0:
 			#	sleep(0.5)
 				
